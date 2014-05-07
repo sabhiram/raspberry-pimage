@@ -65,8 +65,8 @@ var
 
     // Include our custom "gallery" interface and pass it to
     // the API
-    gallery =       require("./app/gallery")(log, gallery_dir),
-    rpi_camera =    require("./app/rpicamera")(log, temp_images_dir),
+    gallery =       require("./app/gallery")(log, args.gallery_dir),
+    rpi_camera =    require("./app/rpi_camera")(log, args.temp_images_dir),
 
     // Define API and View handlers
     handlers = {

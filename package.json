@@ -19,7 +19,6 @@
     "mocha": "~1.18.2",
     "winston": "~0.7.3",
     "ejs": "~1.0.0",
-    "node-gallery": "~0.3.2",
     "should": "~3.3.1",
     "rimraf": "~2.2.6",
     "request": "~2.34.0"
