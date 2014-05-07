@@ -1,0 +1,27 @@
+{
+  "name": "raspberryPImage",
+  "version": "0.0.1",
+  "description": "NodeJS server for RPI camera module, and basic album management",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "Shaba Abhiram",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "~3.4.8",
+    "async": "~0.8.0",
+    "underscore": "~1.6.0",
+    "mocha": "~1.18.2",
+    "winston": "~0.7.3",
+    "ejs": "~1.0.0",
+    "node-gallery": "~0.3.2",
+    "should": "~3.3.1",
+    "rimraf": "~2.2.6",
+    "request": "~2.34.0"
+  }
+}

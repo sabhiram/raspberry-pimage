@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="PIMageApp">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=1">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="/external/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/external/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/external/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>RaspberryPImage</title>
+
+</head>
+<body ng-controller="AppController">
+
+    <script src="/external/js/underscore.min.js"></script>
+    <script src="/external/js/jquery.js"></script>
+    <script src="/external/js/bootstrap.min.js"></script>
+    <script src="/external/js/angular.js"></script>
+    <script src="/external/js/angular.animate.js"></script>
+    <script src="/external/js/angular.touch.js"></script>
+
+    <script src="/js/app.controller.js"></script>
+
+    <br>
+    <div id="pim-header-div">
+        Album:
+        <select ng-model="album_selection">
+            <option ng-repeat="album in albums" value="{{album.name}}">{{album.name}}</option>
+        </select>
+
+        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+
+        <a href="#"><i class="fa fa-camera"></i>&nbsp;Take a Picture
+        </a>
+    </div>
+    <hr>
+
+    {{ album_selection | json }}
+    
+
+    <br>
+    <div id="pim-content-div">
+    </div>
+
+    <script>
+        // On document ready...
+        $(document).ready(function() {
+            console.log("Page ready");
+        });
+    </script>
+
+</body>
+</html>
