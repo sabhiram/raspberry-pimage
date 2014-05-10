@@ -1,7 +1,11 @@
-//
-// Test group to validate the gallery functions
-//
+/******************************************************************************\
+    These are tests to validate the gallery module. Take note that some of 
+    these tests are ordered and require them to be run in a certain order.
+\******************************************************************************/
 describe("Gallery Tests", function() {
+    /******************************************************************************\
+    GLOBALS
+    \******************************************************************************/
     var
         rm_rf = require("rimraf"),
         path = require("path"),
@@ -20,9 +24,9 @@ describe("Gallery Tests", function() {
         gallery = require("../app/gallery")(log, test_dir);
 
 
-    //
-    // Setup
-    //
+    /******************************************************************************\
+    SETUP
+    \******************************************************************************/
     before(function(done) {
         // make the test gallery dir...
         gallery.init();
@@ -31,9 +35,9 @@ describe("Gallery Tests", function() {
     });
 
 
-    //
-    // Cleanup
-    //
+    /******************************************************************************\
+    CLEANUP
+    \******************************************************************************/
     after(function(done) {
         // rm_rf(test_dir, function(error) {
         //     fs.existsSync(test_dir).should.be.false;
@@ -42,20 +46,18 @@ describe("Gallery Tests", function() {
         done();
     });
 
-
-    // 
-    // Tests
-    //
+    /******************************************************************************\
+    Basic test to validate non-null gallery init...
+    \******************************************************************************/
     it("Initial test, validate gallery init", function(next_test) {
         gallery.should.not.eql(null);
         gallery.gallery_dir.should.match(test_dir);
         next_test();
     });
 
-
-    /***
-     *  add_album tests
-    ***/
+    /******************************************************************************\
+    Tests for adding an album to the gallery
+    \******************************************************************************/
     describe("Add an album", function() {
         var 
             test_album_name = "2013 Feb, Hawaii",
@@ -93,9 +95,9 @@ describe("Gallery Tests", function() {
         });
     });
 
-    /***
-     *  delete_album tests
-    ***/
+    /******************************************************************************\
+    Tests for deleting an album 
+    \******************************************************************************/
     describe("Remove an album", function() {
         var 
             empty_album_name        = "2013 Feb, Hawaii",
@@ -158,11 +160,10 @@ describe("Gallery Tests", function() {
         });
     });
 
-    
-    /***
-     *  rename_album tests
-    ***/
-    describe("Edit an album", function() {
+    /******************************************************************************\
+    Tests for renaming an album
+    \******************************************************************************/
+    describe("Rename an album", function() {
         var 
             source_album_name = "2013 Feb, SOURCE",
             source_album_path = path.join(test_dir, source_album_name),
@@ -218,10 +219,9 @@ describe("Gallery Tests", function() {
         });
     });
 
-    
-    /***
-     *  list_album tests
-    ***/
+    /******************************************************************************\
+    Tests for listing the albums in the gallery
+    \******************************************************************************/
     it("List albums in the gallery", function(next_test) {
         var
             albums = ["A", "B", "C", "D", "E"],
@@ -236,26 +236,25 @@ describe("Gallery Tests", function() {
             function(iterate) {
                 var album = albums[idx];
                 idx += 1;
-                gallery.add_album(albums[idx], iterate);
+                gallery.add_album(album, iterate);
             },
             function(error) {
                 gallery.list_albums(function(error, returned_albums) {
-                    _.contains(returned_albums, "A");
-                    _.contains(returned_albums, "B");
-                    _.contains(returned_albums, "C");
-                    _.contains(returned_albums, "D");
-                    _.contains(returned_albums, "E");
+                    _.contains(returned_albums, "A").should.be.true;
+                    _.contains(returned_albums, "B").should.be.true;
+                    _.contains(returned_albums, "C").should.be.true;
+                    _.contains(returned_albums, "D").should.be.true;
+                    _.contains(returned_albums, "E").should.be.true;
 
                     next_test(error);
                 });
             }
         );
     });
-
     
-    /***
-     *  Image tests
-    ***/
+    /******************************************************************************\
+    Tests for Images
+    \******************************************************************************/
     describe("Image related tests", function() {
         var
             base_path       = path.join(".", "test", "fixtures"),
@@ -294,9 +293,9 @@ describe("Gallery Tests", function() {
             ], done);
         });
 
-        /***
-         *  Copy images to an album
-        ***/
+        /******************************************************************************\
+        Copy images to an album
+        \******************************************************************************/
         describe("Copy images from path -> album", function() {
             
             it("Copy image from path to valid album", function(next_test) {
@@ -341,7 +340,7 @@ describe("Gallery Tests", function() {
                 });
             });
 
-            it("Copy multiple images to album", function(next_test) {
+            it("Copy multiple images to album [1/3]", function(next_test) {
                 async.waterfall([
                     function(next_step) {
                         gallery.copy_image_to_album(source0_path, "IMAGES 0", true, next_step);        
@@ -367,12 +366,40 @@ describe("Gallery Tests", function() {
                     next_test(error);
                 });
             });
+            
+            it("List images in an album [2/3]", function(next_test) {
+                // From the previous test case, we should have 4 images in the album. List them
+                gallery.list_images_in_album("IMAGES 0", function(error, images) {
+                    images.length.should.be.exactly(4);
+                    _.contains(images, source0).should.be.true;
+                    _.contains(images, source1).should.be.true;
+                    _.contains(images, source2).should.be.true;
+                    _.contains(images, source3).should.be.true;
+                    next_test(error);
+                });
+            });
+
+            it("List images in invalid album", function(next_test) {
+                gallery.list_images_in_album(bad_album, function(error, images) {
+                    error.id.should.be.exactly(gallery.ERRORS.ALBUM_DOES_NOT_EXIST.id);
+                    error.name.should.match(gallery.ERRORS.ALBUM_DOES_NOT_EXIST.name);
+                    next_test();
+                });
+            });
+
+            xit("Validate non images showing up in list images", function(next_test) {
+                next_test();
+            });
+            xit("Validate copying images - filter etc", function(next_test) {
+                next_test();
+            });
+
         }); /* End Copy images tests */     
 
-        /***
-         *  NOTE: The Delete tests rely on the fact that source0,1,2,3 live
-         *        in the IMAGES 0 album. Reorder with care!
-        ***/
+        /******************************************************************************\
+        NOTE: The Delete tests rely on the fact that source0,1,2,3 live in the 
+              "IMAGES 0" album. Reorder with care!
+        \******************************************************************************/
         describe("Delete images in album", function() {
             
             it("Delete valid image from gallery", function(next_test) {
@@ -402,4 +429,4 @@ describe("Gallery Tests", function() {
 
     }); /* End Image related tests */
 
-});
+}); /* End Gallery tests */

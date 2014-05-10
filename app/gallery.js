@@ -8,6 +8,10 @@ var
     path    = require("path");
 
 module.exports = function(log, gallery_dir) {
+    /******************************************************************************\
+    Define module globals / constants. Some of these are / can be exposed to the
+    person including the module.
+    \******************************************************************************/
     var
         _gallery_dir = gallery_dir,
         _ERRORS = {
@@ -20,10 +24,16 @@ module.exports = function(log, gallery_dir) {
             DESTINATION_ALREADY_EXISTS:             { id: 6, name: "DESTINATION_ALREADY_EXISTS" },
             IMAGE_ALREADY_EXISTS_IN_ALBUM:          { id: 7, name: "IMAGE_ALREADY_EXISTS_IN_ALBUM" },
             IMAGE_DOES_NOT_EXIST:                   { id: 8, name: "IMAGE_DOES_NOT_EXIST" },
+        },
+        _RE = {
+            FILTERS: {
+                VALID_IMAGE: /\.(jpg|jpeg|png|gif|bmp)$/i
+            } 
         };
-    /***
-     *  Some helper functions - maybe these will be moved out
-    ***/
+
+    /******************************************************************************\
+    Helper functions to raise errors on certain frequent conditions
+    \******************************************************************************/
     function raise_error_if_no_path(search_path, error, callback) {
         fs.exists(search_path, function(exists) {
             var e = null;
@@ -46,26 +56,40 @@ module.exports = function(log, gallery_dir) {
     }
 
 
-    /***
-     *  Start defining our interface functions
-    ***/
+    /******************************************************************************\
+    Define external interfaces
+    \******************************************************************************/
     var
-        /***
-         *  Initialize the gallery, called once explicitly
-         *  by whoever requires this
-        ***/
+        /******************************************************************************\
+        Function:
+            init
+        
+        Inputs:
+            none, probably should take a callback (TODO)
+        
+        Description:
+            Init the gallery, make the gallery folder if it does not exist. Eventually
+            this should bubble some errors...
+        \******************************************************************************/
         _init = function() {
             if(!fs.existsSync(_gallery_dir)) {
                 fs.mkdirSync(_gallery_dir);
             }
         },
 
-        /***
-         *  add_album takes in an album name, and
-         *  creates an album in the gallery_dir.
-         *  If an album already exists, it will return
-         *  a suitable error.
-        ***/
+        /******************************************************************************\
+        Function:
+            add_album
+        
+        Inputs:
+            album_name          - the album to add to the gallery
+            callback            - [error]
+
+        Description:
+            Adds a given album to the gallery, returns the following errors:
+            * ALBUM_ALREADY_EXISTS
+            * ALBUM_CREATION_FAILED
+        \******************************************************************************/
         _add_album = function(album_name, callback) {
             var
                 album_path = path.join(_gallery_dir, album_name);
@@ -87,10 +111,20 @@ module.exports = function(log, gallery_dir) {
             ], callback);
         },
 
-        /***
-         *  rename_album function which takes a given album name and 
-         *  renames it to another (valid one).
-        ***/
+        /******************************************************************************\
+        Function:
+            rename_album
+        
+        Inputs:
+            old_album_name      - source name of source
+            new_album_name      - destination name of album
+            callback            - [error]
+        
+        Description:
+            Renames a given album, raises the following errors:
+            * SOURCE_DOES_NOT_EXIST
+            * DESTINATION_ALREADY_EXISTS
+        \******************************************************************************/
         _rename_album = function(old_album_name, new_album_name, callback) {
             var
                 old_path = path.join(_gallery_dir, old_album_name),
@@ -118,10 +152,21 @@ module.exports = function(log, gallery_dir) {
             ], callback);
         },
 
-        /***
-         *  delete_album takes an album name and if the album is found
-         *  deletes it (if empty or if force == true). 
-        ***/
+        /******************************************************************************\
+        Function:
+            delete_album
+        
+        Inputs:
+            album_name          - name of album we are trying to delete
+            force_delete        - if set, non-empty albums will be nuked
+            callback            - [error]
+        
+        Description:
+            Deletes a given album. If force_delete is set, non-empty albums will
+            be deleted. The errors raised could be:
+            * ALBUM_DOES_NOT_EXIST
+            * ALBUM_NOT_EMPTY
+        \******************************************************************************/
         _delete_album = function(album_name, force_delete, callback) {
             var
                 album_path = path.join(_gallery_dir, album_name);
@@ -151,11 +196,17 @@ module.exports = function(log, gallery_dir) {
             ], callback);
         },
 
-        /***
-         *  list_albums lists the currently created and available
-         *  albums in array form. The callback is called using the
-         *  standard, cb(error, [album0, album1, ... albumN]) format
-        ***/
+        /******************************************************************************\
+        Function:
+            list_albums
+        
+        Inputs:
+            callback            - [error, album_list]
+        
+        Description:
+            Returns an array of albums in the gallery folder. Currently the error raised
+            is the one propagated by fs.readdir.
+        \******************************************************************************/
         _list_albums = function(callback) {
             // For now, I am being lazy and allowing this to just be a dumb read
             // of the gallery dir. This assumes that there are no other files and
@@ -163,11 +214,57 @@ module.exports = function(log, gallery_dir) {
             // Ideally this is done once the system adds / removes files or albums
             // but that would involve setting up a fs.watch on the albums.
             fs.readdir(_gallery_dir, callback);
-        }
+        },
 
+        /******************************************************************************\
+        Function:
+            list_images_in_album
+        
+        Inputs:
+            album_name          - name of the album
+            callback            - [error, images]
+        
+        Description:
+            Returns a filtered list of images found in a given album in the "images"
+            list. Raises the ALBUM_DOES_NOT_EXIST error if applicable.
+        \******************************************************************************/
+        _list_images_in_album = function(album_name, callback) {
+            // See above comment in _list_albums - the same applies here
+            var album_path = path.join(_gallery_dir, album_name);
+            
+            async.waterfall([
+                function validate_album(next_step) {
+                    raise_error_if_no_path(album_path, _ERRORS.ALBUM_DOES_NOT_EXIST, next_step);
+                },
+                function read_album_contents(next_step) {
+                    fs.readdir(album_path, next_step);
+                },
+            ], function(error, files) {
+                callback(error, _.filter(files, function(each_file) {
+                    return each_file.match(_RE.FILTERS.VALID_IMAGE);
+                }));
+            });
+        },
 
+        /******************************************************************************\
+        Function:
+            copy_image_to_album
+        
+        Inputs:
+            source_path         - path to source image, relative or explicit
+            target_album        - album to copy to, must be valid album
+            force_copy          - boolean, determines if the destination can be o/w
+            callback            - [error]
+        
+        Description:
+            Uses the linux cp utility to copy a file from any path to a given album. The
+            callback is fired with the following erros when appropriate:
+            * SOURCE_DOES_NOT_EXIST
+            * ALBUM_DOES_NOT_EXIST
+            * IMAGE_ALREADY_EXISTS_IN_ALBUM (ignored if force_copy is set)
 
-
+            Internally, the child-process's exec function is used to execute the cp cmd.
+        \******************************************************************************/
         _copy_image_to_album = function(source_path, target_album, force_copy, callback) {
             var
                 target_dir  = path.join(_gallery_dir, target_album),
@@ -211,6 +308,24 @@ module.exports = function(log, gallery_dir) {
             ], callback);
         },
 
+        /******************************************************************************\
+        Function:
+            delete_image
+        
+        Inputs:
+            image_name          - name of image to delete
+            target_album        - album to delete image in
+            callback            - [error]
+        
+        Description:
+            Delete the given image in the given album. Erros raised to the callback
+            are the following:
+            * ALBUM_DOES_NOT_EXIST
+            * IMAGE_DOES_NOT_EXIST
+
+            The deletion uses the fs.unlink method to delete the file, it is possible
+            to change this to end up calling something like rm [-rf] etc...
+        \******************************************************************************/
         _delete_image = function(image_name, target_album, callback) {
             var
                 target_dir  = path.join(_gallery_dir, target_album),
@@ -231,6 +346,13 @@ module.exports = function(log, gallery_dir) {
         },
 
         __LAST_VARIABLE__ = 0;
+
+    /******************************************************************************\
+        This is a neat little trick I saw somewhere (Need to find source), this 
+        allows the module to take in a set of inputs, and return a chosen set of 
+        interfaces to expose. I have chosen to define functions with an "_" when
+        they are interface functions. The private ones are just defined as-is.
+    \******************************************************************************/
     return {
         gallery_dir:                _gallery_dir,
         ERRORS:                     _ERRORS,
@@ -242,10 +364,12 @@ module.exports = function(log, gallery_dir) {
         rename_album:               _rename_album,
         delete_album:               _delete_album,
 
+        // Album / image interactions
         list_albums:                _list_albums,
+        list_images_in_album:       _list_images_in_album,
+        copy_image_to_album:        _copy_image_to_album,
 
         // Image management
-        copy_image_to_album:        _copy_image_to_album,
         delete_image:               _delete_image,
 
     };
