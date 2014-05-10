@@ -218,11 +218,57 @@ describe("Gallery Tests", function() {
         });
     });
 
+    
+    /***
+     *  list_album tests
+    ***/
+    it("List albums in the gallery", function(next_test) {
+        var
+            albums = ["A", "B", "C", "D", "E"],
+            idx = 0;
 
+        async.until(
+            // Condition
+            function() {
+                return idx >= albums.length;
+            },
+            // Body
+            function(iterate) {
+                var album = albums[idx];
+                idx += 1;
+                gallery.add_album(albums[idx], iterate);
+            },
+            function(error) {
+                gallery.list_albums(function(error, returned_albums) {
+                    _.contains(returned_albums, "A");
+                    _.contains(returned_albums, "B");
+                    _.contains(returned_albums, "C");
+                    _.contains(returned_albums, "D");
+                    _.contains(returned_albums, "E");
+
+                    next_test(error);
+                });
+            }
+        );
+    });
+
+    
     /***
      *  Image tests
     ***/
     describe("Image related tests", function() {
+        var
+            base_path       = path.join(".", "test", "fixtures"),
+            source0         = "moon image.jpeg",
+            source0_path    = path.join(base_path, source0),
+            source1         = "polar bear.jpeg",
+            source1_path    = path.join(base_path, source1),
+            source2         = "pup pups.jpeg",
+            source2_path    = path.join(base_path, source2),
+            source3         = "Some flower.jpg",
+            source3_path    = path.join(base_path, source3),
+            bad_source      = "invalidfile.png",
+            bad_album       = "INVALID_ALBUM";
 
         before(function(done) {
             // Add a couple of albums for testing
@@ -252,19 +298,7 @@ describe("Gallery Tests", function() {
          *  Copy images to an album
         ***/
         describe("Copy images from path -> album", function() {
-            var
-                base_path       = path.join(".", "test", "fixtures"),
-                source0         = "moon image.jpeg",
-                source0_path    = path.join(base_path, source0),
-                source1         = "polar bear.jpeg",
-                source1_path    = path.join(base_path, source1),
-                source2         = "pup pups.jpeg",
-                source2_path    = path.join(base_path, source2),
-                source3         = "Some flower.jpg",
-                source3_path    = path.join(base_path, source3),
-                bad_source      = "invalidfile.png",
-                bad_album       = "INVALID_ALBUM";
-
+            
             it("Copy image from path to valid album", function(next_test) {
                 gallery.copy_image_to_album(source0_path, "IMAGES 0", function(error) {
                     var target_path = path.join(gallery.gallery_dir, "IMAGES 0", source0);
@@ -333,28 +367,39 @@ describe("Gallery Tests", function() {
                     next_test(error);
                 });
             });
+        }); /* End Copy images tests */     
 
-        }); /* End Copy images tests */        
+        /***
+         *  NOTE: The Delete tests rely on the fact that source0,1,2,3 live
+         *        in the IMAGES 0 album. Reorder with care!
+        ***/
+        describe("Delete images in album", function() {
+            
+            it("Delete valid image from gallery", function(next_test) {
+                gallery.delete_image(source0, "IMAGES 0", function(error) {
+                    var target_path = path.join(gallery.gallery_dir, "IMAGES 0", source0);
+                    fs.existsSync(target_path).should.be.false;
+                    next_test(error);
+                });
+            });
+
+            it("Delete invalid image from gallery", function(next_test) {
+                gallery.delete_image(bad_source, "IMAGES 0", function(error) {
+                    error.id.should.be.exactly(gallery.ERRORS.IMAGE_DOES_NOT_EXIST.id);
+                    error.name.should.match(gallery.ERRORS.IMAGE_DOES_NOT_EXIST.name);
+                    next_test();
+                });
+            });
+
+            it("Delete image from invalid gallery", function(next_test) {
+                gallery.delete_image(source0, bad_album, function(error) {
+                    error.id.should.be.exactly(gallery.ERRORS.ALBUM_DOES_NOT_EXIST.id);
+                    error.name.should.match(gallery.ERRORS.ALBUM_DOES_NOT_EXIST.name);
+                    next_test();
+                });
+            });
+        }); /* End tests for "Delete images in album" */
 
     }); /* End Image related tests */
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

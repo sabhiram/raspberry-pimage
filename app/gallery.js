@@ -19,6 +19,7 @@ module.exports = function(log, gallery_dir) {
             SOURCE_DOES_NOT_EXIST:                  { id: 5, name: "SOURCE_DOES_NOT_EXIST" },
             DESTINATION_ALREADY_EXISTS:             { id: 6, name: "DESTINATION_ALREADY_EXISTS" },
             IMAGE_ALREADY_EXISTS_IN_ALBUM:          { id: 7, name: "IMAGE_ALREADY_EXISTS_IN_ALBUM" },
+            IMAGE_DOES_NOT_EXIST:                   { id: 8, name: "IMAGE_DOES_NOT_EXIST" },
         };
     /***
      *  Some helper functions - maybe these will be moved out
@@ -150,6 +151,23 @@ module.exports = function(log, gallery_dir) {
             ], callback);
         },
 
+        /***
+         *  list_albums lists the currently created and available
+         *  albums in array form. The callback is called using the
+         *  standard, cb(error, [album0, album1, ... albumN]) format
+        ***/
+        _list_albums = function(callback) {
+            // For now, I am being lazy and allowing this to just be a dumb read
+            // of the gallery dir. This assumes that there are no other files and
+            // crap in there. Would be easy to pass this via a filter if needed.
+            // Ideally this is done once the system adds / removes files or albums
+            // but that would involve setting up a fs.watch on the albums.
+            fs.readdir(_gallery_dir, callback);
+        }
+
+
+
+
         _copy_image_to_album = function(source_path, target_album, force_copy, callback) {
             var
                 target_dir  = path.join(_gallery_dir, target_album),
@@ -193,8 +211,23 @@ module.exports = function(log, gallery_dir) {
             ], callback);
         },
 
-        _delete_image = function(image_info, album_name, callback) {
-            callback("TODO: delete_image");
+        _delete_image = function(image_name, target_album, callback) {
+            var
+                target_dir  = path.join(_gallery_dir, target_album),
+                target_path = path.join(target_dir, image_name);
+
+            async.series([
+                function validate_destination_album(next_step) {
+                    raise_error_if_no_path(target_dir, _ERRORS.ALBUM_DOES_NOT_EXIST, next_step);
+                },
+                function validate_destination_file(next_step) {
+                    raise_error_if_no_path(target_path, _ERRORS.IMAGE_DOES_NOT_EXIST, next_step);
+                },
+                function remove_image(next_step) {
+                    // TODO: SAFE UNLINK!!
+                    fs.unlink(target_path, next_step);
+                }
+            ], callback);
         },
 
         __LAST_VARIABLE__ = 0;
@@ -208,6 +241,8 @@ module.exports = function(log, gallery_dir) {
         add_album:                  _add_album,
         rename_album:               _rename_album,
         delete_album:               _delete_album,
+
+        list_albums:                _list_albums,
 
         // Image management
         copy_image_to_album:        _copy_image_to_album,
