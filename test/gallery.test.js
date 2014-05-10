@@ -7,13 +7,16 @@ describe("Gallery Tests", function() {
     GLOBALS
     \******************************************************************************/
     var
-        rm_rf = require("rimraf"),
-        path = require("path"),
-        fs = require("fs"),
-        async = require("async"),
-        _ = require("underscore")._,
-        request = require("request"),
+        rm_rf       = require("rimraf"),
+        path        = require("path"),
+        fs          = require("fs"),
+        async       = require("async"),
+        _           = require("underscore")._,
+        request     = require("request"),
 
+        // Define our own "logger" so we can cull our any output etc.
+        // We can easily toggle failing of tests on errors by just adding
+        // the assert(false) to the error log.
         log = {
             log:    function(s) { /* do nothing */ },
             info:   function(s) { /* do nothing */ },
