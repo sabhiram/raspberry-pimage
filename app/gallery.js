@@ -27,7 +27,8 @@ module.exports = function(log, gallery_dir) {
         },
         _RE = {
             FILTERS: {
-                VALID_IMAGE: /\.(jpg|jpeg|png|gif|bmp)$/i
+                VALID_IMAGE:        /\.(jpg|jpeg|png|gif|bmp)$/i,
+                INVALID_ALBUM:      /^\.DS_Store/i
             } 
         };
 
@@ -204,8 +205,8 @@ module.exports = function(log, gallery_dir) {
             callback            - [error, album_list]
         
         Description:
-            Returns an array of albums in the gallery folder. Currently the error raised
-            is the one propagated by fs.readdir.
+            Returns a dictionary of albums in the gallery folder. Currently the error raised
+            is the one propagated by fs.readdir. The return value looks like: [{id: _id, name: _name}]
         \******************************************************************************/
         _list_albums = function(callback) {
             // For now, I am being lazy and allowing this to just be a dumb read
@@ -213,7 +214,20 @@ module.exports = function(log, gallery_dir) {
             // crap in there. Would be easy to pass this via a filter if needed.
             // Ideally this is done once the system adds / removes files or albums
             // but that would involve setting up a fs.watch on the albums.
-            fs.readdir(_gallery_dir, callback);
+            fs.readdir(_gallery_dir, function(error, albums) {
+                callback(
+                    error,
+                    _.map(
+                        _.filter(
+                            albums,
+                            function(album, index) { return !album.match(_RE.FILTERS.INVALID_ALBUM); }
+                        ),
+                        function(album, index) {
+                            return { id: index, name: album };
+                        }
+                    )
+                );
+            });
         },
 
         /******************************************************************************\
@@ -225,7 +239,7 @@ module.exports = function(log, gallery_dir) {
             callback            - [error, images]
         
         Description:
-            Returns a filtered list of images found in a given album in the "images"
+            Returns a filtered list of images info found in a given album in the "images"
             list. Raises the ALBUM_DOES_NOT_EXIST error if applicable.
         \******************************************************************************/
         _list_images_in_album = function(album_name, callback) {
@@ -240,9 +254,23 @@ module.exports = function(log, gallery_dir) {
                     fs.readdir(album_path, next_step);
                 },
             ], function(error, files) {
-                callback(error, _.filter(files, function(each_file) {
-                    return each_file.match(_RE.FILTERS.VALID_IMAGE);
-                }));
+                callback(
+                    error, 
+                    _.map(
+                        _.filter(
+                            files,
+                            function(each_file) {
+                                return each_file.match(_RE.FILTERS.VALID_IMAGE);
+                            }
+                        ),
+                        function(filtered_file, index) {
+                            return {
+                                id: index,
+                                name: filtered_file,
+                            };
+                        }
+                    )
+                );
             });
         },
 

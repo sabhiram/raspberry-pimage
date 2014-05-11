@@ -23,8 +23,9 @@ describe("Gallery Tests", function() {
             error:  function(s) { console.log(s); assert(false); }
         },
 
-        test_dir = path.join(__dirname, "__TEMP_TEST_DIR__"),
-        gallery = require("../app/gallery")(log, test_dir);
+        test_dir        = path.join(__dirname, "__TEMP_TEST_DIR__"),
+        gallery         = require("../app/gallery")(log, test_dir),
+        skip_cleanup    = false;
 
 
     /******************************************************************************\
@@ -42,11 +43,14 @@ describe("Gallery Tests", function() {
     CLEANUP
     \******************************************************************************/
     after(function(done) {
-        // rm_rf(test_dir, function(error) {
-        //     fs.existsSync(test_dir).should.be.false;
-        //     done();
-        // });
-        done();
+        if(!skip_cleanup) {
+            rm_rf(test_dir, function(error) {
+                fs.existsSync(test_dir).should.be.false;
+                done();
+            });
+        } else {
+            done();
+        }
     });
 
     /******************************************************************************\
@@ -243,11 +247,14 @@ describe("Gallery Tests", function() {
             },
             function(error) {
                 gallery.list_albums(function(error, returned_albums) {
-                    _.contains(returned_albums, "A").should.be.true;
-                    _.contains(returned_albums, "B").should.be.true;
-                    _.contains(returned_albums, "C").should.be.true;
-                    _.contains(returned_albums, "D").should.be.true;
-                    _.contains(returned_albums, "E").should.be.true;
+                    var ret_album_names = _.map(returned_albums, function(album) {
+                        return album.name;
+                    });
+                    _.contains(ret_album_names, "A").should.be.true;
+                    _.contains(ret_album_names, "B").should.be.true;
+                    _.contains(ret_album_names, "C").should.be.true;
+                    _.contains(ret_album_names, "D").should.be.true;
+                    _.contains(ret_album_names, "E").should.be.true;
 
                     next_test(error);
                 });
@@ -374,10 +381,11 @@ describe("Gallery Tests", function() {
                 // From the previous test case, we should have 4 images in the album. List them
                 gallery.list_images_in_album("IMAGES 0", function(error, images) {
                     images.length.should.be.exactly(4);
-                    _.contains(images, source0).should.be.true;
-                    _.contains(images, source1).should.be.true;
-                    _.contains(images, source2).should.be.true;
-                    _.contains(images, source3).should.be.true;
+                    var image_names = _.map(images, function(image) { return image.name; });
+                    _.contains(image_names, source0).should.be.true;
+                    _.contains(image_names, source1).should.be.true;
+                    _.contains(image_names, source2).should.be.true;
+                    _.contains(image_names, source3).should.be.true;
                     next_test(error);
                 });
             });

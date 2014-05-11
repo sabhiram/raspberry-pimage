@@ -35,7 +35,7 @@ var
         port:           process.env.PORT || 1234,
         version:        "0.0.1",
         name:           "RaspberryPIMage",
-        gallery_dir:    "gallery",
+        gallery_dir:    "app/public/gallery",
         temp_images_dir:"temp_images",
         admin_passcode: "mrfseesall",
         logs_dir:       "logs",
@@ -71,7 +71,7 @@ var
     // Define API and View handlers
     handlers = {
         view:       require("./app/route_handlers/view")(log),
-        api:        require("./app/route_handlers/api")(log, gallery),
+        api:        require("./app/route_handlers/api")(log, gallery, rpi_camera),
     },
 
     // Create an express app. Note this is using our custom
