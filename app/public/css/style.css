@@ -26,6 +26,25 @@ html, body {
     background: rgba(0,0,0,0.8); 
 }
 
+#pim-header-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+}
+#pim-content-div {
+    top: 60px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    overflow-y: auto;
+
+    margin: 0;
+    position: absolute;
+    text-align:center;
+}
+
 .pim-image-thumb-div {
     width: 196px;
     height: 196px;
@@ -33,12 +52,61 @@ html, body {
     padding: 0px;
     margin: 10px;
 
-
     position: relative;
     display: inline-block;
-    float: left;
 
     -webkit-box-shadow: 3px 3px 1px 0px rgba(0,0,0,0.6);  
 
     overflow: hidden;  
 }
+
+.pim-image-container {
+    width: 100%;
+    height: 100%;
+    padding: auto;
+    vertical-align: middle;
+    background-color: #000000;
+    cursor: pointer;
+}
+.pim-center-image {
+  width: 50%;
+  height: 50%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+.pim-image-img {
+    width: 100%;
+    height: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.pim-image-toolbox {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+
+    cursor: default;
+
+    bottom: 0;
+
+    color: #ffffff;
+    background-color: rgba(255,255,255,0.1);
+    -webkit-transition: all 0.33s linear 0.0s;
+}
+.pim-image-toolbox.hide_toolbox {
+    bottom: -25px;
+}
+.pim-image-toolbox i {
+    -webkit-transition: all 0.33s linear 0.0s;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding-right: 8px;
+}
+.pim-image-toolbox i:hover {
+    color: orange;
+};
