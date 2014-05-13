@@ -26,13 +26,17 @@ html, body {
     background: rgba(0,0,0,0.8); 
 }
 
+/*Header*/
 #pim-header-div {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 60px;
+
+    background-color: #000000;
 }
+/*Rest*/
 #pim-content-div {
     top: 60px;
     left: 0;
@@ -45,9 +49,10 @@ html, body {
     text-align:center;
 }
 
-.pim-image-thumb-div {
+/*Main container for an image*/
+.pim-image-thumb {
     width: 196px;
-    height: 196px;
+    height: 220px;
 
     padding: 0px;
     margin: 10px;
@@ -58,23 +63,36 @@ html, body {
     -webkit-box-shadow: 3px 3px 1px 0px rgba(0,0,0,0.6);  
 
     overflow: hidden;  
-}
-
-.pim-image-container {
-    width: 100%;
-    height: 100%;
-    padding: auto;
-    vertical-align: middle;
     background-color: #000000;
+
     cursor: pointer;
 }
+
+.pim-image-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    line-height: 24px;
+    width: 100%;
+
+    background-color: rgba(0,0,0,0.6);
+    color: #ffffff;
+    -webkit-transition: all 0.33s linear 0.0s;
+    opacity: 0.6;
+}
+.pim-image-header.selected {
+    opacity: 1;
+}
+
 .pim-center-image {
-  width: 50%;
-  height: 50%;
-  overflow: auto;
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+    width: 50%;
+    height: 50%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+
 }
 .pim-image-img {
     width: 100%;
@@ -83,6 +101,7 @@ html, body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
+/*Image tools*/
 .pim-image-toolbox {
     position: absolute;
     left: 0;
@@ -109,4 +128,7 @@ html, body {
 }
 .pim-image-toolbox i:hover {
     color: orange;
-};
+}
+.pim-image-toolbox i:last-child:hover {
+    color: red;
+}
