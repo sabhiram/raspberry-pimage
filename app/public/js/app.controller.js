@@ -145,20 +145,16 @@ Description:
 app.service("AlbumManager", function($http) {
     return {
         list_albums: function() {
-            return $http.get("/api/albums/list");
+            return $http.get("/api/list_albums");
         },
         take_picture: function(album_name) {
-            return $http.get("/api/albums/" + album_name + "/take_picture");
+            return $http.get("/api/take_picture/album/" + album_name);
         },
         delete_image_from_album: function(album_name, image_name) {
-            return $http.delete("/api/delete/album/" + album_name + "/image/" + image_name);
+            return $http.delete("/api/album/" + album_name + "/image/" + image_name);
         },
         list_images_in_album: function(album_name) {
-            return $http.get("/api/image/" + album_name + "/list");
+            return $http.get("/api/list_images/album/" + album_name);
         }
     };
 });
-
-
-
-

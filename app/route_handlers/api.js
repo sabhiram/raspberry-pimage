@@ -19,7 +19,7 @@ module.exports = function(log, gallery, rpi_camera) {
 
             // List all albums in the gallery
             list_albums: function(request, response) {
-                log.info("GET /api/albums/list");
+                log.info("GET /api/list_albums");
                 gallery.list_albums(function(error, albums) {
                     response.send(albums);
                     response.end();
@@ -28,7 +28,7 @@ module.exports = function(log, gallery, rpi_camera) {
 
             // Take a pic
             take_picture: function(request, response) {
-                log.info("GET /api/albums/:album_name/take_picture");
+                log.info("GET /api/take_picture/album/:album_name");
                 var
                     album_name = request.params.album_name,
                     album_path = path.join(gallery.gallery_dir, album_name),
@@ -41,27 +41,17 @@ module.exports = function(log, gallery, rpi_camera) {
                         log.error(error);
                         response.send(error);
                     } else {
-                        log.info("take_picture - about to list images " + album_name);
-                        gallery.list_images_in_album(
-                            album_name,
-                            function(error, images) {
-                                log.info(images);
-                                response.send(images);
-                                response.end();
-                            }
-                        );
+                        log.info("take_picture - done, adding to " + album_name);
+                        response.send("SUCCESS");
                     }
+                    response.end();
                 });
             },
-        },
-
-        // Image related APIs
-        image: {
 
             // List all images in an album
             // GET /api/image/list_images/:album_name
             list_images: function(request, response) {
-                log.info("GET /api/image/list/:album_name");
+                log.info("GET /api/list_images/:album_name");
                 gallery.list_images_in_album(
                     request.params.album_name, 
                     function(error, images) {
@@ -69,9 +59,24 @@ module.exports = function(log, gallery, rpi_camera) {
                         response.end();
                     }
                 );
-            }
+            },
+
+            delete_image: function(request, response) {
+                log.info("DELETE /api/album/:album_name/image/:image_name");
+                gallery.delete_image(request.params.image_name, request.params.album_name, function(error) {
+                    if(!error) {
+                        response.send("SUCCESS");
+                    } else {
+                        response.send(error);
+                    }
+                    response.end();
+                });
+            },
         },
 
+        // Image related APIs
+        image: {
+        },
 
         // Other APIs
     };
