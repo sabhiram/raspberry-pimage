@@ -18,20 +18,28 @@
 </head>
 <body ng-controller="AppController">
 
-    <div id="pim-header-div">
-        <select ng-model="selected_album" ng-options="album.name for album in albums" ng-init="selected_album = selected_album || album[0]" style="font-family:'FontAwesome', Arial;">
-            <option>Choose Album &quot;</option>
-        </select>
-        <div class="btn btn-primary" ng-disabled="!selected_album" ng-click="take_picture()">
-            <i class="fa fa-camera"></i>&nbsp;Take a Picture
+    <div id="pim-header-div" class="row">
+        <div class="col-xs-5">
+            <pim-dropdown
+                selection    = "selected_album_name"
+                albums       = "albums"
+                prompt       = "Choose Album" >
+            </pim-dropdown>
+        </div>
+
+        <div class="col-xs-7">
+            <select ng-model="selected_album" ng-options="album.name for album in albums" ng-init="selected_album = selected_album || album[0]" style="font-family:'FontAwesome', Arial;">
+                <option>Choose Album &quot;</option>
+            </select>
+            <div class="btn btn-primary" ng-disabled="!selected_album" ng-click="take_picture()">
+                <i class="fa fa-camera"></i>&nbsp;Take a Picture
+            </div>
         </div>
     </div>
-    <hr>
 
     <div id="pim-content-div">
-        <div id="links">
-            <pim-image-thumb ng-repeat="image in images" album-name="{{selected_album.name}}" image-name="{{image.name}}" on-delete="delete_image($index, selected_album.name, image.name)" class="pim-image-thumb-div"></pim-image-thumb>
-        </div>
+        <pre>{{selected_album_name}}</pre>
+        <div ng-view></div>
     </div>
 
     <script src="/external/js/underscore.min.js"></script>
@@ -39,7 +47,7 @@
     <script src="/external/js/bootstrap.min.js"></script>
     <script src="/external/js/angular.js"></script>
     <script src="/external/js/angular.animate.js"></script>
-    <script src="/external/js/angular.touch.js"></script>
+    <script src="/external/js/angular.route.js"></script>
 
     <script src="/js/app.controller.js"></script>
 
