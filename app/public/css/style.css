@@ -154,7 +154,7 @@ html, body {
     overflow: hidden;
 }
 .pim-dropdown-container.pim-expanded {
-    max-height: 300px;
+    max-height: 1000px;
 }
 .pim-dropdown-header {
     height: 40px;

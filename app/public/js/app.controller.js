@@ -64,8 +64,6 @@ Description:
     Main application controller
 \******************************************************************************/
 function AppController(AlbumManager, $scope, $location) {
-    $scope.selected_album_name = null;
-
     // Deferred load the list of albums and set the scope
     // appropriately.
     $scope.albums = [];
@@ -175,12 +173,26 @@ app.directive("pimImageThumb", function() {
     };
 });
 
+/******************************************************************************\
+Directive:
+    pimDropdown <pim-dropdown>
+
+Dependencies:
+    $location
+
+Inputs:
+    albums - the list of albums {id, name} which we wish to choose from
+    prompt - what to display for the drop down
+
+Description:
+    Directive to display a simple drop down menu which allows us to pick
+    from various albums.
+\******************************************************************************/
 app.directive("pimDropdown", function($location) {
     return {
         restrict: "E",
 
         scope: {
-            selection:   "=", // 2-way binding to the selected item
             albums:      "=", // 2-way
             prompt:      "@", // text binding
         },
@@ -190,7 +202,7 @@ app.directive("pimDropdown", function($location) {
         template: [
             "<div class='pim-dropdown-container' ng-class='{\"pim-expanded\": expanded}' ng-mouseleave='expanded=false'>",
             "    <div class='pim-dropdown-header' ng-click='expanded = !expanded'>",
-            "        {{_prompt}}&nbsp;<i class='fa fa-chevron-down' style='position: absolute; right: 25px; top: 22px;'></i>",
+            "        {{prompt}}&nbsp;<i class='fa fa-chevron-down' style='position: absolute; right: 25px; top: 22px;'></i>",
             "    </div>",
             "    <div class='pim-dropdown-item' ng-repeat='album in albums' ng-click='change_album_to(album.name)'>",
             "        {{ album.name }}",
@@ -203,12 +215,10 @@ app.directive("pimDropdown", function($location) {
 
         link: function(scope, element, attributes) {
             scope.expanded = false;
-            scope._prompt = scope.prompt;
 
             scope.change_album_to = function(album_name) {
                 scope.expanded = false;
                 scope.selection = album_name;
-                scope._prompt = album_name;
                 $location.url("/album/" + album_name);
             }
 
@@ -220,5 +230,5 @@ app.directive("pimDropdown", function($location) {
     };
 });
 
-
+// app.directive("pimImageFullscreen")
 
