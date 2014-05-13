@@ -64,50 +64,28 @@ Description:
     Main application controller
 \******************************************************************************/
 function AppController(AlbumManager, $scope, $location) {
-    console.log("Main contoller loaded");
     $scope.selected_album_name = null;
-    $scope.albums = [];
 
     // Deferred load the list of albums and set the scope
     // appropriately.
+    $scope.albums = [];
     AlbumManager.list_albums().then(function(response) {
-        console.log("Main contoller loaded album info");
         $scope.albums = response.data;
     });
-
-    // // Watch when the album changes, and load the images from it...
-    // $scope.$watch("selected_album", function(new_value, old_value) {
-    //     if(new_value === old_value) {
-    //         return;
-    //     }
-
-    //     if(new_value) {
-    //         AlbumManager.list_images_in_album(new_value.name).then(function(response) {
-    //             $scope.images = response.data;
-    //         });
-    //     } else {
-    //         // Null new_value - clear the images??
-    //         $scope.images = [];
-    //     }
-    // });
 }
 
 function AlbumController($scope, $routeParams, AlbumManager) {
-    
-    var
-        album_name = $routeParams.album_name;
+    $scope.album_name = $routeParams.album_name;
 
-    console.log("AlbumController loaded with name: " + album_name);
-
+    // Defer load the images for this Controller
     $scope.images = [];
-
-    AlbumManager.list_images_in_album(album_name).then(function(response) {
+    AlbumManager.list_images_in_album($scope.album_name).then(function(response) {
         $scope.images = response.data;
     });
     
-    // Delete Image API
+    // Delete image client side hook
     $scope.delete_image = function(index, image_name) {
-        AlbumManager.delete_image_from_album(album_name, image_name).then(function(response) {
+        AlbumManager.delete_image_from_album($scope.album_name, image_name).then(function(response) {
             if(response.data.status == "SUCCESS") {
                 $scope.images.splice(index, 1);
             } else {
@@ -116,8 +94,9 @@ function AlbumController($scope, $routeParams, AlbumManager) {
         });
     }
 
+    // Picture taking clientside hook
     $scope.take_picture = function() {
-        AlbumManager.take_picture(album_name).then(function(response) {
+        AlbumManager.take_picture($scope.album_name).then(function(response) {
             // The response is expected to send back a list of images in the album
             // so we can reload this page. Perhaps this needs to be de-coupled.
             // TODO: This should return just the image dict we want to append to {images}
@@ -209,21 +188,37 @@ app.directive("pimDropdown", function($location) {
         replace: true,
 
         template: [
-            "<div class='pim-dropdown-container' ng-class='{\"pim-expanded\": expanded}'>",
-            "    <div class='pim-dropdown-header' ng-click='expanded = !expanded'>{{prompt}}&nbsp;<i class='fa fa-chevron-down'></i></div>",
+            "<div class='pim-dropdown-container' ng-class='{\"pim-expanded\": expanded}' ng-mouseleave='expanded=false'>",
+            "    <div class='pim-dropdown-header' ng-click='expanded = !expanded'>",
+            "        {{_prompt}}&nbsp;<i class='fa fa-chevron-down' style='position: absolute; right: 25px; top: 22px;'></i>",
+            "    </div>",
             "    <div class='pim-dropdown-item' ng-repeat='album in albums' ng-click='change_album_to(album.name)'>",
             "        {{ album.name }}",
+            "    </div>",
+            "    <div class='pim-dropdown-add-album' ng-click='add_album()'>",
+            "        <i class='fa fa-plus'></i>&nbsp;Add Album",
             "    </div>",
             "</div>",
         ].join("\n"),
 
         link: function(scope, element, attributes) {
             scope.expanded = false;
+            scope._prompt = scope.prompt;
+
             scope.change_album_to = function(album_name) {
                 scope.expanded = false;
                 scope.selection = album_name;
+                scope._prompt = album_name;
                 $location.url("/album/" + album_name);
+            }
+
+            scope.add_album = function() {
+                scope.expanded = false;
+                // TODO: Add a new album modal etc
             }
         },
     };
 });
+
+
+

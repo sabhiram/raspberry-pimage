@@ -170,6 +170,7 @@ html, body {
     color: orange;
     background-color: rgba(255,255,255,0.0);
 }
+.pim-dropdown-add-album,
 .pim-dropdown-item {
     color: #ffffff;
     background-color: #000000;
@@ -179,7 +180,15 @@ html, body {
 
     border-top: 2px solid #222222;
     cursor: pointer;
+    -webkit-transition: all 0.33s linear 0.0s;
 }
+.pim-dropdown-add-album:hover,
 .pim-dropdown-item:hover {
     background-color: rgba(255,255,255,0.3);
+}
+.pim-dropdown-add-album {
+    text-align: center;
+}
+.pim-dropdown-add-album:hover {
+    background-color: rgba(0,255,0,0.3);
 }

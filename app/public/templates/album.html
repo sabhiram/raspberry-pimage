@@ -1,7 +1,15 @@
-<pim-image-thumb
-    ng-repeat   = "image in images"
-    album-name  = "{{selected_album_name}}"
-    image-name  = "{{image.name}}"
-    on-delete   = "delete_image($index, image.name)"
-    class       = "pim-image-thumb-div">
-</pim-image-thumb>
+<div class="pim-album-container" ng-show="album_name">
+    <div class="pim-album-info-container" align="left">
+        <h3>Album Information:</h3>
+        <b>Name:</b> {{album_name}}<br>
+        <b>Images:</b> {{images.length}}
+    </div>
+
+    <pim-image-thumb
+        ng-repeat   = "image in images"
+        album-name  = "{{album_name}}"
+        image-name  = "{{image.name}}"
+        on-delete   = "delete_image($index, image.name)"
+        class       = "pim-image-thumb-div">
+    </pim-image-thumb>
+</div>
