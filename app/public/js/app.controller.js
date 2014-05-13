@@ -35,9 +35,14 @@ function AppController(AlbumManager, $scope) {
             // The response is expected to send back a list of images in the album
             // so we can reload this page. Perhaps this needs to be de-coupled.
             // TODO: This should return just the image dict we want to append to {images}
-            console.log(response);
-            console.log("TAKE PIC HTTP ");
-            $scope.images = response.data;
+            if(response.data.status=="SUCCESS") {
+                $scope.images.push({
+                    id:   $scope.images.length,
+                    name: response.data.image_name
+                });
+            } else {
+                console.log("Error taking picture...");
+            }
         });
     }
 
@@ -61,11 +66,11 @@ function AppController(AlbumManager, $scope) {
     $scope.delete_image = function(index, album_name, image_name) {
         console.log("app controller delete_image called" + album_name + " " + image_name);
         AlbumManager.delete_image_from_album(album_name, image_name).then(function(response) {
-            console.log(response.data);
-            // As long as there is no error here, we should be able to remove this
-            // item from the images list.
-            // TODO: Validate success!
-            $scope.images.splice(index, 1);
+            if(response.data.status == "SUCCESS") {
+                $scope.images.splice(index, 1);
+            } else {
+                console.log("Error - unable to delete image");
+            }
         });
     }
 
