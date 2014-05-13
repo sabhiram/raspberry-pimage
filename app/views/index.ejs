@@ -28,10 +28,7 @@
         </div>
 
         <div class="col-xs-7">
-            <select ng-model="selected_album" ng-options="album.name for album in albums" ng-init="selected_album = selected_album || album[0]" style="font-family:'FontAwesome', Arial;">
-                <option>Choose Album &quot;</option>
-            </select>
-            <div class="btn btn-primary" ng-disabled="!selected_album" ng-click="take_picture()">
+            <div class="btn btn-primary" ng-disabled="!selected_album_name" ng-click="take_picture()">
                 <i class="fa fa-camera"></i>&nbsp;Take a Picture
             </div>
         </div>
