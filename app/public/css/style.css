@@ -82,12 +82,14 @@ html, body {
 }
 
 #pim-settings-div {
-    background-color: green;
+    background-color: #111111;
     width: 100%;
     position: absolute;
     top: 0;
     bottom: 0;
-    padding-bottom: 62px
+    padding-bottom: 62px;
+    overflow: hidden;
+    color: #ffffff;
 }
 
 
@@ -195,7 +197,11 @@ html, body {
 
 
 
-/*Image related directive style*/
+/*****************************************************************\
+
+    BEGIN - pimImageThumb
+
+\*****************************************************************/
 .pim-image-thumb {
     width: 196px;
     height: 220px;
@@ -278,6 +284,11 @@ html, body {
 .pim-image-toolbox i:last-child:hover {
     color: red;
 }
+/*****************************************************************\
+
+    END - pimImageThumb
+
+\*****************************************************************/
 
 
 
@@ -322,8 +333,11 @@ html, body {
 
 
 
+/*****************************************************************\
 
-/*Directive style for dropdown*/
+    BEGIN - pimDropdown
+
+\*****************************************************************/
 .pim-dropdown-container {
     margin: 10px;
 
@@ -354,6 +368,7 @@ html, body {
     background-color: #ffffff;
 }
 
+/*Selective style for some of the icons*/
 .pim-dropdown-add-album,
 .pim-dropdown-item {
     color: #ffffff;
@@ -376,3 +391,90 @@ html, body {
 .pim-dropdown-add-album:hover {
     background-color: rgba(0,255,0,0.3);
 }
+/*****************************************************************\
+
+    END - pimDropdown
+
+\*****************************************************************/
+
+
+
+
+
+
+
+/*****************************************************************\
+
+    BEGIN - pimCheckbox
+
+\*****************************************************************/
+.pim-checkbox-container {
+    position: relative;
+    width:  100%;
+    height: 40px;
+    -webkit-transition: all 0.33s linear 0.0s;
+    overflow: hidden;
+
+    font-size: 13pt;
+}
+.pim-checkbox-indicator {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    top: 6px;
+    
+    margin-left: 10px; margin-right: 10px;
+
+    border: 2px solid #ffffff;
+    background-color: #000000;
+    color: #000000;
+
+    float: left;
+
+    -webkit-transition: all 0.33s linear 0.0s;
+    cursor: pointer;
+}
+.pim-checkbox-indicator.selected {
+    background-color: orange;
+}
+
+.pim-checkbox-prompt-container {
+    position: relative;
+    height: 24px;
+    line-height: 24px;
+    top: 6px;
+    cursor: pointer;
+    float: left;
+}
+.pim-checkbox-prompt-alt,
+.pim-checkbox-prompt {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    opacity: 1;
+    font-size: 12pt;
+    color: #bbbbbb;
+    -webkit-transition: all 0.33s linear 0.0s;
+}
+.pim-checkbox-prompt.unselected,
+.pim-checkbox-prompt-alt.unselected {
+    top: -100%;
+    opacity: 0;
+}
+.pim-checkbox-text {
+    position: relative;
+    height: 24px;
+    top: 6px;
+    line-height: 24px;
+    float: left;
+
+    font-size: 14pt;
+    margin-right: 10px;
+}
+/*****************************************************************\
+
+    END - pimCheckbox
+
+\*****************************************************************/

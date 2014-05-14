@@ -64,11 +64,19 @@ Description:
     Main application controller
 \******************************************************************************/
 function AppController(AlbumManager, $scope, $location) {
-    // Deferred load the list of albums and set the scope
-    // appropriately.
+    // Initialize scope
     $scope.albums = [];
     $scope.show_settings = false;
-    
+
+    // Setup some settings
+    $scope.settings = {
+        general: {
+            hide_additional_help: false,
+        },
+    };
+
+    // Deferred load the list of albums and set the scope
+    // appropriately.
     AlbumManager.list_albums().then(function(response) {
         $scope.albums = response.data;
     });
@@ -232,5 +240,51 @@ app.directive("pimDropdown", function($location) {
     };
 });
 
+/******************************************************************************\
+Directive:
+    pimCheckbox <pim-checkbox>
+
+Dependencies:
+    None
+
+Inputs:
+    value   - the boolean $scope variable we want to bind to this 
+              checkbox. Note that this is expected to be 2-way bound.
+    prompt  - the prompt to display in the checkbox
+
+Description:
+    Directive to render a simple checkbox
+\******************************************************************************/
+app.directive("pimCheckbox", function() {
+    return {
+        restrict: "E",
+
+        scope: {
+            value:      "=",
+            prompt:     "@",
+            promptAlt:  "@"
+        },
+
+        replace: true,
+        transclude: true,
+
+        template: [
+
+            "<div class='pim-checkbox-container'>",
+            "    <div class='pim-checkbox-indicator' ng-class='{\"selected\": value}' ng-click='value = !value'>",
+            "    </div>",
+            "    <div class='pim-checkbox-text' ng-transclude></div>",
+            "    <div class='pim-checkbox-prompt-container'>",
+            "        <div class='pim-checkbox-prompt' ng-click='value = !value' ng-class='{\"unselected\": value}'>{{prompt}}</div>",
+            "        <div class='pim-checkbox-prompt-alt' ng-click='value = !value' ng-class='{\"unselected\": !value}'>{{promptAlt}}</div>",
+            "    </div>",
+            "</div>",
+        ].join("\n"),
+
+        link: function(scope, element, attributes) {
+            scope.value = scope.value || false;
+        },
+    };
+});
 // app.directive("pimImageFullscreen")
 
