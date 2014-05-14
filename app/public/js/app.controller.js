@@ -356,4 +356,3 @@ app.directive("pimHelpFrame", function() {
 });
 
 
-app.directive("pimImagePreview");
