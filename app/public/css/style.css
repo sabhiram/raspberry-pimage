@@ -26,17 +26,31 @@ html, body {
     background: rgba(0,0,0,0.8); 
 }
 
-/*Header*/
+
+
+#pim-full-header-div {
+    position: relative;
+    width: 100%;
+    height: 62px;
+    background-color: #000000;
+    -webkit-transition: all 0.61s linear 0.0s;
+}
+#pim-full-header-div.expanded {
+    height: 100%;
+}
+
+
 #pim-header-div {
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 0;
+    height: 62px;
     width: 100%;
-    height: 60px;
-
     background-color: #000000;
-
-    z-index: 10;
+    border-top: 2px solid #000000;
+    -webkit-transition: all 0.61s linear 0.0s;
+}
+#pim-header-div.expanded {
+    border-top: 2px solid #ffffff;
 }
 .pim-header-dropdown-sizer {
     position: absolute;
@@ -44,12 +58,12 @@ html, body {
     left: 0;
     width: 40%;
     height: 100%;
-    -webkit-transition: all 0.33s linear 0.0s;
-
+    -webkit-transition: all 0.61s linear 0.0s;
+ 
     z-index: 12;
 }
 .pim-header-dropdown-sizer.hidden {
-    left: -80%;
+    left: -65%;
     display: block!important;
 }
 .pim-header-link-sizer {
@@ -58,51 +72,38 @@ html, body {
     left: 80%;
     width: 20%;
     height: 100%;
-    -webkit-transition: all 0.33s linear 0.0s;
-
+    -webkit-transition: all 0.61s linear 0.0s;
+ 
     z-index: 11;
 }
 .pim-header-link-sizer.expanded {
     left: 0%;
     width: 100%;
 }
-.pim-header-spacer {
+
+#pim-settings-div {
+    background-color: green;
+    width: 100%;
     position: absolute;
     top: 0;
-    left: 40%;
-    width: 40%;
-    height: 100%;
-    -webkit-transition: all 0.33s linear 0.0s;
-}
-.pim-header-spacer.hidden {
-    left: -40%;
-    display: block!important;
-}
-
-
-
-
-
-
-/*Rest*/
-#pim-content-div {
-    top: 60px;
-    left: 0;
-    width: 100%;
     bottom: 0;
-    overflow-y: auto;
-
-    margin: 0;
-    position: absolute;
-    text-align:center;
-
-    z-index: 0;
+    padding-bottom: 62px
 }
 
 
 
 
-/*Common*/
+
+
+
+
+
+
+
+
+
+
+
 .pim-settings-btn {
     margin-top: 9px;
 
@@ -132,16 +133,55 @@ html, body {
     color: #000000;
     background-color: #ffffff;
 }
-/*.pim-settings-btn.expanded {
-    position: relative;
-    width: 42px;
-    margin-left: auto;
-    margin-right: auto;
-}*/
 .pim-settings-btn.expanded i {
     position: absolute;
     left: 6px;
 }
+/*TODO: NEED TO MAKE THE STUPID BTN LINED UP W/ A 
+      10 PADDING to the RIGHT*/
+/*.pim-settings-btn.expanded {
+    margin-left: auto;
+    margin-right: auto;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -238,6 +278,48 @@ html, body {
 .pim-image-toolbox i:last-child:hover {
     color: red;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
