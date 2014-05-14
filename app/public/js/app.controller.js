@@ -71,7 +71,7 @@ function AppController(AlbumManager, $scope, $location) {
     // Setup some settings
     $scope.settings = {
         general: {
-            show_additional_help: true,
+            show_help: true,
         },
         preview: {
             fullscreen: false,
@@ -354,3 +354,6 @@ app.directive("pimHelpFrame", function() {
         }
     };
 });
+
+
+app.directive("pimImagePreview");

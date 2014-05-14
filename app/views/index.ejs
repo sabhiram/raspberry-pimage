@@ -27,10 +27,10 @@
                 <h3 ng-click="a_expanded = !a_expanded">General Settings:</h3>
 
                 <pim-checkbox
-                    value = "settings.general.show_additional_help"
+                    value = "settings.general.show_help"
                     prompt = "show" prompt-alt = "hide"> Details
                 </pim-checkbox>
-                <pim-help-frame show="settings.general.show_additional_help">
+                <pim-help-frame show="settings.general.show_help">
                     Show / hide expanded information for the varittings.
                 </pim-help-frame>
             </div>
@@ -42,7 +42,7 @@
                     value = "settings.preview.fullscreen"
                     prompt = "enable" prompt-alt = "disable"> Full Screen
                 </pim-checkbox>
-                <pim-help-frame show="settings.general.show_additional_help">
+                <pim-help-frame show="settings.general.show_help">
                     --fullscreen (-f), Fullscreen preview mode.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="5px"></pim-settings-spacer>
@@ -51,7 +51,7 @@
                     value = "settings.preview.nopreview"
                     prompt = "enable" prompt-alt = "disable"> No Preview
                 </pim-checkbox>
-                <pim-help-frame show="settings.general.show_additional_help">
+                <pim-help-frame show="settings.general.show_help">
                     --nopreview (-n), Do not display a preview window.
                 </pim-help-frame>
 
@@ -64,7 +64,7 @@
                     value = "settings.camera.vstab"
                     prompt = "enable" prompt-alt = "disable"> Video Stabilization
                 </pim-checkbox>
-                <pim-help-frame show="settings.general.show_additional_help">
+                <pim-help-frame show="settings.general.show_help">
                     --vstab (-vs), Turn on video stabilizaton.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="5px"></pim-settings-spacer>
@@ -73,7 +73,7 @@
                     value = "settings.camera.hflip"
                     prompt = "enable" prompt-alt = "disable"> Horizontal Flip
                 </pim-checkbox>
-                <pim-help-frame show="settings.general.show_additional_help">
+                <pim-help-frame show="settings.general.show_help">
                     --hflip (-hf), Set horizontal flip
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="5px"></pim-settings-spacer>
@@ -82,7 +82,7 @@
                     value = "settings.camera.vflip"
                     prompt = "enable" prompt-alt = "disable"> Vertical Flip
                 </pim-checkbox>
-                <pim-help-frame show="settings.general.show_additional_help">
+                <pim-help-frame show="settings.general.show_help">
                     --vflip (-vf), Set vertical flip
                 </pim-help-frame>
 
