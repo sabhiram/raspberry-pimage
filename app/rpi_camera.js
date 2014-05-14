@@ -14,13 +14,18 @@ module.exports = function(log, storage_dir) {
         },
 
         /***
-         *  Initialize the rpi_camear, called once explicitly
+         *  Initialize the rpi_camera, called once explicitly
          *  by whoever requires this
         ***/
-        _init = function() {
-            if(!fs.existsSync(_storage_dir)) {
-                fs.mkdirSync(_storage_dir);
-            }
+        _init = function(callback) {
+            fs.exists(_storage_dir, function(exists) {
+                if(!exists) {
+                    fs.mkdir(_storage_dir, callback);
+                } else {
+                    // Nothing to do, gallery exists
+                    callback();
+                }
+            });
         },
 
         _take_picture = function(image_path, options, callback) {

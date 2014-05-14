@@ -33,9 +33,10 @@ describe("Gallery Tests", function() {
     \******************************************************************************/
     before(function(done) {
         // make the test gallery dir...
-        gallery.init();
-        fs.existsSync(test_dir).should.be.true;
-        done();
+        gallery.init(function(error) {
+            fs.existsSync(test_dir).should.be.true;
+            done(error);
+        });
     });
 
 

@@ -23,8 +23,8 @@
 
         <div id="pim-settings-div">
 
-            <div class="pim-settings-container">
-                <h3>General Settings:</h3>
+            <div class="pim-settings-container" ng-class="{'expanded': a_expanded}">
+                <h3 ng-click="a_expanded = !a_expanded">General Settings:</h3>
 
                 <pim-checkbox
                     value = "settings.general.show_additional_help"
@@ -35,8 +35,8 @@
                 </pim-help-frame>
             </div>
 
-            <div class="pim-settings-container">
-                <h3>Preview Window:</h3>
+            <div class="pim-settings-container" ng-class="{'expanded': b_expanded}">
+                <h3 ng-click="b_expanded = !b_expanded">Preview Window:</h3>
                 
                 <pim-checkbox
                     value = "settings.preview.fullscreen"
@@ -57,8 +57,8 @@
 
             </div>
 
-            <div class="pim-settings-container">
-                <h3>Camera Control Options:</h3>
+            <div class="pim-settings-container" ng-class="{'expanded': c_expanded}">
+                <h3 ng-click="c_expanded = !c_expanded">Camera Control Options:</h3>
 
                 <pim-checkbox
                     value = "settings.camera.vstab"

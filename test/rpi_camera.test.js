@@ -23,9 +23,10 @@ describe("RPI Camera Tests", function() {
     //
     before(function(done) {
         // make the test gallery dir...
-        rpi_camera.init();
-        fs.existsSync(test_dir).should.be.true;
-        done();
+        rpi_camera.init(function(error) {
+            fs.existsSync(test_dir).should.be.true;
+            done(error);
+        });
     });
 
 

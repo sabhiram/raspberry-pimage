@@ -66,16 +66,21 @@ module.exports = function(log, gallery_dir) {
             init
         
         Inputs:
-            none, probably should take a callback (TODO)
+            callback
         
         Description:
             Init the gallery, make the gallery folder if it does not exist. Eventually
             this should bubble some errors...
         \******************************************************************************/
-        _init = function() {
-            if(!fs.existsSync(_gallery_dir)) {
-                fs.mkdirSync(_gallery_dir);
-            }
+        _init = function(callback) {
+            fs.exists(_gallery_dir, function(exists) {
+                if(!exists) {
+                    fs.mkdir(_gallery_dir, callback);
+                } else {
+                    // Nothing to do, gallery exists
+                    callback();
+                }
+            });
         },
 
         /******************************************************************************\

@@ -78,17 +78,27 @@ var
     // "app.config" module to bootstrap an express app
     app = require("./app/config/app.config")(express());
 
-// Initialize stuff
-// TODO: This can be async later if needed
-gallery.init();
-rpi_camera.init();
-
-// Setup routes
-require("./app/routes.js")(app, handlers);
-
-app.listen(args.port);
-log.info("Server up at: " + new Date());
-log.info("... waiting on port: " + args.port);
+// Setup and start the server
+async.series([
+    function setup_gallery(next_step) {
+        gallery.init(next_step);
+    },
+    function setup_camera(next_step) {
+        rpi_camera.init(next_step);
+    },
+    function setup_app_routes(next_step) {
+        require("./app/routes.js")(app, handlers);
+        next_step();
+    }
+], function(error) {
+    if(error) {
+        log.error("Unable to start server. Aborting...");
+    } else {
+        app.listen(args.port);
+        log.info("Server up at: " + new Date());
+        log.info("... waiting on port: " + args.port);
+    }
+});
 
 // This is done so that we can require, and test this app
 module.exports = app;
