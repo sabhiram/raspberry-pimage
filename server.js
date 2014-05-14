@@ -32,13 +32,13 @@ var
 var
     // TODO: Load args from file
     args = {
-        port:           process.env.PORT || 1234,
-        version:        "0.0.1",
-        name:           "RaspberryPIMage",
-        gallery_dir:    "app/public/gallery",
-        temp_images_dir:"temp_images",
-        admin_passcode: "mrfseesall",
-        logs_dir:       "logs",
+        port:               process.env.PORT || 1234,
+        version:            "0.0.1",
+        name:               "RaspberryPIMage",
+        gallery_dir:        "app/public/gallery",
+        camera_settings:    "camera_settings.json",
+        admin_passcode:     "mrfseesall",
+        logs_dir:           "logs",
     };
 
 /*****************************************************************************\
@@ -66,7 +66,7 @@ var
     // Include our custom "gallery" interface and pass it to
     // the API
     gallery =       require("./app/gallery")(log, args.gallery_dir),
-    rpi_camera =    require("./app/rpi_camera")(log, args.temp_images_dir),
+    rpi_camera =    require("./app/rpi_camera")(log, args.camera_settings),
 
     // Define API and View handlers
     handlers = {

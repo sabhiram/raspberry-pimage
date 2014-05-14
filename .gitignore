@@ -1,4 +1,5 @@
 /node_modules
 /logs
-photos
+/public/gallery
+camera_settings.json
 
