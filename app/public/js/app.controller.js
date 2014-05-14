@@ -71,8 +71,17 @@ function AppController(AlbumManager, $scope, $location) {
     // Setup some settings
     $scope.settings = {
         general: {
-            hide_additional_help: false,
+            show_additional_help: true,
         },
+        preview: {
+            fullscreen: false,
+            nopreview: false,
+        },
+        camera: {
+            vstab: false,
+            hflip: false,
+            vflip: false,
+        }
     };
 
     // Deferred load the list of albums and set the scope
@@ -269,7 +278,6 @@ app.directive("pimCheckbox", function() {
         transclude: true,
 
         template: [
-
             "<div class='pim-checkbox-container'>",
             "    <div class='pim-checkbox-indicator' ng-class='{\"selected\": value}' ng-click='value = !value'>",
             "    </div>",
@@ -286,5 +294,63 @@ app.directive("pimCheckbox", function() {
         },
     };
 });
-// app.directive("pimImageFullscreen")
 
+/******************************************************************************\
+Directive:
+    pimSettingsSpacer <pim-settings-spacer>
+
+Dependencies:
+    None
+
+Inputs:
+    verticalSpace - the amount of CSS space (height) needed to be given to 
+                    this div
+
+Description:
+    Directive to render a div which fills the prescribed amount of space
+\******************************************************************************/
+app.directive("pimSettingsSpacer", function() {
+    return {
+        restrict: "E",
+        scope: {
+            verticalSpace: "@"
+        },
+        replace: true,
+        template: "<div style='width: 100%; height: {{_height}};'></div>",
+        link: function(scope, element, attributes) {
+            scope._height = scope.verticalSpace || "10px";
+        }
+    };
+});
+
+/******************************************************************************\
+Directive:
+    pimHelpFrame <pim-help-frame>
+
+Dependencies:
+    None
+
+Inputs:
+    show - scope var which toggles if this is visible or not
+
+Description:
+    Directive to show help for various settings, can be collapsed away
+\******************************************************************************/
+app.directive("pimHelpFrame", function() {
+    return {
+        restrict: "E",
+        scope: {
+            show: "=",
+        },
+        replace: true,
+        transclude: true,
+        template: [
+            "<div class='pim-help-div' ng-class='{\"hidden\": !show}'>",
+            "   <div ng-transclude></div>",
+            "</div>",
+        ].join("\n"),
+        link: function(scope, element, attributes) {
+            // No link needed
+        }
+    };
+});

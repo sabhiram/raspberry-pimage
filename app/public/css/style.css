@@ -56,14 +56,14 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 40%;
+    width: 50%;
     height: 100%;
     -webkit-transition: all 0.61s linear 0.0s;
  
     z-index: 12;
 }
 .pim-header-dropdown-sizer.hidden {
-    left: -65%;
+    left: -70%;
     display: block!important;
 }
 .pim-header-link-sizer {
@@ -87,9 +87,24 @@ html, body {
     position: absolute;
     top: 0;
     bottom: 0;
-    padding-bottom: 62px;
+    margin-bottom: 62px;
     overflow: hidden;
+    overflow-y: auto;
     color: #ffffff;
+}
+#pim-settings-div::-webkit-scrollbar-thumb {
+    background: #ffffff; 
+}
+.pim-settings-container {
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+.pim-settings-container h3 {
+    text-align: left;
+    text-decoration: underline;
 }
 
 
@@ -145,6 +160,37 @@ html, body {
     margin-left: auto;
     margin-right: auto;
 }*/
+
+
+
+
+
+
+
+
+
+/*Help div*/
+.pim-help-div {
+    width: 90%;
+    max-height: 140px;
+    overflow-y: auto;
+    margin: 0 auto;
+    border-radius: 2px;
+
+    background-color: #222222;
+
+    -webkit-transition: all 0.33s linear 0.0s;
+}
+.pim-help-div * {
+    margin: 5px;
+}
+.pim-help-div.hidden {
+    max-height: 0px;
+    opacity: 0;
+    display: block!important;
+}
+
+
 
 
 
@@ -292,47 +338,6 @@ html, body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*****************************************************************\
 
     BEGIN - pimDropdown
@@ -398,11 +403,6 @@ html, body {
 \*****************************************************************/
 
 
-
-
-
-
-
 /*****************************************************************\
 
     BEGIN - pimCheckbox
@@ -436,8 +436,8 @@ html, body {
 }
 .pim-checkbox-indicator.selected {
     background-color: orange;
+    border: 2px solid #ffffff;
 }
-
 .pim-checkbox-prompt-container {
     position: relative;
     height: 24px;
@@ -455,7 +455,7 @@ html, body {
     left: 0;
     opacity: 1;
     font-size: 12pt;
-    color: #bbbbbb;
+    color: #999999;
     -webkit-transition: all 0.33s linear 0.0s;
 }
 .pim-checkbox-prompt.unselected,
