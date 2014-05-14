@@ -67,6 +67,8 @@ function AppController(AlbumManager, $scope, $location) {
     // Deferred load the list of albums and set the scope
     // appropriately.
     $scope.albums = [];
+    $scope.show_settings = false;
+    
     AlbumManager.list_albums().then(function(response) {
         $scope.albums = response.data;
     });

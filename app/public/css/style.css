@@ -38,6 +38,52 @@ html, body {
 
     z-index: 10;
 }
+.pim-header-dropdown-sizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    -webkit-transition: all 0.33s linear 0.0s;
+
+    z-index: 12;
+}
+.pim-header-dropdown-sizer.hidden {
+    left: -80%;
+    display: block!important;
+}
+.pim-header-link-sizer {
+    position: absolute;
+    top: 0;
+    left: 80%;
+    width: 20%;
+    height: 100%;
+    -webkit-transition: all 0.33s linear 0.0s;
+
+    z-index: 11;
+}
+.pim-header-link-sizer.expanded {
+    left: 0%;
+    width: 100%;
+}
+.pim-header-spacer {
+    position: absolute;
+    top: 0;
+    left: 40%;
+    width: 40%;
+    height: 100%;
+    -webkit-transition: all 0.33s linear 0.0s;
+}
+.pim-header-spacer.hidden {
+    left: -40%;
+    display: block!important;
+}
+
+
+
+
+
+
 /*Rest*/
 #pim-content-div {
     top: 60px;
@@ -53,7 +99,63 @@ html, body {
     z-index: 0;
 }
 
-/*Main container for an image*/
+
+
+
+/*Common*/
+.pim-settings-btn {
+    margin-top: 9px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    position: relative;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 100%;
+
+    width: 42px;
+    height: 42px;
+
+    right: 0;
+
+    cursor: pointer;
+    -webkit-transition: all 0.33s linear 0.0s;
+}
+.pim-settings-btn i {
+    position: absolute;
+    top: 6px;
+    left: 7px;
+    -webkit-transition: all 0.33s linear 0.0s;
+}
+.pim-settings-btn:hover {
+    color: #000000;
+    background-color: #ffffff;
+}
+/*.pim-settings-btn.expanded {
+    position: relative;
+    width: 42px;
+    margin-left: auto;
+    margin-right: auto;
+}*/
+.pim-settings-btn.expanded i {
+    position: absolute;
+    left: 6px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Image related directive style*/
 .pim-image-thumb {
     width: 196px;
     height: 220px;
@@ -105,7 +207,7 @@ html, body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-/*Image tools*/
+/*Image toolbox*/
 .pim-image-toolbox {
     position: absolute;
     left: 0;
@@ -141,8 +243,7 @@ html, body {
 
 /*Directive style for dropdown*/
 .pim-dropdown-container {
-    margin-top: 10px;
-    margin-left: 10px;
+    margin: 10px;
 
     width: auto;
     max-height: 40px;
@@ -154,11 +255,11 @@ html, body {
     overflow: hidden;
 }
 .pim-dropdown-container.pim-expanded {
-    max-height: 1000px;
+    max-height: 300px;
 }
 .pim-dropdown-header {
-    height: 40px;
-    line-height: 40px;
+    height: 36px;
+    line-height: 36px;
 
     color: #ffffff;
     -webkit-transition: all 0.33s linear 0.0s;
@@ -167,9 +268,10 @@ html, body {
     text-align: center;
 }
 .pim-dropdown-header:hover {
-    color: orange;
-    background-color: rgba(255,255,255,0.0);
+    color: #000000;
+    background-color: #ffffff;
 }
+
 .pim-dropdown-add-album,
 .pim-dropdown-item {
     color: #ffffff;

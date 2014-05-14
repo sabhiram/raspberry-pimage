@@ -18,17 +18,17 @@
 </head>
 <body ng-controller="AppController">
 
-    <div id="pim-header-div" class="row">
-        <div class="col-xs-5">
+    <div id="pim-header-div" class="">
+        <div class="pim-header-dropdown-sizer" ng-class="{'hidden': show_settings}">
             <pim-dropdown
                 albums       = "albums"
                 prompt       = "Choose Album" >
             </pim-dropdown>
         </div>
-
-        <div class="col-xs-7">
-            <div class="btn btn-primary" ng-click="take_picture()">
-                <i class="fa fa-camera"></i>&nbsp;Take a Picture
+        <div class="pim-header-spacer" ng-class="{'hidden': show_settings}"></div>
+        <div class="pim-header-link-sizer" ng-class="{'expanded': show_settings}">
+            <div class="pim-settings-btn" ng-click="show_settings = !show_settings" ng-class="{'expanded': show_settings}">
+                <i class="fa fa-2x fa-bars" ng-class="{'fa-rotate-90': show_settings}"></i>
             </div>
         </div>
     </div>
