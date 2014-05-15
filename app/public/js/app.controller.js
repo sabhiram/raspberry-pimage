@@ -50,13 +50,13 @@ Description:
 app.service("AlbumManager", function($http) {
     return {
         list_albums: function() {
-            return $http.get("/api/list_albums");
+            return $http.get("/api/albums/list");
         },
         delete_image_from_album: function(album_name, image_name) {
-            return $http.delete("/api/album/" + album_name + "/image/" + image_name);
+            return $http.delete("/api/albums/delete_image/" + album_name + "/" + image_name);
         },
         list_images_in_album: function(album_name) {
-            return $http.get("/api/list_images/album/" + album_name);
+            return $http.get("/api/albums/list_images/" + album_name);
         }
     };
 });
@@ -75,16 +75,16 @@ Description:
 app.service("CameraManager", function($http) {
     return {
         take_picture: function(album_name) {
-            return $http.get("/api/take_picture/album/" + album_name);
-        },
-        save_settings: function(settings) {
-            return $http.post("/api/settings", settings);
-        },
-        get_settings: function() {
-            return $http.get("/api/settings");
+            return $http.get("/api/camera/take_picture/album/" + album_name);
         },
         get_default_settings: function() {
-            return $http.get("/api/default_settings");
+            return $http.get("/api/camera/default_settings");
+        },
+        get_settings: function() {
+            return $http.get("/api/camera/settings");
+        },
+        save_settings: function(settings) {
+            return $http.post("/api/camera/settings", settings);
         },
     };
 });
