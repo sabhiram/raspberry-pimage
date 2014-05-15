@@ -101,7 +101,7 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     $scope.albums = [];
     $scope.show_settings = false;
 
-    // Defer load the settings when the pimSaveJsonBtn directive is
+    // Defer load the settings when the pimJsonTransport directive is
     // loaded. This settings model is passed in as reference to said
     // directive along with the API endpoint to get / set the settings.
     $scope.settings = null;
@@ -438,7 +438,7 @@ app.directive("pimSlider", function() {
 
 /******************************************************************************\
 Directive:
-    pimSaveJsonBtn <pim-save-json-btn>
+    pimJsonTransport <pim-json-transport>
 
 Dependencies:
     $timeout, $http
@@ -456,7 +456,7 @@ Description:
     Submit button which can be linked to a model. The API endpoint
     specified will be triggered with "model" being the data    
 \******************************************************************************/
-app.directive("pimSaveJsonBtn", function($timeout, $http) {
+app.directive("pimJsonTransport", function($timeout, $http) {
     return {
         restrict: "E",
         scope: {
@@ -468,7 +468,7 @@ app.directive("pimSaveJsonBtn", function($timeout, $http) {
         },
         replace: true,
         template: [
-            "<div class='pim-save-json-btn' ng-click='save_model()' ng-class='{\"hidden\": !model_dirty, \"shrunk\": shrunk}'>",
+            "<div class='pim-json-transport-btn' ng-click='save_model()' ng-class='{\"hidden\": !model_dirty, \"shrunk\": shrunk}'>",
             "    <div ng-if='!shrunk' style='float: left; margin-right: 5px;'>Save </div>",
             "    <i class='fa fa-save' ng-show='!waiting_on_save'></i>",
             "    <i class='fa fa-spinner fa-spin' ng-show='waiting_on_save'></i>",
