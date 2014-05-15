@@ -117,7 +117,7 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     });
 }   
 
-function AlbumController($scope, $routeParams, AlbumManager) {
+function AlbumController($scope, $routeParams, AlbumManager, CameraManager) {
     $scope.album_name = $routeParams.album_name;
 
     // Defer load the images for this Controller
