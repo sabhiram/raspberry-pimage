@@ -185,13 +185,13 @@
                     <i class="fa fa-2x fa-bars" ng-class="{'fa-rotate-90': show_settings}"></i>
                 </div>
 
-                <div class="pim-save-btn-container">
+                <div id="pim-save-btn-container">
                     <pim-save-json-btn
                         model   = "settings"
                         api     = "/api/settings"
                         shrunk  = "!show_settings"
-                        autosave= "settings.general.enable_autosave" >
-                    </pim-save-json-btn>
+                        load-on-init = "true"
+                        autosave= "settings.general.enable_autosave" />
                 </div>
 
             </div>

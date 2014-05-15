@@ -101,16 +101,11 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     $scope.albums = [];
     $scope.show_settings = false;
 
-    // Defer load the settings
+    // Defer load the settings when the pimSaveJsonBtn directive is
+    // loaded. This settings model is passed in as reference to said
+    // directive along with the API endpoint to get / set the settings.
     $scope.settings = null;
-    CameraManager.get_settings().then(function(response) {
-        if(response.data.status == "SUCCESS") {
-            $scope.settings = response.data.settings;
-        } else {
-            console.log("Error - " + response.data);
-        }
-    });
-        
+            
     // Deferred load the list of albums and set the scope
     // appropriately.
     AlbumManager.list_albums().then(function(response) {
@@ -120,17 +115,6 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
             console.log("Error - " + response.data);
         }
     });
-
-    // Setup a deep watch on the camera settings
-    $scope.$watch("settings", function(new_value, old_value) {
-        // The old_value != null hack is added to ensure that
-        // when we defer load this scope element, the save icon
-        // does not pop up (since the settings changed from null
-        // to whatever the object returned from the server)
-        if(new_value != old_value && old_value != null) {
-            $scope.settings_changed = true;
-        }
-    }, true);
 }   
 
 function AlbumController($scope, $routeParams, AlbumManager) {
@@ -460,10 +444,13 @@ Dependencies:
     $timeout, $http
 
 Inputs:
-    =model  - the model which is bound to this submit btn
-    @api    - the api endpoint to do the HTTP POST to
-    =shrunk - boolean which controls if this is shrunk / expanded (optional)
-    =autosave - enables / disables automatically pushing to HTTP POST
+    =model      - the model which is bound to this submit btn
+    @api        - the api endpoint to do the HTTP POST to
+    =shrunk     - boolean which controls if this is shrunk / expanded (optional)
+    =autosave   - enables / disables automatically pushing to HTTP POST
+    =loadOnInit - if set, the directive will fetch and set the model to the data
+                  returned from the API endpoint (with a GET). This option allows
+                  for not having the app explicitly go fetch the settings etc..
 
 Description:
     Submit button which can be linked to a model. The API endpoint
@@ -473,10 +460,11 @@ app.directive("pimSaveJsonBtn", function($timeout, $http) {
     return {
         restrict: "E",
         scope: {
-            model:  "=",
-            api:    "@",
-            shrunk: "=",
-            autosave: "=",
+            model:      "=",
+            api:        "@",
+            shrunk:     "=",
+            autosave:   "=",
+            loadOnInit: "=",
         },
         replace: true,
         template: [
@@ -490,6 +478,23 @@ app.directive("pimSaveJsonBtn", function($timeout, $http) {
             scope.model_dirty = false;
             scope.waiting_on_save = false;
 
+            // If we were asked to load the settings when this directive is 
+            // initialized - do so. Be wary of this, model is two way bound into
+            // this directive. I did it this way so it is convienient for my
+            // app to just use this directive without needing to initialize the
+            // settings. In a way - this directive is reponsible for loading, saving
+            // and presenting a UI for the user.
+            if(scope.loadOnInit) {
+                $http.get(scope.api).then(function(response) {
+                    if(response.data.status == "SUCCESS") {
+                        scope.model = response.data.settings;
+                        console.log(scope.model);
+                    } else {
+                        console.log("Error - unable to load settings from " + scope.api);
+                    }
+                });
+            }
+
             // Setup a watch on the model...
             scope.$watch("model", function(new_value, old_value) {
                 // If the model changed, and one of the values is not
@@ -501,6 +506,8 @@ app.directive("pimSaveJsonBtn", function($timeout, $http) {
                     scope.model_dirty = true;
                 }
 
+                // If the user asked us to auto-save, then anytime
+                // the model is dirty, auto-save :)
                 if(scope.model_dirty && scope.autosave) {
                     scope.save_model();
                 }
@@ -511,7 +518,7 @@ app.directive("pimSaveJsonBtn", function($timeout, $http) {
             // with the spinner once the POST is successful
             scope.save_model = function() {
                 scope.waiting_on_save = true;
-                $http.post("/api/settings", scope.model).then(function(response) {
+                $http.post(scope.api, scope.model).then(function(response) {
                     $timeout(function() {
                         scope.waiting_on_save = false;
                         scope.model_dirty = false;
