@@ -101,9 +101,6 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     $scope.albums = [];
     $scope.show_settings = false;
 
-    $scope.saving_settings = false;
-    $scope.settings_changed = false;
-
     // Defer load the settings
     $scope.settings = null;
     CameraManager.get_settings().then(function(response) {
@@ -134,22 +131,6 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
             $scope.settings_changed = true;
         }
     }, true);
-
-    $scope.save_settings = function() {
-        $scope.saving_settings = true;
-        CameraManager.save_settings($scope.settings).success(function(data, status, headers, config) {
-            if(data.status == "SUCCESS") {
-                if($scope.saving_settings) {
-                    // $timeout(function() {
-                    $scope.saving_settings = false;
-                    $scope.settings_changed = false;    
-                    // }, 100);
-                }
-            } else {
-                console.log("ERROR: unable to save settings.");
-            }
-        });
-    }
 }   
 
 function AlbumController($scope, $routeParams, AlbumManager) {
@@ -434,7 +415,7 @@ Inputs:
     @default - default, if source is undefined
 
 Description:
-    
+    Slider directive for PIMage
 \******************************************************************************/
 app.directive("pimSlider", function() {
     return {
@@ -471,4 +452,72 @@ app.directive("pimSlider", function() {
     };
 });
 
+/******************************************************************************\
+Directive:
+    pimSaveJsonBtn <pim-save-json-btn>
 
+Dependencies:
+    $timeout, $http
+
+Inputs:
+    =model  - the model which is bound to this submit btn
+    @api    - the api endpoint to do the HTTP POST to
+    =shrunk - boolean which controls if this is shrunk / expanded (optional)
+    =autosave - enables / disables automatically pushing to HTTP POST
+
+Description:
+    Submit button which can be linked to a model. The API endpoint
+    specified will be triggered with "model" being the data    
+\******************************************************************************/
+app.directive("pimSaveJsonBtn", function($timeout, $http) {
+    return {
+        restrict: "E",
+        scope: {
+            model:  "=",
+            api:    "@",
+            shrunk: "=",
+            autosave: "=",
+        },
+        replace: true,
+        template: [
+            "<div class='pim-save-json-btn' ng-click='save_model()' ng-class='{\"hidden\": !model_dirty, \"shrunk\": shrunk}'>",
+            "    <div ng-if='!shrunk' style='float: left; margin-right: 5px;'>Save </div>",
+            "    <i class='fa fa-save' ng-show='!waiting_on_save'></i>",
+            "    <i class='fa fa-spinner fa-spin' ng-show='waiting_on_save'></i>",
+            "</div>",
+        ].join("\n"),
+        link: function(scope, element, attributes) {
+            scope.model_dirty = false;
+            scope.waiting_on_save = false;
+
+            // Setup a watch on the model...
+            scope.$watch("model", function(new_value, old_value) {
+                // If the model changed, and one of the values is not
+                // null (non-init case), then we identify that as a 
+                // valid change in the model which might need to be
+                // resolved.
+                if(new_value != old_value &&
+                   old_value != null) {
+                    scope.model_dirty = true;
+                }
+
+                if(scope.model_dirty && scope.autosave) {
+                    scope.save_model();
+                }
+            }, true);
+
+            // Save the model to the API endpoint, show the spinner
+            // once it sends the POST, and remove the dirty flag along
+            // with the spinner once the POST is successful
+            scope.save_model = function() {
+                scope.waiting_on_save = true;
+                $http.post("/api/settings", scope.model).then(function(response) {
+                    $timeout(function() {
+                        scope.waiting_on_save = false;
+                        scope.model_dirty = false;
+                    }, 100);
+                });
+            }
+        },
+    }
+});

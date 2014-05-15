@@ -116,7 +116,17 @@ textarea:focus, input:focus, *.focus{
     cursor: pointer;
 }
 
-
+#pim-save-btn-container {
+    position: absolute;
+    top: 9px;
+    right: 0;
+    height: 42px;
+    width: 88px;
+    margin-right: 15px;
+    z-index: 100;
+    color: #ffffff;
+    overflow: hidden;
+}
 
 
 
@@ -171,44 +181,6 @@ textarea:focus, input:focus, *.focus{
 }*/
 
 
-.pim-save-btn {
-    opacity: 0;
-
-    position: absolute;
-    top: 9px;
-    right: 0;
-    height: 42px;
-    width: 88px;
-
-    margin-right: 15px;
-    z-index: 100;
-
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    border-radius: 42px;
-
-    font-size: 15pt;
-    cursor: pointer;
-    -webkit-transition: all 0.33s linear 0.0s;
-
-    padding-left: 8px; padding-top: 5px;
-}
-.pim-save-btn.visible {
-    opacity: 1;
-}
-.pim-save-btn.shrunken {
-    width: 42px;
-    font-size: 19pt;
-    padding-left: 9px;
-    padding-top: 2px;
-}
-.pim-save-btn:hover {
-    background-color: rgba(0,0,255,0.6);
-}
-.pim-save-btn.loading:hover,
-.pim-save-btn.loading {
-    background-color: rgba(0,255,0,0.4);
-}
 
 
 
@@ -639,5 +611,61 @@ input[type="range"]::-webkit-slider-thumb:focus {
 /*****************************************************************\
 
     END - pimSlider
+
+\*****************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*****************************************************************\
+
+    BEGIN - pimSaveJsonBtn
+
+\*****************************************************************/
+.pim-save-json-btn {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 42px;
+
+    font-size: 15pt;
+    cursor: pointer;
+    -webkit-transition: all 0.30s linear 0.0s;
+
+    padding-left: 8px; padding-top: 5px;
+    opacity: 1;
+}
+.pim-save-json-btn.shrunk {
+    width: 42px;
+    margin-left: 45px;
+    font-size: 17pt;
+    padding-left: 10px; padding-top: 3px;
+}
+.pim-save-json-btn.hidden,
+.pim-save-json-btn.shrunk.hidden {
+    display: block!important;
+    opacity: 0;
+}
+.pim-save-json-btn.shrunk:hover,
+.pim-save-json-btn:hover {
+    background-color: rgba(0,0,255,0.6);
+}
+/*****************************************************************\
+
+    END - pimSaveJsonBtn
 
 \*****************************************************************/
