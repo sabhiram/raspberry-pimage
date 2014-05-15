@@ -99,14 +99,12 @@ function AppController(AlbumManager, $scope, $location, $timeout) {
         $scope.albums = response.data;
     });
 
-    function update_settings_changed(new_value, old_value) {
+    // Setup a deep watch on the camera settings / preview settings
+    $scope.$watch("settings", function(new_value, old_value) {
         if(new_value != old_value) {
             $scope.settings_changed = true;
         }
-    }
-    // Setup a watch on the camera settings / preview settings
-    $scope.$watch("settings.preview", update_settings_changed, true);
-    $scope.$watch("settings.camera", update_settings_changed, true);
+    }, true);
 }   
 
 function AlbumController($scope, $routeParams, AlbumManager) {
