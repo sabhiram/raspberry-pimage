@@ -149,19 +149,23 @@ module.exports = function(log, settings_file) {
         _get_settings_sync = function() {
             return _settings;
         }
+        _get_default_settings_sync = function() {
+            return _DEFAULT_SETTINGS;
+        },
 
         __LAST_VARIABLE__ = 0;
     return {
-        settings_file:  _settings_file,
-        ERRORS:         _ERRORS,
+        settings_file:              _settings_file,
+        ERRORS:                     _ERRORS,
 
-        init:           _init,
+        init:                       _init,
 
         // Update settings
-        save_settings:  _save_settings,
-        get_settings_sync: _get_settings_sync,
+        save_settings:              _save_settings,
+        get_settings_sync:          _get_settings_sync,
+        get_default_settings_sync:  _get_default_settings_sync,
 
         // Camera interfaces
-        take_picture:   _take_picture,
+        take_picture:               _take_picture,
     };
 };

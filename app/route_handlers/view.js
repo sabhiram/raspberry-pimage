@@ -2,7 +2,7 @@ module.exports = function(log) {
 
     return {
 
-        home: function(request, response) {
+        app: function(request, response) {
             response.render("index", {});
         },
         

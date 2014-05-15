@@ -83,6 +83,9 @@ app.service("CameraManager", function($http) {
         get_settings: function() {
             return $http.get("/api/settings");
         },
+        get_default_settings: function() {
+            return $http.get("/api/default_settings");
+        },
     };
 });
 
@@ -105,7 +108,19 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     // loaded. This settings model is passed in as reference to said
     // directive along with the API endpoint to get / set the settings.
     $scope.settings = null;
-            
+
+    // Define a function to fetch the default settings from the server
+    $scope.load_default_settings = function() {
+        CameraManager.get_default_settings().then(function(response) {
+            if(response.data.status == "SUCCESS") {
+                console.log("Setting settings to default!");
+                $scope.settings = response.data.default_settings;
+            } else {
+                console.log("Error - " + response.data);    
+            }
+        })
+    }
+
     // Deferred load the list of albums and set the scope
     // appropriately.
     AlbumManager.list_albums().then(function(response) {
@@ -117,6 +132,16 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     });
 }   
 
+/******************************************************************************\
+Function:
+    AlbumController
+
+Dependencies:
+    $scope, $routeParams, AlbumManager, CameraManager
+
+Description:
+    Controller for Albums
+\******************************************************************************/
 function AlbumController($scope, $routeParams, AlbumManager, CameraManager) {
     $scope.album_name = $routeParams.album_name;
 
@@ -159,7 +184,16 @@ function AlbumController($scope, $routeParams, AlbumManager, CameraManager) {
     }
 }
 
+/******************************************************************************\
+Function:
+    PreviewController
 
+Dependencies:
+    $scope
+
+Description:
+    Controller for Preview
+\******************************************************************************/
 function PreviewController($scope) {
     console.log("PreviewController loaded");
 }

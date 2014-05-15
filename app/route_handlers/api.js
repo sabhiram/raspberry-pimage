@@ -91,8 +91,13 @@ module.exports = function(log, gallery, rpi_camera) {
             // exposed via the rpi_camera.settings param.
             get_settings: function(request, response) {
                 log.info("GET /api/settings");
-                log.log(rpi_camera.settings);
                 log_error_send_success_with({settings: rpi_camera.get_settings_sync()}, null, response);
+            },
+
+            // Same as above, but default settings
+            get_default_settings: function(request, response) {
+                log.info("GET /api/default_settings");
+                log_error_send_success_with({default_settings: rpi_camera.get_default_settings_sync()}, null, response);
             },
         },
 

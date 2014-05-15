@@ -3,7 +3,7 @@
     to the ReSTy interface we provide...
 */
 module.exports = function(app, handlers) {
-    app.get(                     "/",          handlers.view.home );
+    app.get("/", handlers.view.app);
 
     // Album Routes
     app.get("/api/list_albums", handlers.api.albums.list_albums);
@@ -14,8 +14,9 @@ module.exports = function(app, handlers) {
 	app.get("/api/take_picture/album/:album_name", handlers.api.camera.take_picture);
     app.post("/api/settings", handlers.api.camera.save_settings);
     app.get("/api/settings", handlers.api.camera.get_settings);
+    app.get("/api/default_settings", handlers.api.camera.get_default_settings);
     
-    app.get(                     "*",          handlers.view.error );
+    app.get("*", handlers.view.error);
     // NO MORE ROUTES HERE... add them before the 404 page!
 };
 

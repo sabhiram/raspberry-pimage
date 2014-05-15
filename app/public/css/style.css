@@ -127,9 +127,33 @@ textarea:focus, input:focus, *.focus{
     color: #ffffff;
     overflow: hidden;
 }
+.pim-default-settings-btn {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    top: 9px; left: 0px;
 
+    margin-left: 15px;
+    padding-left: 7px;
+    padding-top: 6px;
 
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 100%;
 
+    cursor: pointer;
+    -webkit-transition: all 0.33s linear 0.0s;
+    opacity: 1;
+}
+.pim-default-settings-btn.hidden {
+    display: block!important;
+    opacity: 0;
+}
+.pim-default-settings-btn:hover,
+.pim-default-settings-btn:focus {
+    color: #000000;
+    background-color: #ffffff;
+}
 
 
 
