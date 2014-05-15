@@ -4,7 +4,8 @@ var
     exec    = require("child_process").exec,
     fs      = require("fs"),
     path    = require("path"),
-    request = require("request");
+    request = require("request"),
+    util    = require("util");
 
 module.exports = function(log, settings_file) {
     /******************************************************************************\
@@ -19,16 +20,24 @@ module.exports = function(log, settings_file) {
         },
         _DEFAULT_SETTINGS = {
             general: {
-                show_help: true,
+                show_help:          true,
+                enable_autosave:    false,
             },
             preview: {
-                fullscreen: false,
-                nopreview: false,
+                fullscreen:         false,
+                nopreview:          false,
+                opacity:            255,
             },
             camera: {
-                vstab: false,
-                hflip: false,
-                vflip: false,
+                sharpness:          0,       
+                contrast:           0,     
+                brightness:         50,         
+                saturation:         0,         
+                ISO:                100, 
+                vstab:              false,
+                ev:                 0,
+                hflip:              false,
+                vflip:              false,
             }
         };
 
@@ -82,6 +91,18 @@ module.exports = function(log, settings_file) {
             });
         },
 
+        _save_settings = function(settings, callback) {
+            // TODO: This needs to be a update, then a copy.
+            // For the time being it is assumed that NO partial
+            // setting will be set this way. Settings is assumed
+            // to contain *every* setting expected...
+            _settings = settings;
+            flush_settings_file(callback);
+        },
+        _get_settings_sync = function() {
+            return _settings;
+        }
+
         __LAST_VARIABLE__ = 0;
     return {
         settings_file:  _settings_file,
@@ -90,6 +111,8 @@ module.exports = function(log, settings_file) {
         init:           _init,
 
         // Update settings
+        save_settings:  _save_settings,
+        get_settings_sync: _get_settings_sync,
 
         // Camera interfaces
         take_picture:   _take_picture,

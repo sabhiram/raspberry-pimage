@@ -9,6 +9,17 @@ var app = angular.module("PIMageApp", [
     "ngRoute"
 ]);
 
+/******************************************************************************\
+Application Route Management
+
+Dependencies:
+    $routeProvider
+
+Description:
+    This sets up the various templates which will be loaded into the
+    ng-view in this app based on which route we are navigating to. We
+    also can attach child controllers, and resolve things here.
+\******************************************************************************/
 app.config(["$routeProvider", function($routeProvider) {
     $routeProvider.
         when("/", {
@@ -41,15 +52,37 @@ app.service("AlbumManager", function($http) {
         list_albums: function() {
             return $http.get("/api/list_albums");
         },
-        take_picture: function(album_name) {
-            return $http.get("/api/take_picture/album/" + album_name);
-        },
         delete_image_from_album: function(album_name, image_name) {
             return $http.delete("/api/album/" + album_name + "/image/" + image_name);
         },
         list_images_in_album: function(album_name) {
             return $http.get("/api/list_images/album/" + album_name);
         }
+    };
+});
+
+/******************************************************************************\
+Service:
+    CameraManager
+
+Dependencies:
+    $http
+
+Description:
+    This is a simple service which abstracts the HTTP ReST API which the
+    server exposes for the RPI Camera
+\******************************************************************************/
+app.service("CameraManager", function($http) {
+    return {
+        take_picture: function(album_name) {
+            return $http.get("/api/take_picture/album/" + album_name);
+        },
+        save_settings: function(settings) {
+            return $http.post("/api/settings", settings);
+        },
+        get_settings: function() {
+            return $http.get("/api/settings");
+        },
     };
 });
 
@@ -63,48 +96,60 @@ Dependencies:
 Description:
     Main application controller
 \******************************************************************************/
-function AppController(AlbumManager, $scope, $location, $timeout) {
+function AppController(AlbumManager, CameraManager, $scope, $location, $timeout) {
     // Initialize scope
     $scope.albums = [];
     $scope.show_settings = false;
-    $scope.setting_changed = false;
 
-    // Setup some settings
-    $scope.settings = {
-        general: {
-            show_help: true,
-            enable_autosave: false,
-        },
-        preview: {
-            fullscreen: false,
-            nopreview: false,
-            opacity: 255,
-        },
-        camera: {
-            sharpness:   0,       
-            contrast:    0,     
-            brightness:  50,         
-            saturation:  0,         
-            ISO:         100, 
-            vstab: false,
-            ev: 0,
-            hflip: false,
-            vflip: false,
+    $scope.saving_settings = false;
+    $scope.settings_changed = false;
+
+    // Defer load the settings
+    $scope.settings = null;
+    CameraManager.get_settings().then(function(response) {
+        if(response.data.status == "SUCCESS") {
+            $scope.settings = response.data.settings;
+        } else {
+            console.log("Error - " + response.data);
         }
-    };
-
+    });
+        
     // Deferred load the list of albums and set the scope
     // appropriately.
     AlbumManager.list_albums().then(function(response) {
-        $scope.albums = response.data;
+        if(response.data.status == "SUCCESS") {
+            $scope.albums = response.data.albums;    
+        } else {
+            console.log("Error - " + response.data);
+        }
     });
 
-    // Setup a deep watch on the camera settings / preview settings
+    // Setup a deep watch on the camera settings
     $scope.$watch("settings", function(new_value, old_value) {
-        if(new_value != old_value) {
+        // The old_value != null hack is added to ensure that
+        // when we defer load this scope element, the save icon
+        // does not pop up (since the settings changed from null
+        // to whatever the object returned from the server)
+        if(new_value != old_value && old_value != null) {
             $scope.settings_changed = true;
         }
     }, true);
+
+    $scope.save_settings = function() {
+        $scope.saving_settings = true;
+        CameraManager.save_settings($scope.settings).success(function(data, status, headers, config) {
+            if(data.status == "SUCCESS") {
+                if($scope.saving_settings) {
+                    // $timeout(function() {
+                    $scope.saving_settings = false;
+                    $scope.settings_changed = false;    
+                    // }, 100);
+                }
+            } else {
+                console.log("ERROR: unable to save settings.");
+            }
+        });
+    }
 }   
 
 function AlbumController($scope, $routeParams, AlbumManager) {
@@ -113,7 +158,11 @@ function AlbumController($scope, $routeParams, AlbumManager) {
     // Defer load the images for this Controller
     $scope.images = [];
     AlbumManager.list_images_in_album($scope.album_name).then(function(response) {
-        $scope.images = response.data;
+        if(response.data.status == "SUCCESS") {
+            $scope.images = response.data.images;    
+        } else {
+            console.log("Error - " + response.data);
+        }
     });
     
     // Delete image client side hook
@@ -129,7 +178,7 @@ function AlbumController($scope, $routeParams, AlbumManager) {
 
     // Picture taking clientside hook
     $scope.take_picture = function() {
-        AlbumManager.take_picture($scope.album_name).then(function(response) {
+        CameraManager.take_picture($scope.album_name).then(function(response) {
             // The response is expected to send back a list of images in the album
             // so we can reload this page. Perhaps this needs to be de-coupled.
             // TODO: This should return just the image dict we want to append to {images}

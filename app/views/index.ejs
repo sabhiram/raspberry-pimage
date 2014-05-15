@@ -184,8 +184,8 @@
                 <div class="pim-settings-btn" ng-click="show_settings = !show_settings" ng-class="{'expanded': show_settings}">
                     <i class="fa fa-2x fa-bars" ng-class="{'fa-rotate-90': show_settings}"></i>
                 </div>
-                <div class="pim-save-btn" ng-click="" ng-class="{'visible': settings_changed, 'shrunken': !show_settings}">
-                    <div ng-if="show_settings" style="float: left; margin-right: 5px;">Save </div><i class="fa fa-save"></i>
+                <div class="pim-save-btn" ng-click="save_settings()" ng-class="{'visible': settings_changed, 'shrunken': !show_settings, 'loading': saving_settings}">
+                    <div ng-if="show_settings" style="float: left; margin-right: 5px;">Save </div><i class="fa fa-save" ng-show="!saving_settings"></i><i class="fa fa-spinner fa-spin" ng-show="saving_settings"></i>
                 </div>
             </div>
         </div>

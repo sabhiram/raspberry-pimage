@@ -4,14 +4,16 @@
 */
 module.exports = function(app, handlers) {
     app.get(                     "/",          handlers.view.home );
-    
+
+    // Album Routes
     app.get("/api/list_albums", handlers.api.albums.list_albums);
-    app.get("/api/take_picture/album/:album_name", handlers.api.albums.take_picture);
     app.get("/api/list_images/album/:album_name", handlers.api.albums.list_images);
-
     app.delete("/api/album/:album_name/image/:image_name", handlers.api.albums.delete_image);
-
     
+    // Camera Routes
+	app.get("/api/take_picture/album/:album_name", handlers.api.camera.take_picture);
+    app.post("/api/settings", handlers.api.camera.save_settings);
+    app.get("/api/settings", handlers.api.camera.get_settings);
     
     app.get(                     "*",          handlers.view.error );
     // NO MORE ROUTES HERE... add them before the 404 page!

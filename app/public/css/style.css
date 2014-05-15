@@ -203,8 +203,13 @@ textarea:focus, input:focus, *.focus{
     padding-top: 2px;
 }
 .pim-save-btn:hover {
+    background-color: rgba(0,0,255,0.6);
+}
+.pim-save-btn.loading:hover,
+.pim-save-btn.loading {
     background-color: rgba(0,255,0,0.4);
 }
+
 
 
 

@@ -10,7 +10,19 @@ var
 ***/
 module.exports = function(log, gallery, rpi_camera) {
 
-
+    // Helper function to log errors and send success status to the
+    // response based on any object the api wishes to pass back
+    function log_error_send_success_with(success_obj, error, response) {
+        if(error) {
+            log.error(error);
+            response.send({ status: "ERROR", error: error });
+        } else {
+            success_obj = success_obj || {};
+            success_obj["status"] = "SUCCESS";
+            response.send(success_obj);
+        }
+        response.end();
+    }
 
     return {
 
@@ -21,8 +33,9 @@ module.exports = function(log, gallery, rpi_camera) {
             list_albums: function(request, response) {
                 log.info("GET /api/list_albums");
                 gallery.list_albums(function(error, albums) {
-                    response.send(albums);
-                    response.end();
+                    log_error_send_success_with({
+                        albums: albums
+                    }, error, response);
                 });
             },
 
@@ -33,13 +46,23 @@ module.exports = function(log, gallery, rpi_camera) {
                 gallery.list_images_in_album(
                     request.params.album_name, 
                     function(error, images) {
-                        response.send(images);
-                        response.end();
+                        log_error_send_success_with({
+                            images: images
+                        }, error, response);
                     }
                 );
             },
             
-            // Take a pic
+            delete_image: function(request, response) {
+                log.info("DELETE /api/album/:album_name/image/:image_name");
+                gallery.delete_image(request.params.image_name, request.params.album_name, function(error) {
+                    log_error_send_success_with({}, error, response);
+                });
+            },
+        },
+
+        // Image related APIs
+        camera: {
             take_picture: function(request, response) {
                 log.info("GET /api/take_picture/album/:album_name");
                 var
@@ -50,43 +73,31 @@ module.exports = function(log, gallery, rpi_camera) {
                     options    = {};
 
                 rpi_camera.take_picture(image_path, options, function(error) {
-                    if(error) {
-                        log.error(error);
-                        response.send({
-                            status: "ERROR",
-                            error: error
-                        });
-                    } else {
-                        log.info("take_picture - done, adding to " + album_name);
-                        response.send({
-                            status: "SUCCESS",
-                            image_name: image_name
-                        });
-                    }
-                    response.end();
+                    log_error_send_success_with({
+                        image_name: image_name
+                    }, error, response);
                 });
             },
 
-            delete_image: function(request, response) {
-                log.info("DELETE /api/album/:album_name/image/:image_name");
-                gallery.delete_image(request.params.image_name, request.params.album_name, function(error) {
-                    if(!error) {
-                        response.send({status: "SUCCESS"});
-                    } else {
-                        response.send({status: "ERROR", error: error});
-                    }
-                    response.end();
+            save_settings: function(request, response) {
+                log.info("POST /api/settings");
+                var settings = request.body;
+                rpi_camera.save_settings(settings, function(error) {
+                    log_error_send_success_with({}, error, response);
                 });
             },
-        },
 
-        // Image related APIs
-        image: {
+            // This does not need to call anything in the camera module, it
+            // simply needs to fetch the camera's current settings which are
+            // exposed via the rpi_camera.settings param.
+            get_settings: function(request, response) {
+                log.info("GET /api/settings");
+                log.log(rpi_camera.settings);
+                log_error_send_success_with({settings: rpi_camera.get_settings_sync()}, null, response);
+            },
         },
 
         // Other APIs
     };
 
 };
-
-
