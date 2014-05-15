@@ -69,10 +69,9 @@ module.exports = function(log, gallery, rpi_camera) {
                     album_name = request.params.album_name,
                     album_path = path.join(gallery.gallery_dir, album_name),
                     image_name = "image" + Math.floor(Math.random()*100+1) + ".jpg",
-                    image_path = path.join(album_path, image_name),
-                    options    = {};
+                    image_path = path.join(album_path, image_name);
 
-                rpi_camera.take_picture(image_path, options, function(error) {
+                rpi_camera.take_picture(image_path, function(error) {
                     log_error_send_success_with({
                         image_name: image_name
                     }, error, response);

@@ -44,20 +44,68 @@ module.exports = function(log, settings_file) {
     /******************************************************************************\
     Helper functions
     \******************************************************************************/
-    function flush_settings_file(callback) {
+    function flush_settings(callback) {
         fs.writeFile(_settings_file, JSON.stringify(_settings, null, 4), "utf-8", callback);
     }
-    function load_settings_file(callback) {
+
+    function load_settings(callback) {
         fs.readFile(_settings_file, "utf-8", function(error, data) {
             if(error) {
                 log.warn("Unable to load settings file for RPI Camera");
                 log.info("Using default settings...");
                 _settings = _DEFAULT_SETTINGS;
-                flush_settings_file(callback);
+                flush_settings(callback);
             } else {
                 _settings = JSON.parse(data);
                 callback();
             }
+        });
+    }
+
+    // Helper function which accepts a group of options and generats
+    // a command line string to be used with the likes of the RPI Camera
+    // utilities.
+    function get_cmd_from_options(options) {
+        var ret = 
+            _.reduce(
+                _.filter(
+                    _.map(options, function(value, key) {
+                        // Mapping step - return the appropriate arg strs for
+                        // each of the options allowable. 
+                        if(typeof(value)=="boolean") {
+                            if(value) {
+                                // Boolean which is enabled should be of the
+                                // form "--key" (enable etc)
+                                return "--" + key
+                            } else {
+                                // Boolean which is disabled, so this should 
+                                // be filtered out at the next stage
+                                return null;
+                            }
+                        } else {
+                            // Normal key value map - expected format is
+                            // "--key value"
+                            return "--" + key + " " + value; 
+                        }
+                    }), function(item) {
+                        // Filtering step - rejects all "null" items
+                        return item;
+                    }), function(cmd, item) {
+                        // Reduce step - merge command line :)
+                        if(cmd.length) {
+                            return cmd + " " + item;
+                        } else {
+                            return item;
+                        }
+                    }, "");
+        return ret;
+    }
+
+    // Helper function to run a given command line
+    function run_command_line(cmd, callback) {
+        log.info("Running cmd: " + cmd);
+        exec(cmd, function(error, stderr, stdout) {
+            callback();
         });
     }
 
@@ -70,7 +118,7 @@ module.exports = function(log, settings_file) {
          *  by whoever requires this
         ***/
         _init = function(callback) {
-            load_settings_file(function(error) {
+            load_settings(function(error) {
                 if(error) {
                     log.error("Unable to init rpi-camera!");
                 } else {
@@ -81,14 +129,13 @@ module.exports = function(log, settings_file) {
             });
         },
 
-        _take_picture = function(image_path, options, callback) {
-            var cmd = "raspistill -t 1 -n -rot 180 -o \"" + image_path + "\"";
-            log.info("About to take pic:");
-            log.info(options)
-            log.info(cmd);
-            exec(cmd, function(error, stderr, stdout) {
-                callback();
-            });
+        _take_picture = function(image_path, callback) {
+            var
+                options_str =
+                    get_cmd_from_options(_settings.preview) + " " +
+                    get_cmd_from_options(_settings.camera),
+                cmd = "raspistill -t 1 -n -rot 180 "+options_str+"-o \"" + image_path + "\"";
+            run_command_line(cmd, callback);
         },
 
         _save_settings = function(settings, callback) {
@@ -97,7 +144,7 @@ module.exports = function(log, settings_file) {
             // setting will be set this way. Settings is assumed
             // to contain *every* setting expected...
             _settings = settings;
-            flush_settings_file(callback);
+            flush_settings(callback);
         },
         _get_settings_sync = function() {
             return _settings;
