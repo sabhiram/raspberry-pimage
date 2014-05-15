@@ -23,7 +23,7 @@
 
         <div id="pim-settings-div">
 
-            <div class="pim-settings-container" ng-class="{'expanded': a_expanded}">
+            <div class="pim-settings-container" ng-class="{'expanded': !a_expanded}">
                 <h3 ng-click="a_expanded = !a_expanded">General Settings:</h3>
 
                 <pim-checkbox
@@ -33,6 +33,17 @@
                 <pim-help-frame show="settings.general.show_help">
                     Show / hide expanded information for the varittings.
                 </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-checkbox
+                    value = "settings.general.enable_autosave"
+                    prompt = "enable" prompt-alt = "disable"> Enable Autosave
+                </pim-checkbox>
+                <pim-help-frame show="settings.general.show_help">
+                    Enable the autosaving of settings. This will be typically done when the settings div is collapsed.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
             </div>
 
             <div class="pim-settings-container" ng-class="{'expanded': b_expanded}">
@@ -45,29 +56,93 @@
                 <pim-help-frame show="settings.general.show_help">
                     --fullscreen (-f), Fullscreen preview mode.
                 </pim-help-frame>
-                <pim-settings-spacer vertical-space="5px"></pim-settings-spacer>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
                 <pim-checkbox
                     value = "settings.preview.nopreview"
                     prompt = "enable" prompt-alt = "disable"> No Preview
                 </pim-checkbox>
                 <pim-help-frame show="settings.general.show_help">
-                    --nopreview (-n), Do not display a preview window.
+                    --nopreview (-n), Do not display a preview window. Camera will produce frames even with this disabled.
                 </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-slider
+                    value = "settings.preview.opacity"
+                    min = "0" max = "255" default = "255"> Opacity 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --opacity (-op), Set preview window opacity. 0 = invisible, 255 = fully opaque. Default is 255 (opaque).
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
             </div>
 
             <div class="pim-settings-container" ng-class="{'expanded': c_expanded}">
                 <h3 ng-click="c_expanded = !c_expanded">Camera Control Options:</h3>
 
+                <pim-slider
+                    value = "settings.camera.sharpness"
+                    min = "-100" max = "100" default = "0"> Sharpness 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --sharpness (-sh), Set the image sharpness. Default is 0.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-slider
+                    value = "settings.camera.contrast"
+                    min = "-100" max = "100" default = "0"> Contrast 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --contrast (-co), Set the image contrast. Default is 0.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-slider
+                    value = "settings.camera.brightness"
+                    min = "0" max = "100" default = "50"> Brightness 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --brightness (-br), Set the brightness of the image, 50 is the default. 0 is black, 100 is white.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-slider
+                    value = "settings.camera.saturation"
+                    min = "-100" max = "100" default = "0"> Saturation 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --saturation (-sa), Set the color saturation of the image. 0 is the default.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-slider
+                    value = "settings.camera.ISO"
+                    min = "100" max = "800" default = "100"> ISO 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --ISO (-ISO), Sets the ISO to be used for captures. Range is 100 to 800.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
                 <pim-checkbox
                     value = "settings.camera.vstab"
                     prompt = "enable" prompt-alt = "disable"> Video Stabilization
                 </pim-checkbox>
                 <pim-help-frame show="settings.general.show_help">
-                    --vstab (-vs), Turn on video stabilizaton.
+                    --vstab (-vs), Turn on video stabilizaton (This only applies to video modes).
                 </pim-help-frame>
-                <pim-settings-spacer vertical-space="5px"></pim-settings-spacer>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
+
+                <pim-slider
+                    value = "settings.camera.ev"
+                    min = "-10" max = "10" default = "0"> EV Compensation 
+                </pim-slider>
+                <pim-help-frame show="settings.general.show_help">
+                    --ev (-ev), Set the EV compensation of the image. Range is -10 to +10, default is 0.
+                </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
                 <pim-checkbox
                     value = "settings.camera.hflip"
@@ -76,7 +151,7 @@
                 <pim-help-frame show="settings.general.show_help">
                     --hflip (-hf), Set horizontal flip
                 </pim-help-frame>
-                <pim-settings-spacer vertical-space="5px"></pim-settings-spacer>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
                 <pim-checkbox
                     value = "settings.camera.vflip"
@@ -85,6 +160,7 @@
                 <pim-help-frame show="settings.general.show_help">
                     --vflip (-vf), Set vertical flip
                 </pim-help-frame>
+                <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
             </div>
 
@@ -105,6 +181,9 @@
             <div class="pim-header-link-sizer" ng-class="{'expanded': show_settings}">
                 <div class="pim-settings-btn" ng-click="show_settings = !show_settings" ng-class="{'expanded': show_settings}">
                     <i class="fa fa-2x fa-bars" ng-class="{'fa-rotate-90': show_settings}"></i>
+                </div>
+                <div class="pim-save-btn" ng-click="" ng-class="{'visible': settings_changed, 'shrunken': !show_settings}">
+                    <div ng-if="show_settings" style="float: left; margin-right: 5px;">Save </div><i class="fa fa-save"></i>
                 </div>
             </div>
         </div>

@@ -63,22 +63,31 @@ Dependencies:
 Description:
     Main application controller
 \******************************************************************************/
-function AppController(AlbumManager, $scope, $location) {
+function AppController(AlbumManager, $scope, $location, $timeout) {
     // Initialize scope
     $scope.albums = [];
     $scope.show_settings = false;
+    $scope.setting_changed = false;
 
     // Setup some settings
     $scope.settings = {
         general: {
             show_help: true,
+            enable_autosave: false,
         },
         preview: {
             fullscreen: false,
             nopreview: false,
+            opacity: 255,
         },
         camera: {
+            sharpness:   0,       
+            contrast:    0,     
+            brightness:  50,         
+            saturation:  0,         
+            ISO:         100, 
             vstab: false,
+            ev: 0,
             hflip: false,
             vflip: false,
         }
@@ -89,7 +98,16 @@ function AppController(AlbumManager, $scope, $location) {
     AlbumManager.list_albums().then(function(response) {
         $scope.albums = response.data;
     });
-}
+
+    function update_settings_changed(new_value, old_value) {
+        if(new_value != old_value) {
+            $scope.settings_changed = true;
+        }
+    }
+    // Setup a watch on the camera settings / preview settings
+    $scope.$watch("settings.preview", update_settings_changed, true);
+    $scope.$watch("settings.camera", update_settings_changed, true);
+}   
 
 function AlbumController($scope, $routeParams, AlbumManager) {
     $scope.album_name = $routeParams.album_name;
@@ -290,7 +308,7 @@ app.directive("pimCheckbox", function() {
         ].join("\n"),
 
         link: function(scope, element, attributes) {
-            scope.value = scope.value || false;
+            //scope.value = scope.value || false;
         },
     };
 });
@@ -316,7 +334,7 @@ app.directive("pimSettingsSpacer", function() {
             verticalSpace: "@"
         },
         replace: true,
-        template: "<div style='width: 100%; height: {{_height}};'></div>",
+        template: "<div style='width: 100%; height: {{_height}}; '></div>",
         link: function(scope, element, attributes) {
             scope._height = scope.verticalSpace || "10px";
         }
@@ -351,6 +369,57 @@ app.directive("pimHelpFrame", function() {
         ].join("\n"),
         link: function(scope, element, attributes) {
             // No link needed
+        }
+    };
+});
+
+/******************************************************************************\
+Directive:
+    pimSlider <pim-slider>
+
+Dependencies:
+    None
+
+Inputs:
+    =value   - value to bind this slider to
+    @min     - min value
+    @max     - max value
+    @default - default, if source is undefined
+
+Description:
+    
+\******************************************************************************/
+app.directive("pimSlider", function() {
+    return {
+        restrict: "E",
+        scope: {
+            value: "=",
+            min: "@",
+            max: "@",
+            default: "@"
+        },
+        replace: true,
+        transclude: true,
+        template: [
+            "<div class='pim-slider-container' ng-mouseenter='focused = true' ng-mouseleave='focused = false'>",
+            "    <div class='pim-slider-name-container'>",
+            "        <div class='pim-slider-name' ng-transclude ng-class='{\"underfocus\": focused}'></div>",
+            "        <div class='pim-slider-value' align='center' ng-class='{\"underfocus\": !focused}'>",
+            "            {{value}}",
+            "            <div class='pim-slider-value-reset' ng-click='value = default'>default</div>",
+            "        </div>",
+            "    </div>",
+            "    <div class='pim-slider-min'>{{min}}</div>",
+            "    <div class='pim-slider-max'>{{max}}</div>",
+            "    <div class='pim-slider-input-container'>",
+            "        <input class='pim-slider-input' ng-model='value' type='range' min='{{min}}' max='{{max}}'></input>",
+            "    </div>",
+            "</div>",
+        ].join("\n"),
+        link: function(scope, element, attributes) {
+            scope.min = parseInt(scope.min, 10) || 0;
+            scope.max = parseInt(scope.min, 10) || 100;
+            scope.default = parseInt(scope.default, 10) || 50;
         }
     };
 });
