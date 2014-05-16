@@ -1,5 +1,5 @@
 /node_modules
 /logs
-/public/gallery
+/app/public/gallery/
 camera_settings.json
 
