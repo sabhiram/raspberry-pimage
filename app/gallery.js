@@ -376,9 +376,7 @@ module.exports = function(log, gallery_dir) {
                     fs.unlink(target_path, next_step);
                 }
             ], callback);
-        },
-
-        __LAST_VARIABLE__ = 0;
+        };
 
     /******************************************************************************\
         This is a neat little trick I saw somewhere (Need to find source), this 

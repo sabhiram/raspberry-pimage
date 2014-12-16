@@ -15,9 +15,11 @@ module.exports = function(log, settings_file) {
     var
         _settings_file = settings_file,
         _settings = null,
+
         _ERRORS = {
             UNKNOWN_ERROR:  { id: 0, name: "UNKNOWN_ERROR" },
         },
+        
         _DEFAULT_SETTINGS = {
             general: {
                 show_help:          true,
@@ -51,7 +53,7 @@ module.exports = function(log, settings_file) {
     function load_settings(callback) {
         fs.readFile(_settings_file, "utf-8", function(error, data) {
             if(error) {
-                log.warn("Unable to load settings file for RPI Camera");
+                log.info("Unable to load settings file for RPI Camera");
                 log.info("Using default settings...");
                 _settings = _DEFAULT_SETTINGS;
                 flush_settings(callback);
@@ -112,48 +114,46 @@ module.exports = function(log, settings_file) {
     /******************************************************************************\
     Define external interfaces
     \******************************************************************************/
-    var
-        /***
-         *  Initialize the rpi_camera, called once explicitly
-         *  by whoever requires this
-        ***/
-        _init = function(callback) {
-            load_settings(function(error) {
-                if(error) {
-                    log.error("Unable to init rpi-camera!");
-                } else {
-                    log.info("RPI Camera Online...");
-                    log.info("Using " + _settings_file + " for settings");
-                }
-                callback(error);
-            });
-        },
+    // Initialize the rpi_camera, called once explicitly
+    // by whoever requires this
+    var _init = function(callback) {
+        load_settings(function(error) {
+            if(error) {
+                log.error("Unable to init rpi-camera!");
+            } else {
+                log.info("RPI Camera Online...");
+                log.info("Using " + _settings_file + " for settings");
+            }
+            callback(error);
+        });
+    },
 
-        _take_picture = function(image_path, callback) {
-            var
-                options_str =
-                    get_cmd_from_options(_settings.preview) + " " +
-                    get_cmd_from_options(_settings.camera),
-                cmd = "raspistill -t 1 -n -rot 180 "+options_str+" -o \"" + image_path + "\"";
-            run_command_line(cmd, callback);
-        },
+    _take_picture = function(image_path, callback) {
+        var
+            options_str =
+                get_cmd_from_options(_settings.preview) + " " +
+                get_cmd_from_options(_settings.camera),
+            cmd = "raspistill -t 1 -n -rot 180 "+options_str+" -o \"" + image_path + "\"";
+        run_command_line(cmd, callback);
+    },
 
-        _save_settings = function(settings, callback) {
-            // TODO: This needs to be a update, then a copy.
-            // For the time being it is assumed that NO partial
-            // setting will be set this way. Settings is assumed
-            // to contain *every* setting expected...
-            _settings = settings;
-            flush_settings(callback);
-        },
-        _get_settings_sync = function() {
-            return _settings;
-        }
-        _get_default_settings_sync = function() {
-            return _DEFAULT_SETTINGS;
-        },
+    _save_settings = function(settings, callback) {
+        // TODO: This needs to be a update, then a copy.
+        // For the time being it is assumed that NO partial
+        // setting will be set this way. Settings is assumed
+        // to contain *every* setting expected...
+        _settings = settings;
+        flush_settings(callback);
+    },
 
-        __LAST_VARIABLE__ = 0;
+    _get_settings_sync = function() {
+        return _settings;
+    },
+    
+    _get_default_settings_sync = function() {
+        return _DEFAULT_SETTINGS;
+    };
+
     return {
         settings_file:              _settings_file,
         ERRORS:                     _ERRORS,

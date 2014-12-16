@@ -46,7 +46,6 @@ describe("RPI Camera Tests", function() {
     //
     it("Initial test, validate rpi_camera init", function(next_test) {
         rpi_camera.should.not.eql(null);
-        rpi_camera.storage_dir.should.match(test_dir);
         next_test();
     });
 });
