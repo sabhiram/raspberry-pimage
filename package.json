@@ -16,11 +16,15 @@
     "express": "~3.4.8",
     "async": "~0.8.0",
     "underscore": "~1.6.0",
-    "mocha": "~1.18.2",
     "winston": "~0.7.3",
     "ejs": "~1.0.0",
-    "should": "~3.3.1",
-    "rimraf": "~2.2.6",
+    "rimraf": "~2.2.6"
+  },
+  "devDependencies": {
+    "should": "~4.3.0",
+    "mocha": "~2.0.1",
+    "coveralls": "~2.11.2",
+    "istanbul": "~0.2.4",
     "request": "~2.34.0"
   }
 }
