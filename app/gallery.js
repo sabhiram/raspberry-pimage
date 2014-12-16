@@ -331,11 +331,13 @@ module.exports = function(log, gallery_dir) {
                     }
                     var cp_cmd = "cp " + copy_options + " \"" + source_path + "\" \"" + target_path + "\"";
                     exec(cp_cmd, function(error, stdout, stderr) {
-                        var cp_error = null;
-                        if(error) {
-                            cp_error = _ERRORS.COPY_FILE_TO_ALBUM_FAILED;
-                        }
-                        next_step(cp_error);
+                        // TODO: This error typically never gets fired, if it does:
+                        //       add a test and re-enable the below 4 lines of code
+                        // var cp_error = null;
+                        // if(error) {
+                        //     cp_error = _ERRORS.COPY_FILE_TO_ALBUM_FAILED;
+                        // }
+                        next_step(error);
                     });
                 }
             ], callback);

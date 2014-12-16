@@ -16,11 +16,12 @@ describe("Gallery Tests", function() {
 
         // Define our own "logger" so we can cull our any output etc.
         // We can easily toggle failing of tests on errors by just adding
-        // the assert(false) to the error log.
+        // the fail_on_error(true) to the error log.
+        fail_on_error = function(force_fail) { force_fail.should.be.false; },
         log = {
             log:    function(s) { /* do nothing */ },
             info:   function(s) { /* do nothing */ },
-            error:  function(s) { console.log(s); assert(false); }
+            error:  function(s) { /* do nothing */ }
         },
 
         test_dir        = path.join(__dirname, "__TEMP_TEST_DIR__"),
@@ -63,6 +64,13 @@ describe("Gallery Tests", function() {
         next_test();
     });
 
+    it("Init on existing gallery should not do anything", function(next_test) {
+        gallery.init(function(error) {
+            fs.existsSync(test_dir).should.be.true;
+            next_test();
+        });
+    });
+
     /******************************************************************************\
     Tests for adding an album to the gallery
     \******************************************************************************/
@@ -92,12 +100,20 @@ describe("Gallery Tests", function() {
             });
         });
 
+        it("Adding a bad album should fail", function(next_test) {
+            gallery.add_album("a/b/c", function(error) {
+                error.id.should.be.exactly(gallery.ERRORS.ALBUM_CREATION_FAILED.id);
+                error.name.should.match(gallery.ERRORS.ALBUM_CREATION_FAILED.name);
+                next_test();
+            });
+        });
+
         it("Adding the same album should fail", function(next_test) {
             gallery.add_album(test_album_name, function(error) {
                 fs.existsSync(test_album_path).should.be.true;
                 error.should.not.eql(null);
                 error.id.should.be.exactly(gallery.ERRORS.ALBUM_ALREADY_EXISTS.id);
-                error.name.should.be.match(gallery.ERRORS.ALBUM_ALREADY_EXISTS.name);
+                error.name.should.match(gallery.ERRORS.ALBUM_ALREADY_EXISTS.name);
                 next_test();
             });
         });
