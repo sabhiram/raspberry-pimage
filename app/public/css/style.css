@@ -72,15 +72,14 @@ textarea:focus, input:focus, *.focus{
 .pim-header-link-sizer {
     position: absolute;
     top: 0;
-    left: 80%;
-    width: 20%;
+    right: 0;
+    width: 72px;
     height: 100%;
     -webkit-transition: all 0.61s linear 0.0s;
  
     z-index: 11;
 }
 .pim-header-link-sizer.expanded {
-    left: 0%;
     width: 100%;
 }
 
@@ -119,14 +118,19 @@ textarea:focus, input:focus, *.focus{
 #pim-save-btn-container {
     position: absolute;
     top: 9px;
-    right: 0;
+    right: 0px;
     height: 42px;
     width: 88px;
     margin-right: 15px;
     z-index: 100;
     color: #ffffff;
     overflow: hidden;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
+#pim-save-btn-container.shrunk {
+    right: 57px;
+}
+
 .pim-default-settings-btn {
     position: absolute;
     width: 42px;
@@ -142,7 +146,7 @@ textarea:focus, input:focus, *.focus{
     border-radius: 100%;
 
     cursor: pointer;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     opacity: 1;
 }
 .pim-default-settings-btn.hidden {
@@ -180,14 +184,14 @@ textarea:focus, input:focus, *.focus{
     right: 0;
 
     cursor: pointer;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     z-index: 101;
 }
 .pim-settings-btn i {
     position: absolute;
     top: 6px;
     left: 7px;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
 .pim-settings-btn:hover {
     color: #000000;
@@ -197,15 +201,6 @@ textarea:focus, input:focus, *.focus{
     position: absolute;
     left: 6px;
 }
-/*TODO: NEED TO MAKE THE STUPID BTN LINED UP W/ A 
-      10 PADDING to the RIGHT*/
-/*.pim-settings-btn.expanded {
-    margin-left: auto;
-    margin-right: auto;
-}*/
-
-
-
 
 
 
@@ -225,7 +220,7 @@ textarea:focus, input:focus, *.focus{
     background-color: #222222;
     color: #999999;
 
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
 .pim-help-div * {
     margin: 5px;
@@ -322,7 +317,7 @@ textarea:focus, input:focus, *.focus{
 
     background-color: #000000;
     color: #ffffff;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     opacity: 0.6;
 }
 .pim-image-header.selected {
@@ -359,13 +354,13 @@ textarea:focus, input:focus, *.focus{
 
     color: #ffffff;
     background-color: rgba(255,255,255,0.1);
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
 .pim-image-toolbox.hide_toolbox {
     bottom: -25px;
 }
 .pim-image-toolbox i {
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     border: 1px solid transparent;
     cursor: pointer;
     padding-right: 8px;
@@ -398,7 +393,7 @@ textarea:focus, input:focus, *.focus{
 
     background-color: #000000;
 
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     overflow: hidden;
 }
 .pim-dropdown-container.pim-expanded {
@@ -409,7 +404,7 @@ textarea:focus, input:focus, *.focus{
     line-height: 36px;
 
     color: #ffffff;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     cursor: pointer;
 
     text-align: center;
@@ -430,7 +425,7 @@ textarea:focus, input:focus, *.focus{
 
     border-top: 2px solid #222222;
     cursor: pointer;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
 .pim-dropdown-add-album:hover,
 .pim-dropdown-item:hover {
@@ -458,7 +453,7 @@ textarea:focus, input:focus, *.focus{
     position: relative;
     width:  100%;
     height: 40px;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     overflow: hidden;
 
     font-size: 13pt;
@@ -477,7 +472,7 @@ textarea:focus, input:focus, *.focus{
 
     float: left;
 
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     cursor: pointer;
 }
 .pim-checkbox-indicator.selected {
@@ -502,7 +497,7 @@ textarea:focus, input:focus, *.focus{
     opacity: 1;
     font-size: 11pt;
     color: #999999;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
 .pim-checkbox-prompt.unselected,
 .pim-checkbox-prompt-alt.unselected {
@@ -561,7 +556,7 @@ textarea:focus, input:focus, *.focus{
     top: 0;
     left: 10px;
     opacity: 1;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
 }
 .pim-slider-name.underfocus,
 .pim-slider-value.underfocus {
@@ -607,7 +602,7 @@ input[type="range"] {
     -webkit-appearance: none;
     background-color: #999999;
     height: 4px;
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     cursor: pointer;
 }
 input[type="range"]:hover, input[type="range"]:focus,
@@ -627,7 +622,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 input[type="range"]::-webkit-slider-thumb:hover,
 input[type="range"]::-webkit-slider-thumb:focus {
-    -webkit-transition: all 0.33s linear 0.0s;
+    -webkit-transition: all 0.30s linear 0.0s;
     background-color: #ffffff;
     border: 2px solid #ffffff;
     color: #000000;
