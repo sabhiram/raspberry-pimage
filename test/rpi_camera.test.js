@@ -37,8 +37,8 @@ describe("RPI Camera Tests", function() {
     // Cleanup
     //
     after(function(done) {
-        rm_rf(test_dir, function(error) {
-            fs.existsSync(test_dir).should.be.false;
+        rm_rf("test_settings.json", function(error) {
+            fs.existsSync("test_settings.json").should.be.false;
             done();
         });
     });
