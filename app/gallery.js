@@ -29,7 +29,7 @@ module.exports = function(log, gallery_dir) {
             FILTERS: {
                 VALID_IMAGE:        /\.(jpg|jpeg|png|gif|bmp)$/i,
                 INVALID_ALBUM:      /^\.DS_Store/i
-            } 
+            }
         };
 
     /******************************************************************************\
@@ -64,10 +64,10 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             init
-        
+
         Inputs:
             callback
-        
+
         Description:
             Init the gallery, make the gallery folder if it does not exist. Eventually
             this should bubble some errors...
@@ -86,7 +86,7 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             add_album
-        
+
         Inputs:
             album_name          - the album to add to the gallery
             callback            - [error]
@@ -120,12 +120,12 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             rename_album
-        
+
         Inputs:
             old_album_name      - source name of source
             new_album_name      - destination name of album
             callback            - [error]
-        
+
         Description:
             Renames a given album, raises the following errors:
             * SOURCE_DOES_NOT_EXIST
@@ -161,12 +161,12 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             delete_album
-        
+
         Inputs:
             album_name          - name of album we are trying to delete
             force_delete        - if set, non-empty albums will be nuked
             callback            - [error]
-        
+
         Description:
             Deletes a given album. If force_delete is set, non-empty albums will
             be deleted. The errors raised could be:
@@ -205,10 +205,10 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             list_albums
-        
+
         Inputs:
             callback            - [error, album_list]
-        
+
         Description:
             Returns a dictionary of albums in the gallery folder. Currently the error raised
             is the one propagated by fs.readdir. The return value looks like: [{id: _id, name: _name}]
@@ -238,11 +238,11 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             list_images_in_album
-        
+
         Inputs:
             album_name          - name of the album
             callback            - [error, images]
-        
+
         Description:
             Returns a filtered list of images info found in a given album in the "images"
             list. Raises the ALBUM_DOES_NOT_EXIST error if applicable.
@@ -250,7 +250,7 @@ module.exports = function(log, gallery_dir) {
         _list_images_in_album = function(album_name, callback) {
             // See above comment in _list_albums - the same applies here
             var album_path = path.join(_gallery_dir, album_name);
-            
+
             async.waterfall([
                 function validate_album(next_step) {
                     raise_error_if_no_path(album_path, _ERRORS.ALBUM_DOES_NOT_EXIST, next_step);
@@ -260,7 +260,7 @@ module.exports = function(log, gallery_dir) {
                 },
             ], function(error, files) {
                 callback(
-                    error, 
+                    error,
                     _.map(
                         _.filter(
                             files,
@@ -282,13 +282,13 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             copy_image_to_album
-        
+
         Inputs:
             source_path         - path to source image, relative or explicit
             target_album        - album to copy to, must be valid album
             force_copy          - boolean, determines if the destination can be o/w
             callback            - [error]
-        
+
         Description:
             Uses the linux cp utility to copy a file from any path to a given album. The
             callback is fired with the following erros when appropriate:
@@ -304,10 +304,13 @@ module.exports = function(log, gallery_dir) {
                 target_name = path.basename(source_path),
                 target_path = path.join(target_dir, target_name);
 
-            if(typeof(force_copy) == "function" && typeof(callback) != "function") {
+            if (typeof(force_copy) == "function" && typeof(callback) != "function") {
                 callback = force_copy;
                 force_copy = false;
             }
+
+            // Normalize the path..
+            source_path = path.resolve(source_path);
 
             async.waterfall([
                 // TODO: This is generic to any file, limit to only images
@@ -335,6 +338,7 @@ module.exports = function(log, gallery_dir) {
                         //       add a test and re-enable the below 4 lines of code
                         // var cp_error = null;
                         // if(error) {
+                        //     console.log("ERROR: " + error);
                         //     cp_error = _ERRORS.COPY_FILE_TO_ALBUM_FAILED;
                         // }
                         next_step(error);
@@ -346,12 +350,12 @@ module.exports = function(log, gallery_dir) {
         /******************************************************************************\
         Function:
             delete_image
-        
+
         Inputs:
             image_name          - name of image to delete
             target_album        - album to delete image in
             callback            - [error]
-        
+
         Description:
             Delete the given image in the given album. Erros raised to the callback
             are the following:
@@ -381,8 +385,8 @@ module.exports = function(log, gallery_dir) {
         };
 
     /******************************************************************************\
-        This is a neat little trick I saw somewhere (Need to find source), this 
-        allows the module to take in a set of inputs, and return a chosen set of 
+        This is a neat little trick I saw somewhere (Need to find source), this
+        allows the module to take in a set of inputs, and return a chosen set of
         interfaces to expose. I have chosen to define functions with an "_" when
         they are interface functions. The private ones are just defined as-is.
     \******************************************************************************/
@@ -391,7 +395,7 @@ module.exports = function(log, gallery_dir) {
         ERRORS:                     _ERRORS,
 
         init:                       _init,
-        
+
         // Album management
         add_album:                  _add_album,
         rename_album:               _rename_album,

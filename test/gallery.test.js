@@ -1,5 +1,5 @@
 /******************************************************************************\
-    These are tests to validate the gallery module. Take note that some of 
+    These are tests to validate the gallery module. Take note that some of
     these tests are ordered and require them to be run in a certain order.
 \******************************************************************************/
 describe("Gallery Tests", function() {
@@ -75,7 +75,7 @@ describe("Gallery Tests", function() {
     Tests for adding an album to the gallery
     \******************************************************************************/
     describe("Add an album", function() {
-        var 
+        var
             test_album_name = "2013 Feb, Hawaii",
             test_album_path = path.join(test_dir, test_album_name);
 
@@ -90,7 +90,7 @@ describe("Gallery Tests", function() {
                 fs.existsSync(test_album_path).should.not.be.true;
                 done(error);
             });
-        });            
+        });
 
         it("Add valid album should make a folder", function(next_test) {
             gallery.add_album(test_album_name, function(error) {
@@ -120,10 +120,10 @@ describe("Gallery Tests", function() {
     });
 
     /******************************************************************************\
-    Tests for deleting an album 
+    Tests for deleting an album
     \******************************************************************************/
     describe("Remove an album", function() {
-        var 
+        var
             empty_album_name        = "2013 Feb, Hawaii",
             empty_album_path        = path.join(test_dir, empty_album_name),
             non_empty_album_name    = "2013 Mar, Tahoe",
@@ -147,7 +147,7 @@ describe("Gallery Tests", function() {
 
         after(function(done) {
             done();
-        });            
+        });
 
         it("Remove an empty album should work", function(next_test) {
             gallery.delete_album(empty_album_name, function(error) {
@@ -188,7 +188,7 @@ describe("Gallery Tests", function() {
     Tests for renaming an album
     \******************************************************************************/
     describe("Rename an album", function() {
-        var 
+        var
             source_album_name = "2013 Feb, SOURCE",
             source_album_path = path.join(test_dir, source_album_name),
             dest_album_name   = "2013 Feb, DESTINATION",
@@ -216,7 +216,7 @@ describe("Gallery Tests", function() {
                     gallery.delete_album(dest_album_name, true, next_step);
                 },
             ], done);
-        });            
+        });
 
         it("Edit an album which does not exist should fail", function(next_test) {
             gallery.rename_album("Album_Does_Not_Exist, 2012", "IMPOSSIBLE ALBUM, 2013", function(error) {
@@ -278,7 +278,7 @@ describe("Gallery Tests", function() {
             }
         );
     });
-    
+
     /******************************************************************************\
     Tests for Images
     \******************************************************************************/
@@ -301,7 +301,7 @@ describe("Gallery Tests", function() {
             // adding images etc
             async.series([
                 function(next_step) {
-                    gallery.add_album("IMAGES 0", next_step);
+                    gallery.add_album("IMAGES_0", next_step);
                 },
                 function(next_step) {
                     gallery.add_album("IMAGES 1", next_step);
@@ -312,7 +312,7 @@ describe("Gallery Tests", function() {
         after(function(done) {
             async.series([
                 function(next_step) {
-                    gallery.delete_album("IMAGES 0", true, next_step);
+                    gallery.delete_album("IMAGES_0", true, next_step);
                 },
                 function(next_step) {
                     gallery.delete_album("IMAGES 1", true, next_step);
@@ -324,18 +324,18 @@ describe("Gallery Tests", function() {
         Copy images to an album
         \******************************************************************************/
         describe("Copy images from path -> album", function() {
-            
+
             it("Copy image from path to valid album", function(next_test) {
-                gallery.copy_image_to_album(source0_path, "IMAGES 0", function(error) {
-                    var target_path = path.join(gallery.gallery_dir, "IMAGES 0", source0);
+                gallery.copy_image_to_album(source0_path, "IMAGES_0", function(error) {
+                    var target_path = path.join(gallery.gallery_dir, "IMAGES_0", source0);
                     fs.existsSync(target_path).should.be.true;
                     next_test(error);
                 });
             });
 
             it("Copy same image from path to same album", function(next_test) {
-                gallery.copy_image_to_album(source0_path, "IMAGES 0", function(error) {
-                    var target_path = path.join(gallery.gallery_dir, "IMAGES 0", source0);
+                gallery.copy_image_to_album(source0_path, "IMAGES_0", function(error) {
+                    var target_path = path.join(gallery.gallery_dir, "IMAGES_0", source0);
                     fs.existsSync(target_path).should.be.true;
                     error.id.should.be.exactly(gallery.ERRORS.IMAGE_ALREADY_EXISTS_IN_ALBUM.id);
                     error.name.should.match(gallery.ERRORS.IMAGE_ALREADY_EXISTS_IN_ALBUM.name);
@@ -344,8 +344,8 @@ describe("Gallery Tests", function() {
             });
 
             it("Force copy same image from path to same album", function(next_test) {
-                gallery.copy_image_to_album(source0_path, "IMAGES 0", true, function(error) {
-                    var target_path = path.join(gallery.gallery_dir, "IMAGES 0", source0);
+                gallery.copy_image_to_album(source0_path, "IMAGES_0", true, function(error) {
+                    var target_path = path.join(gallery.gallery_dir, "IMAGES_0", source0);
                     fs.existsSync(target_path).should.be.true;
                     next_test(error);
                 });
@@ -370,19 +370,19 @@ describe("Gallery Tests", function() {
             it("Copy multiple images to album [1/3]", function(next_test) {
                 async.waterfall([
                     function(next_step) {
-                        gallery.copy_image_to_album(source0_path, "IMAGES 0", true, next_step);        
+                        gallery.copy_image_to_album(source0_path, "IMAGES_0", true, next_step);
                     },
                     function(next_step) {
-                        gallery.copy_image_to_album(source1_path, "IMAGES 0", true, next_step);        
+                        gallery.copy_image_to_album(source1_path, "IMAGES_0", true, next_step);
                     },
                     function(next_step) {
-                        gallery.copy_image_to_album(source2_path, "IMAGES 0", true, next_step);        
+                        gallery.copy_image_to_album(source2_path, "IMAGES_0", true, next_step);
                     },
                     function(next_step) {
-                        gallery.copy_image_to_album(source3_path, "IMAGES 0", true, next_step);        
+                        gallery.copy_image_to_album(source3_path, "IMAGES_0", true, next_step);
                     },
                     function(next_step) {
-                        var album_base_path = path.join(gallery.gallery_dir, "IMAGES 0");
+                        var album_base_path = path.join(gallery.gallery_dir, "IMAGES_0");
                         fs.readdir(album_base_path, next_step);
                     },
                 ], function(error, files_in_album) {
@@ -393,10 +393,10 @@ describe("Gallery Tests", function() {
                     next_test(error);
                 });
             });
-            
+
             it("List images in an album [2/3]", function(next_test) {
                 // From the previous test case, we should have 4 images in the album. List them
-                gallery.list_images_in_album("IMAGES 0", function(error, images) {
+                gallery.list_images_in_album("IMAGES_0", function(error, images) {
                     images.length.should.be.exactly(4);
                     var image_names = _.map(images, function(image) { return image.name; });
                     _.contains(image_names, source0).should.be.true;
@@ -422,24 +422,24 @@ describe("Gallery Tests", function() {
                 next_test();
             });
 
-        }); /* End Copy images tests */     
+        }); /* End Copy images tests */
 
         /******************************************************************************\
-        NOTE: The Delete tests rely on the fact that source0,1,2,3 live in the 
-              "IMAGES 0" album. Reorder with care!
+        NOTE: The Delete tests rely on the fact that source0,1,2,3 live in the
+              "IMAGES_0" album. Reorder with care!
         \******************************************************************************/
         describe("Delete images in album", function() {
-            
+
             it("Delete valid image from gallery", function(next_test) {
-                gallery.delete_image(source0, "IMAGES 0", function(error) {
-                    var target_path = path.join(gallery.gallery_dir, "IMAGES 0", source0);
+                gallery.delete_image(source0, "IMAGES_0", function(error) {
+                    var target_path = path.join(gallery.gallery_dir, "IMAGES_0", source0);
                     fs.existsSync(target_path).should.be.false;
                     next_test(error);
                 });
             });
 
             it("Delete invalid image from gallery", function(next_test) {
-                gallery.delete_image(bad_source, "IMAGES 0", function(error) {
+                gallery.delete_image(bad_source, "IMAGES_0", function(error) {
                     error.id.should.be.exactly(gallery.ERRORS.IMAGE_DOES_NOT_EXIST.id);
                     error.name.should.match(gallery.ERRORS.IMAGE_DOES_NOT_EXIST.name);
                     next_test();
