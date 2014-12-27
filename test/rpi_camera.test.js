@@ -15,7 +15,7 @@ describe("RPI Camera Tests", function() {
         },
 
         test_dir = "__TEMP_TEST_CAMERA_DIR__",
-        rpi_camera = require("../app/rpi_camera")(log, test_dir);
+        rpi_camera = require("../app/rpi_camera")(log, "test_settings.json");
 
 
     //
@@ -24,8 +24,11 @@ describe("RPI Camera Tests", function() {
     before(function(done) {
         // make the test gallery dir...
         rpi_camera.init(function(error) {
-            fs.existsSync(test_dir).should.be.true;
-            done(error);
+            // Call init again to validate settings file loads correctly
+            rpi_camera.init(function(error) {
+                fs.existsSync("test_settings.json").should.be.true;
+                done(error);
+            });
         });
     });
 
@@ -41,11 +44,23 @@ describe("RPI Camera Tests", function() {
     });
 
 
-    // 
+    //
     // Tests
     //
     it("Initial test, validate rpi_camera init", function(next_test) {
         rpi_camera.should.not.eql(null);
         next_test();
+    });
+
+    describe("Validate option string builder", function() {
+
+        it("Build simple options", function(next_test) {
+            var result = rpi_camera.get_cmd_from_options({"a": true, "b": 100, "c": "hello"});
+            result.should.containEql("--a");
+            result.should.containEql("--b 100");
+            result.should.containEql("--c hello");
+            next_test();
+        });
+
     });
 });

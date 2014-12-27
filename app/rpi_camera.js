@@ -19,7 +19,7 @@ module.exports = function(log, settings_file) {
         _ERRORS = {
             UNKNOWN_ERROR:  { id: 0, name: "UNKNOWN_ERROR" },
         },
-        
+
         _DEFAULT_SETTINGS = {
             general: {
                 show_help:          true,
@@ -31,11 +31,11 @@ module.exports = function(log, settings_file) {
                 opacity:            255,
             },
             camera: {
-                sharpness:          0,       
-                contrast:           0,     
-                brightness:         50,         
-                saturation:         0,         
-                ISO:                100, 
+                sharpness:          0,
+                contrast:           0,
+                brightness:         50,
+                saturation:         0,
+                ISO:                100,
                 vstab:              false,
                 ev:                 0,
                 hflip:              false,
@@ -67,27 +67,28 @@ module.exports = function(log, settings_file) {
     // Helper function which accepts a group of options and generats
     // a command line string to be used with the likes of the RPI Camera
     // utilities.
-    function get_cmd_from_options(options) {
-        var ret = 
+    // TODO: Move this to helper function file
+    var _get_cmd_from_options = function(options) {
+        var ret =
             _.reduce(
                 _.filter(
                     _.map(options, function(value, key) {
                         // Mapping step - return the appropriate arg strs for
-                        // each of the options allowable. 
+                        // each of the options allowable.
                         if(typeof(value)=="boolean") {
                             if(value) {
                                 // Boolean which is enabled should be of the
                                 // form "--key" (enable etc)
                                 return "--" + key
                             } else {
-                                // Boolean which is disabled, so this should 
+                                // Boolean which is disabled, so this should
                                 // be filtered out at the next stage
                                 return null;
                             }
                         } else {
                             // Normal key value map - expected format is
                             // "--key value"
-                            return "--" + key + " " + value; 
+                            return "--" + key + " " + value;
                         }
                     }), function(item) {
                         // Filtering step - rejects all "null" items
@@ -131,8 +132,8 @@ module.exports = function(log, settings_file) {
     _take_picture = function(image_path, callback) {
         var
             options_str =
-                get_cmd_from_options(_settings.preview) + " " +
-                get_cmd_from_options(_settings.camera),
+                _get_cmd_from_options(_settings.preview) + " " +
+                _get_cmd_from_options(_settings.camera),
             cmd = "raspistill -t 1 -n -rot 180 "+options_str+" -o \"" + image_path + "\"";
         run_command_line(cmd, callback);
     },
@@ -149,7 +150,7 @@ module.exports = function(log, settings_file) {
     _get_settings_sync = function() {
         return _settings;
     },
-    
+
     _get_default_settings_sync = function() {
         return _DEFAULT_SETTINGS;
     };
@@ -167,5 +168,8 @@ module.exports = function(log, settings_file) {
 
         // Camera interfaces
         take_picture:               _take_picture,
+
+        // Helpers
+        get_cmd_from_options:       _get_cmd_from_options,
     };
 };
