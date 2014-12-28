@@ -91,7 +91,6 @@ module.exports = function(log, settings_file) {
 
     /******************************************************************************/
     /* istanbul ignore next */
-    /******************************************************************************/
     _take_picture = function(image_path, callback) {
         var
             options_str =
