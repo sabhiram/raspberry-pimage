@@ -87,11 +87,11 @@ module.exports = function(log, settings_file) {
             }
             callback(error);
         });
-    },
+    };
 
-    /******************************************************************************/
+
     /* istanbul ignore next */
-    _take_picture = function(image_path, callback) {
+    var _take_picture = function(image_path, callback) {
         var
             options_str =
                 helpers.build_cmd_from_options(_settings.preview) + " " +
@@ -101,22 +101,22 @@ module.exports = function(log, settings_file) {
         run_command_line(cmd, function(error, stdout) {
             callback();
         });
-    },
+    };
 
-    _save_settings = function(settings, callback) {
+    var _save_settings = function(settings, callback) {
         // TODO: This needs to be a update, then a copy.
         // For the time being it is assumed that NO partial
         // setting will be set this way. Settings is assumed
         // to contain *every* setting expected...
         _settings = settings;
         flush_settings(callback);
-    },
+    };
 
-    _get_settings_sync = function() {
+    var _get_settings_sync = function() {
         return _settings;
-    },
+    };
 
-    _get_default_settings_sync = function() {
+    var _get_default_settings_sync = function() {
         return _DEFAULT_SETTINGS;
     };
 
