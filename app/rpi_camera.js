@@ -5,7 +5,9 @@ var
     fs      = require("fs"),
     path    = require("path"),
     request = require("request"),
-    util    = require("util");
+    util    = require("util")
+
+    helpers = require("./helpers.js");
 
 module.exports = function(log, settings_file) {
     /******************************************************************************\
@@ -64,46 +66,6 @@ module.exports = function(log, settings_file) {
         });
     }
 
-    // Helper function which accepts a group of options and generats
-    // a command line string to be used with the likes of the RPI Camera
-    // utilities.
-    // TODO: Move this to helper function file
-    var _get_cmd_from_options = function(options) {
-        var ret =
-            _.reduce(
-                _.filter(
-                    _.map(options, function(value, key) {
-                        // Mapping step - return the appropriate arg strs for
-                        // each of the options allowable.
-                        if(typeof(value)=="boolean") {
-                            if(value) {
-                                // Boolean which is enabled should be of the
-                                // form "--key" (enable etc)
-                                return "--" + key
-                            } else {
-                                // Boolean which is disabled, so this should
-                                // be filtered out at the next stage
-                                return null;
-                            }
-                        } else {
-                            // Normal key value map - expected format is
-                            // "--key value"
-                            return "--" + key + " " + value;
-                        }
-                    }), function(item) {
-                        // Filtering step - rejects all "null" items
-                        return item;
-                    }), function(cmd, item) {
-                        // Reduce step - merge command line :)
-                        if(cmd.length) {
-                            return cmd + " " + item;
-                        } else {
-                            return item;
-                        }
-                    }, "");
-        return ret;
-    }
-
     // Helper function to run a given command line
     function run_command_line(cmd, callback) {
         log.info("Running cmd: " + cmd);
@@ -132,8 +94,8 @@ module.exports = function(log, settings_file) {
     _take_picture = function(image_path, callback) {
         var
             options_str =
-                _get_cmd_from_options(_settings.preview) + " " +
-                _get_cmd_from_options(_settings.camera),
+                helpers.build_cmd_from_options(_settings.preview) + " " +
+                helpers.build_cmd_from_options(_settings.camera),
             cmd = "raspistill -t 1 -n -rot 180 "+options_str+" -o \"" + image_path + "\"";
         run_command_line(cmd, callback);
     },
@@ -168,8 +130,5 @@ module.exports = function(log, settings_file) {
 
         // Camera interfaces
         take_picture:               _take_picture,
-
-        // Helpers
-        get_cmd_from_options:       _get_cmd_from_options,
     };
 };
