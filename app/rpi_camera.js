@@ -70,7 +70,7 @@ module.exports = function(log, settings_file) {
     function run_command_line(cmd, callback) {
         log.info("Running cmd: " + cmd);
         exec(cmd, function(error, stderr, stdout) {
-            callback();
+            callback(error, stdout);
         });
     }
 
@@ -81,9 +81,7 @@ module.exports = function(log, settings_file) {
     // by whoever requires this
     var _init = function(callback) {
         load_settings(function(error) {
-            if(error) {
-                log.error("Unable to init rpi-camera!");
-            } else {
+            if(!error) {
                 log.info("RPI Camera Online...");
                 log.info("Using " + _settings_file + " for settings");
             }
@@ -91,13 +89,19 @@ module.exports = function(log, settings_file) {
         });
     },
 
+    /******************************************************************************/
+    /* istanbul ignore next */
+    /******************************************************************************/
     _take_picture = function(image_path, callback) {
         var
             options_str =
                 helpers.build_cmd_from_options(_settings.preview) + " " +
                 helpers.build_cmd_from_options(_settings.camera),
             cmd = "raspistill -t 1 -n -rot 180 "+options_str+" -o \"" + image_path + "\"";
-        run_command_line(cmd, callback);
+
+        run_command_line(cmd, function(error, stdout) {
+            callback();
+        });
     },
 
     _save_settings = function(settings, callback) {
