@@ -1,15 +1,15 @@
 var
     // Node modules
-    async   = require("async"),
-    _       = require("underscore")._,
-    exec    = require("child_process").exec,
-    fs      = require("fs"),
-    rm_rf   = require("rimraf"),
-    util    = require("util"),
-    path    = require("path"),
+    async = require("async"),
+    _     = require("underscore")._,
+    exec  = require("child_process").exec,
+    fs    = require("fs"),
+    rm_rf = require("rimraf"),
+    util  = require("util"),
+    path  = require("path"),
 
     // Custom Modules
-    log     = require("./logger")();
+    log   = require("./logger")();
 
 module.exports = function(gallery_dir) {
     /******************************************************************************\
@@ -42,7 +42,7 @@ module.exports = function(gallery_dir) {
     function raise_error_if_no_path(search_path, error, callback) {
         fs.exists(search_path, function(exists) {
             var e = null;
-            if(!exists) {
+            if (!exists) {
                 // console.log("RAISE ERROR " + error.name + ". " + search_path + " not found.");
                 e = error;
             }
@@ -52,7 +52,7 @@ module.exports = function(gallery_dir) {
     function raise_error_if_path(search_path, error, callback) {
         fs.exists(search_path, function(exists) {
             var e = null;
-            if(exists) {
+            if (exists) {
                 // console.log("RAISE ERROR " + error.name + ". " + search_path + " found.");
                 e = error;
             }
@@ -78,7 +78,7 @@ module.exports = function(gallery_dir) {
         \******************************************************************************/
         _init = function(callback) {
             fs.exists(_gallery_dir, function(exists) {
-                if(!exists) {
+                if (!exists) {
                     fs.mkdir(_gallery_dir, callback);
                 } else {
                     // Nothing to do, gallery exists
@@ -111,7 +111,7 @@ module.exports = function(gallery_dir) {
                 function create_folder_for_album(next_step) {
                     log.info("Making a new album at folder: " + album_path);
                     fs.mkdir(album_path, function(error) {
-                        if(error) {
+                        if (error) {
                             log.error("Gallery::Add Album - " + error);
                             error = _ERRORS.ALBUM_CREATION_FAILED;
                         }
@@ -141,7 +141,7 @@ module.exports = function(gallery_dir) {
                 new_path = path.join(_gallery_dir, new_album_name);
 
             // Mmmm early exits
-            if(old_album_name == new_album_name) callback();
+            if (old_album_name == new_album_name) callback();
 
             async.waterfall([
                 function list_gallery_albums(next_step) {
@@ -181,7 +181,7 @@ module.exports = function(gallery_dir) {
             var
                 album_path = path.join(_gallery_dir, album_name);
 
-            if(typeof(force_delete) == "function") {
+            if (typeof(force_delete) == "function") {
                 callback = force_delete;
                 force_delete = false;
             }
@@ -194,9 +194,9 @@ module.exports = function(gallery_dir) {
                     fs.readdir(album_path, next_step);
                 },
                 function validate_deletion(files, next_step) {
-                    if(files.length == 0) {
+                    if (files.length == 0) {
                         fs.rmdir(album_path, next_step);
-                    } else if(force_delete == true) {
+                    } else if (force_delete == true) {
                         // Use rimraf (rm -rf) to delete the files
                         rm_rf(album_path, next_step);
                     } else {
@@ -325,14 +325,14 @@ module.exports = function(gallery_dir) {
                     raise_error_if_no_path(target_dir, _ERRORS.ALBUM_DOES_NOT_EXIST, next_step);
                 },
                 function check_destination_file(next_step) {
-                    if(force_copy) {
+                    if (force_copy) {
                         next_step(null, "-f");
                     } else {
                         raise_error_if_path(target_path, _ERRORS.IMAGE_ALREADY_EXISTS_IN_ALBUM, next_step);
                     }
                 },
                 function copy_image(copy_options, next_step) {
-                    if(typeof(copy_options) == "function") {
+                    if (typeof(copy_options) == "function") {
                         next_step = copy_options;
                         copy_options = "";
                     }
@@ -341,7 +341,7 @@ module.exports = function(gallery_dir) {
                         // TODO: This error typically never gets fired, if it does:
                         //       add a test and re-enable the below 4 lines of code
                         // var cp_error = null;
-                        // if(error) {
+                        // if (error) {
                         //     console.log("ERROR: " + error);
                         //     cp_error = _ERRORS.COPY_FILE_TO_ALBUM_FAILED;
                         // }

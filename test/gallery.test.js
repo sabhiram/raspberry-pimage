@@ -9,18 +9,18 @@ describe("Gallery Tests", function() {
     GLOBALS
     \******************************************************************************/
     var
-        rm_rf       = require("rimraf"),
-        path        = require("path"),
-        fs          = require("fs"),
-        async       = require("async"),
-        _           = require("underscore")._,
-        request     = require("request"),
+        rm_rf        = require("rimraf"),
+        path         = require("path"),
+        fs           = require("fs"),
+        async        = require("async"),
+        _            = require("underscore")._,
+        request      = require("request"),
 
-        log        = require("../app/logger")(),
+        log          = require("../app/logger")(),
 
-        test_dir        = path.join(__dirname, "__TEMP_TEST_DIR__"),
-        gallery         = require("../app/gallery")(test_dir),
-        skip_cleanup    = false;
+        test_dir     = path.join(__dirname, "__TEMP_TEST_DIR__"),
+        gallery      = require("../app/gallery")(test_dir),
+        skip_cleanup = false;
 
 
     /******************************************************************************\
@@ -39,7 +39,7 @@ describe("Gallery Tests", function() {
     CLEANUP
     \******************************************************************************/
     after(function(done) {
-        if(!skip_cleanup) {
+        if (!skip_cleanup) {
             rm_rf(test_dir, function(error) {
                 fs.existsSync(test_dir).should.be.false;
                 done();

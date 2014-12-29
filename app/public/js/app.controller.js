@@ -1,7 +1,7 @@
 "use strict";
 
 /***
- *  Define the app and inject any modules we wish to 
+ *  Define the app and inject any modules we wish to
  *  refer to.
 ***/
 var app = angular.module("PIMageApp", [
@@ -112,11 +112,11 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     // Define a function to fetch the default settings from the server
     $scope.load_default_settings = function() {
         CameraManager.get_default_settings().then(function(response) {
-            if(response.data.status == "SUCCESS") {
+            if (response.data.status == "SUCCESS") {
                 console.log("Setting settings to default!");
                 $scope.settings = response.data.default_settings;
             } else {
-                console.log("Error - " + response.data);    
+                console.log("Error - " + response.data);
             }
         })
     }
@@ -124,13 +124,13 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     // Deferred load the list of albums and set the scope
     // appropriately.
     AlbumManager.list_albums().then(function(response) {
-        if(response.data.status == "SUCCESS") {
-            $scope.albums = response.data.albums;    
+        if (response.data.status == "SUCCESS") {
+            $scope.albums = response.data.albums;
         } else {
             console.log("Error - " + response.data);
         }
     });
-}   
+}
 
 /******************************************************************************\
 Function:
@@ -148,17 +148,17 @@ function AlbumController($scope, $routeParams, AlbumManager, CameraManager) {
     // Defer load the images for this Controller
     $scope.images = [];
     AlbumManager.list_images_in_album($scope.album_name).then(function(response) {
-        if(response.data.status == "SUCCESS") {
-            $scope.images = response.data.images;    
+        if (response.data.status == "SUCCESS") {
+            $scope.images = response.data.images;
         } else {
             console.log("Error - " + response.data);
         }
     });
-    
+
     // Delete image client side hook
     $scope.delete_image = function(index, image_name) {
         AlbumManager.delete_image_from_album($scope.album_name, image_name).then(function(response) {
-            if(response.data.status == "SUCCESS") {
+            if (response.data.status == "SUCCESS") {
                 $scope.images.splice(index, 1);
             } else {
                 console.log("Error - unable to delete image");
@@ -172,7 +172,7 @@ function AlbumController($scope, $routeParams, AlbumManager, CameraManager) {
             // The response is expected to send back a list of images in the album
             // so we can reload this page. Perhaps this needs to be de-coupled.
             // TODO: This should return just the image dict we want to append to {images}
-            if(response.data.status=="SUCCESS") {
+            if (response.data.status=="SUCCESS") {
                 $scope.images.push({
                     id:   $scope.images.length,
                     name: response.data.image_name
@@ -212,7 +212,7 @@ Inputs:
     onDelete  <on-delete>  Function in root scope to bind to onDelete
 
 Description:
-    Directive to display an image hosted in a pim gallery. This is just a 
+    Directive to display an image hosted in a pim gallery. This is just a
     preview directive. Implements functions like delete, edit image name,
     preview etc..
 \******************************************************************************/
@@ -321,7 +321,7 @@ Dependencies:
     None
 
 Inputs:
-    value   - the boolean $scope variable we want to bind to this 
+    value   - the boolean $scope variable we want to bind to this
               checkbox. Note that this is expected to be 2-way bound.
     prompt  - the prompt to display in the checkbox
 
@@ -367,7 +367,7 @@ Dependencies:
     None
 
 Inputs:
-    verticalSpace - the amount of CSS space (height) needed to be given to 
+    verticalSpace - the amount of CSS space (height) needed to be given to
                     this div
 
 Description:
@@ -488,7 +488,7 @@ Inputs:
 
 Description:
     Submit button which can be linked to a model. The API endpoint
-    specified will be triggered with "model" being the data    
+    specified will be triggered with "model" being the data
 \******************************************************************************/
 app.directive("pimJsonTransport", function($timeout, $http) {
     return {
@@ -512,15 +512,15 @@ app.directive("pimJsonTransport", function($timeout, $http) {
             scope.model_dirty = false;
             scope.waiting_on_save = false;
 
-            // If we were asked to load the settings when this directive is 
+            // If we were asked to load the settings when this directive is
             // initialized - do so. Be wary of this, model is two way bound into
             // this directive. I did it this way so it is convienient for my
             // app to just use this directive without needing to initialize the
             // settings. In a way - this directive is reponsible for loading, saving
             // and presenting a UI for the user.
-            if(scope.loadOnInit) {
+            if (scope.loadOnInit) {
                 $http.get(scope.api).then(function(response) {
-                    if(response.data.status == "SUCCESS") {
+                    if (response.data.status == "SUCCESS") {
                         scope.model = response.data.settings;
                         console.log(scope.model);
                     } else {
@@ -532,17 +532,17 @@ app.directive("pimJsonTransport", function($timeout, $http) {
             // Setup a watch on the model...
             scope.$watch("model", function(new_value, old_value) {
                 // If the model changed, and one of the values is not
-                // null (non-init case), then we identify that as a 
+                // null (non-init case), then we identify that as a
                 // valid change in the model which might need to be
                 // resolved.
-                if(new_value != old_value &&
+                if (new_value != old_value &&
                    old_value != null) {
                     scope.model_dirty = true;
                 }
 
                 // If the user asked us to auto-save, then anytime
                 // the model is dirty, auto-save :)
-                if(scope.model_dirty && scope.autosave) {
+                if (scope.model_dirty && scope.autosave) {
                     scope.save_model();
                 }
             }, true);

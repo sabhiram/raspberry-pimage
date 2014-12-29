@@ -5,8 +5,8 @@ Validates random RPI Helper tests, see source file: ../app/helpers.js
 \*****************************************************************************/
 describe("RPI Helper Tests", function() {
     var
-        log             = require("../app/logger")(),
-        helpers         = require("../app/helpers");
+        log     = require("../app/logger")(),
+        helpers = require("../app/helpers");
 
     /*****************************************************************************\
     Validates the build_cmd_from_options() function
