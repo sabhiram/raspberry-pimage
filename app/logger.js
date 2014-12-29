@@ -69,13 +69,17 @@ module.exports = function(debug_options) {
         // this allows us to assert on errors, log wierd messages when debugging etc
         var
             _log = function(s) {
+                /* istanbul ignore if  */
                 if (debug_options["log_all"]) { console.log(s); }
             },
             _info = function(s) {
+                /* istanbul ignore if  */
                 if (debug_options["log_info"]) { console.log(s); }
             },
             _error = function(s) {
+                /* istanbul ignore if  */
                 if (debug_options["log_errors"]) { console.log(s); }
+                /* istanbul ignore if  */
                 if (debug_options["abort_on_error"]) { assert(false); }
             };
 

@@ -54,11 +54,3 @@ module.exports.write_json_to_file = function(json, file_path, callback) {
     fs.writeFile(file_path, JSON.stringify(json, null, 4), "utf-8", callback);
 };
 
-/*****************************************************************************\
-Extends a json object to a file. If the file does not exists then the
-file gets updated
-\*****************************************************************************/
-module.exports.extend_json_to_file = function(json, file_path, callback) {
-    fs.writeFile(file_path, JSON.stringify(json, null, 4), "utf-8", callback);
-};
-
