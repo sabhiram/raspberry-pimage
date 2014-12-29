@@ -6,7 +6,7 @@ var
     fs    = require("fs"),
 
     // Custom Modules
-    log     = require("./logger")();
+    log     = require("./logger")({});
 
 // Helper function which accepts a group of options and generats
 // a command line string to be used with the likes of the RPI Camera
