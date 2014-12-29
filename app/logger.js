@@ -2,8 +2,21 @@
 //     An amazingly flexible logger for NodeJS, allows the user
 //     to define transport mechanisims to route logs to arbitary
 //     recievers
-var winston = require("winston"),
-    path    = require("path");
+var winston     = require("winston"),
+    path        = require("path"),
+    _           = require("underscore")._;
+
+// TODO: Load args from file, use nconf?
+var args = {
+    port:               process.env.PORT || 1234,
+    version:            "1.0.0",
+    name:               "RaspberryPIMage",
+    gallery_dir:        "./app/public/gallery",
+    camera_settings:    "camera_settings.json",
+    admin_passcode:     "mrfseesall",
+    logs_dir:           "./logs",
+};
+
 
 // There is actually an issue when using more than one type of each transport
 // with winston. This can be worked around by overloading the "name" field in
@@ -13,18 +26,14 @@ var winston = require("winston"),
 // the default master logfile. You can read more about this here:
 // http://stackoverflow.com/questions/10045891/multiple-log-files-with-winston
 
-// TODO: Tests for this logger wrapper (maybe ship this as its own module?)
 /*****************************************************************************\
 Custom App Logger
 
 `logs_path` points at the folder in which the `master.log` and the
 `exceptions.log` files will be written to. The `debug_options` parameter is
 specified as follows:
-
-debug_options = {
-    // This enables the debug logging vs regular winston logging
-    unit_tests_enabeld: false
-
+\*****************************************************************************/
+var DEFAULT_DEBUG_OPTIONS = {
     // Set this to `true` if you want errors to cause the test to fail
     // by raising an error. Default value is `false`
     abort_on_error: false,
@@ -37,14 +46,23 @@ debug_options = {
 
     // Set this to `true` to log all messages
     log_all: false,
-}
-\*****************************************************************************/
-module.exports = function(logs_path, debug_options) {
-    if (typeof(debug_options) != "object") {
-        debug_options = {}
-    }
+};
 
-    if (debug_options["unit_tests_enabeld"]) {
+/*****************************************************************************\
+The `debug_options` param below is expected to be `undefined` for all normal
+cases of running the server. However when `UNIT_TEST_ENABLED` is set then
+the `debug_options` are merged with the `DEFAULT_DEBUG_OPTIONS` which allows
+for the tests to override logging on a per test basis
+\*****************************************************************************/
+module.exports = function(debug_options) {
+
+    if (process.env.UNIT_TESTS_ENABLED) {
+
+        if (typeof(debug_options) == "object") {
+            debug_options = _.extend(DEFAULT_DEBUG_OPTIONS, debug_options);
+        } else {
+            debug_options = DEFAULT_DEBUG_OPTIONS;
+        }
 
         // If the unit tests are enabled, then we just return our custom log interface
         // this allows us to assert on errors, log wierd messages when debugging etc
@@ -59,6 +77,7 @@ module.exports = function(logs_path, debug_options) {
                 if (debug_options["log_errors"]) { console.log(s); }
                 if (debug_options["abort_on_error"]) { assert(false); }
             };
+
         return {
             log:    _log,
             info:   _info,
@@ -74,13 +93,15 @@ module.exports = function(logs_path, debug_options) {
                 new winston.transports.Console({ colorize: "true" }),
 
                 // Route all messages to the global logs file
-                new winston.transports.File({ filename: path.join(logs_path, "master.log"), json: false }),
+                new winston.transports.File({ filename: path.join(args.logs_dir, "master.log"), json: false }),
             ],
             exceptionHandlers: [
                 // Log exceptions to the exception file
-                new winston.transports.File({ filename: path.join(logs_path, "exceptions.log"), json: false }),
+                new winston.transports.File({ filename: path.join(args.logs_dir, "exceptions.log"), json: false }),
             ],
             exitOnError: false
         });
+
     }
+
 };

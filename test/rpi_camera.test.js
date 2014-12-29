@@ -1,3 +1,5 @@
+process.env.UNIT_TESTS_ENABLED = 1;
+
 /*****************************************************************************\
 Validates the RPI Camera Module, see file ../app/rpi_camera.js
 \*****************************************************************************/
@@ -8,10 +10,10 @@ describe("RPI Camera Tests", function() {
         fs         = require("fs"),
         async      = require("async"),
 
-        log        = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
+        log        = require("../app/logger")(),
 
         test_dir   = "__TEMP_TEST_CAMERA_DIR__",
-        rpi_camera = require("../app/rpi_camera")(log, "test_settings.json"),
+        rpi_camera = require("../app/rpi_camera")("test_settings.json"),
         helpers    = require("../app/helpers");
 
 

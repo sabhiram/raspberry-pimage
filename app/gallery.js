@@ -1,13 +1,17 @@
 var
+    // Node modules
     async   = require("async"),
     _       = require("underscore")._,
     exec    = require("child_process").exec,
     fs      = require("fs"),
     rm_rf   = require("rimraf"),
     util    = require("util"),
-    path    = require("path");
+    path    = require("path"),
 
-module.exports = function(log, gallery_dir) {
+    // Custom Modules
+    log     = require("./logger")();
+
+module.exports = function(gallery_dir) {
     /******************************************************************************\
     Define module globals / constants. Some of these are / can be exposed to the
     person including the module.

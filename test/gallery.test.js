@@ -1,3 +1,5 @@
+process.env.UNIT_TESTS_ENABLED = 1;
+
 /******************************************************************************\
 These are tests to validate the gallery module. Take note that some of
 these tests are ordered and require them to be run in a certain order.
@@ -14,10 +16,10 @@ describe("Gallery Tests", function() {
         _           = require("underscore")._,
         request     = require("request"),
 
-        log             = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
+        log        = require("../app/logger")(),
 
         test_dir        = path.join(__dirname, "__TEMP_TEST_DIR__"),
-        gallery         = require("../app/gallery")(log, test_dir),
+        gallery         = require("../app/gallery")(test_dir),
         skip_cleanup    = false;
 
 

@@ -1,14 +1,18 @@
 var
+    // Node Modules
     _       = require("underscore")._,
-    path    = require("path");
+    path    = require("path"),
 
-/***
- *  RPI API Handler. This is only done in a single file since this
- *  is a very simple project... if this required a more heavy handed
- *  approach (manage albums, folders, images etc directly), then
- *  this *should* be split out into various handlers.
-***/
-module.exports = function(log, gallery, rpi_camera) {
+    // Custom Modules
+    log     = require("../logger")();
+
+/*****************************************************************************\
+RPI API Handler. This is only done in a single file since this
+is a very simple project... if this required a more heavy handed
+approach (manage albums, folders, images etc directly), then
+this *should* be split out into various handlers.
+\*****************************************************************************/
+module.exports = function(gallery, rpi_camera) {
 
     // Helper function to log errors and send success status to the
     // response based on any object the api wishes to pass back
@@ -44,7 +48,7 @@ module.exports = function(log, gallery, rpi_camera) {
             list_images: function(request, response) {
                 log.info("GET /api/list_images/:album_name");
                 gallery.list_images_in_album(
-                    request.params.album_name, 
+                    request.params.album_name,
                     function(error, images) {
                         log_error_send_success_with({
                             images: images
@@ -52,7 +56,7 @@ module.exports = function(log, gallery, rpi_camera) {
                     }
                 );
             },
-            
+
             delete_image: function(request, response) {
                 log.info("DELETE /api/album/:album_name/image/:image_name");
                 gallery.delete_image(request.params.image_name, request.params.album_name, function(error) {

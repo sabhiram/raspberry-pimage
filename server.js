@@ -27,19 +27,16 @@ var
 /*****************************************************************************\
     Application Globals
 \*****************************************************************************/
-
-
-var
-    // TODO: Load args from file
-    args = {
-        port:               process.env.PORT || 1234,
-        version:            "1.0.0",
-        name:               "RaspberryPIMage",
-        gallery_dir:        "./app/public/gallery",
-        camera_settings:    "camera_settings.json",
-        admin_passcode:     "mrfseesall",
-        logs_dir:           "logs",
-    };
+// TODO: Load args from file, use nconf?
+var args = {
+    port:               process.env.PORT || 1234,
+    version:            "1.0.0",
+    name:               "RaspberryPIMage",
+    gallery_dir:        "./app/public/gallery",
+    camera_settings:    "camera_settings.json",
+    admin_passcode:     "mrfseesall",
+    logs_dir:           "./logs",
+};
 
 /*****************************************************************************\
     Setup Logging
@@ -57,21 +54,19 @@ if(!fs.existsSync(_logs)) {
 }
 
 var
-    // Since we have a common logs folder for our logs, we can encapsulate
-    // the loggers settings in a logger.js file, and pass the path to the
-    // logs dir while requiring the logger module. This way all modules
-    // can log to a consistent location.
-    log        = require("./app/logger.js")(_logs),
+    // Load the log module, the above code ensures that the
+    // logging folder exists before we create the log
+    log        = require("./app/logger")(),
 
     // Include our custom "gallery" interface and pass it to
     // the API
-    gallery    = require("./app/gallery")(log, args.gallery_dir),
-    rpi_camera = require("./app/rpi_camera")(log, args.camera_settings),
+    gallery    = require("./app/gallery")(args.gallery_dir),
+    rpi_camera = require("./app/rpi_camera")(args.camera_settings),
 
     // Define API and View handlers
     handlers   = {
-        view:    require("./app/route_handlers/view")(log),
-        api:     require("./app/route_handlers/api")(log, gallery, rpi_camera),
+        view:    require("./app/route_handlers/view")(),
+        api:     require("./app/route_handlers/api")(gallery, rpi_camera),
     },
 
     // Create an express app. Note this is using our custom
@@ -87,7 +82,7 @@ async.series([
         rpi_camera.init(next_step);
     },
     function setup_app_routes(next_step) {
-        require("./app/routes.js")(app, handlers);
+        require("./app/routes")(app, handlers);
         next_step();
     }
 ], function(error) {

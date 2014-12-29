@@ -1,9 +1,11 @@
+process.env.UNIT_TESTS_ENABLED = 1;
+
 /*****************************************************************************\
 Validates random RPI Helper tests, see source file: ../app/helpers.js
 \*****************************************************************************/
 describe("RPI Helper Tests", function() {
     var
-        log             = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
+        log             = require("../app/logger")(),
         helpers         = require("../app/helpers");
 
     /*****************************************************************************\
