@@ -1,4 +1,5 @@
 var
+    // Node modules
     async   = require("async"),
     _       = require("underscore")._,
     exec    = require("child_process").exec,
@@ -7,12 +8,13 @@ var
     util    = require("util"),
     path    = require("path");
 
-module.exports = function(log, gallery_dir) {
+module.exports = function(gallery_dir, log_settings) {
     /******************************************************************************\
     Define module globals / constants. Some of these are / can be exposed to the
     person including the module.
     \******************************************************************************/
     var
+        log = require("./logger")(log_settings),
         _gallery_dir = gallery_dir,
         _ERRORS = {
             UNKNOWN_ERROR:                          { id: 0, name: "UNKNOWN_ERROR" },

@@ -1,4 +1,5 @@
 var
+    // Node Modules
     async   = require("async"),
     _       = require("underscore")._,
     exec    = require("child_process").exec,
@@ -7,14 +8,16 @@ var
     request = require("request"),
     util    = require("util")
 
-    helpers = require("./helpers.js");
+    // Custom modules
+    helpers = require("./helpers");
 
-module.exports = function(log, settings_file) {
+module.exports = function(settings_file, log_settings) {
     /******************************************************************************\
     Define module globals / constants. Some of these are / can be exposed to the
     person including the module.
     \******************************************************************************/
     var
+        log     = require("./logger")(log_settings),
         _settings_file = settings_file,
         _settings = null,
 

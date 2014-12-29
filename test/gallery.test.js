@@ -14,10 +14,11 @@ describe("Gallery Tests", function() {
         _           = require("underscore")._,
         request     = require("request"),
 
-        log             = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
+        log_settings    = {"unit_tests_enabeld": true},
+        log             = require("../app/logger")(log_settings),
 
         test_dir        = path.join(__dirname, "__TEMP_TEST_DIR__"),
-        gallery         = require("../app/gallery")(log, test_dir),
+        gallery         = require("../app/gallery")(test_dir, log_settings),
         skip_cleanup    = false;
 
 
