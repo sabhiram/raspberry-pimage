@@ -6,7 +6,7 @@ var
     path    = require("path"),
 
     // Custom Modules
-    log     = require("./logger")();
+    log   = require("./logger")();
 
 module.exports = function() {
 

@@ -1,22 +1,20 @@
 var
-    path            = require("path"),
+    path       = require("path"),
 
-    // express - http://expressjs.com/
-    //     A web framework for node, provides easy ways to manage 
-    //     a web application"s routes, etc
-    express         = require("express"),
-    
-    public_dir      = path.join("./", "app", "public"),
-    views_dir       = path.join("./", "app", "views");
+    express    = require("express"),
+
+    public_dir = path.join("./", "app", "public"),
+    views_dir  = path.join("./", "app", "views");
 
 
 module.exports = function(app) {
 
     // Configure express application
     app.configure(function() {
+
         // Setup public visible hosted files
         app.use(express.static(public_dir));
-        
+
         // Setup app preferences
 
         // There is an issue which prevents express from using the bodyParser since
@@ -27,11 +25,10 @@ module.exports = function(app) {
         app.use(express.urlencoded());
         app.use(express.cookieParser());
 
-        //app.use(express.session({secret: "fuzzleswilltakeapictureofyou"}));
-        
         // Setup server side template engine
         app.set("view engine", "ejs");
         app.set("views", views_dir);
+
     });
 
     return app;

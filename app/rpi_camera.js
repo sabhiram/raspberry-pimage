@@ -55,7 +55,7 @@ module.exports = function(settings_file) {
     \******************************************************************************/
     function load_settings(callback) {
         fs.readFile(_settings_file, "utf-8", function(error, data) {
-            if(error) {
+            if (error) {
                 log.info("Unable to load settings file for RPI Camera");
                 log.info("Using default settings...");
                 _settings = _DEFAULT_SETTINGS;
@@ -82,7 +82,7 @@ module.exports = function(settings_file) {
     // by whoever requires this
     var _init = function(callback) {
         load_settings(function(error) {
-            if(!error) {
+            if (!error) {
                 log.info("RPI Camera Online...");
                 log.info("Using " + _settings_file + " for settings");
             }
@@ -90,11 +90,8 @@ module.exports = function(settings_file) {
         });
     };
 
-
-    /* istanbul ignore next */
     var _take_picture = function(image_path, callback) {
-        var
-            options_str =
+        var options_str =
                 helpers.build_cmd_from_options(_settings.preview) + " " +
                 helpers.build_cmd_from_options(_settings.camera),
             cmd = "raspistill -t 1 -n -rot 180 " + options_str + " -o \"" + image_path + "\"";
