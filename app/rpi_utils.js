@@ -11,7 +11,11 @@ var
 
 module.exports = function() {
 
-    function run_system_cmd(cmd, callback) {
+    var
+    /*****************************************************************************\
+    Run a system command on the pi
+    \*****************************************************************************/
+    _run_system_cmd = function(cmd, callback) {
         // Dont actually run the commands if we are testing,
         // simply return back the cmd to the callback w/ no error
         /* istanbul ignore else */
@@ -23,9 +27,8 @@ module.exports = function() {
                 callback(error, stdout);
             });
         }
-    }
+    },
 
-    var
     /*****************************************************************************\
     Enable / Disable start this service on boot
     \*****************************************************************************/
@@ -39,18 +42,20 @@ module.exports = function() {
     \*****************************************************************************/
     _reboot_pi = function(callback) {
         log.info("Rebooting the pi");
-        run_system_cmd("shutdown -r now", callback);
+        _run_system_cmd("shutdown -r now", callback);
     },
 
     _shutdown_pi = function(callback) {
         log.info("Shutdown the pi");
-        run_system_cmd("shutdown -t now", callback);
+        _run_system_cmd("shutdown -t now", callback);
     };
 
     /*****************************************************************************\
     Return public interfaces
     \*****************************************************************************/
     return {
+
+        run_system_cmd: _run_system_cmd,
 
         enable_start_on_boot: _enable_start_on_boot,
 

@@ -70,8 +70,8 @@ describe("RPI Camera Tests", function() {
     });
 
     it("Take picture", function(next_test) {
-        rpi_camera.take_picture(function(error, result) {
-            result.should.match("raspistill");
+        rpi_camera.take_picture("./test.jpg", function(error, result) {
+            result.should.containEql("raspistill");
             next_test(error);
         });
     });
