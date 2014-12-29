@@ -1,7 +1,14 @@
-var helpers = require("../app/helpers");
-
+/*****************************************************************************\
+Validates random RPI Helper tests, see source file: ../app/helpers.js
+\*****************************************************************************/
 describe("RPI Helper Tests", function() {
+    var
+        log             = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
+        helpers         = require("../app/helpers");
 
+    /*****************************************************************************\
+    Validates the build_cmd_from_options() function
+    \*****************************************************************************/
     describe("build_cmd_from_options Tests", function() {
 
         it("Build simple options", function(next_test) {

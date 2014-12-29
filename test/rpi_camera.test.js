@@ -1,22 +1,18 @@
-//
-// Test group to validate the gallery functions
-//
+/*****************************************************************************\
+Validates the RPI Camera Module, see file ../app/rpi_camera.js
+\*****************************************************************************/
 describe("RPI Camera Tests", function() {
     var
-        rm_rf = require("rimraf"),
-        path = require("path"),
-        fs = require("fs"),
-        async = require("async"),
+        rm_rf      = require("rimraf"),
+        path       = require("path"),
+        fs         = require("fs"),
+        async      = require("async"),
 
-        log = {
-            log:    function(s) { /* do nothing */ },
-            info:   function(s) { /* do nothing */ },
-            error:  function(s) { console.log(s); assert(false); }
-        },
+        log        = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
 
-        test_dir = "__TEMP_TEST_CAMERA_DIR__",
+        test_dir   = "__TEMP_TEST_CAMERA_DIR__",
         rpi_camera = require("../app/rpi_camera")(log, "test_settings.json"),
-        helpers = require("../app/helpers");
+        helpers    = require("../app/helpers");
 
 
     //

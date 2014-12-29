@@ -1,6 +1,6 @@
 /******************************************************************************\
-    These are tests to validate the gallery module. Take note that some of
-    these tests are ordered and require them to be run in a certain order.
+These are tests to validate the gallery module. Take note that some of
+these tests are ordered and require them to be run in a certain order.
 \******************************************************************************/
 describe("Gallery Tests", function() {
     /******************************************************************************\
@@ -14,15 +14,7 @@ describe("Gallery Tests", function() {
         _           = require("underscore")._,
         request     = require("request"),
 
-        // Define our own "logger" so we can cull our any output etc.
-        // We can easily toggle failing of tests on errors by just adding
-        // the fail_on_error(true) to the error log.
-        fail_on_error = function(force_fail) { force_fail.should.be.false; },
-        log = {
-            log:    function(s) { /* do nothing */ },
-            info:   function(s) { /* do nothing */ },
-            error:  function(s) { /* do nothing */ }
-        },
+        log             = require("../app/logger")("dummy_log_dir", {"unit_tests_enabeld": true}),
 
         test_dir        = path.join(__dirname, "__TEMP_TEST_DIR__"),
         gallery         = require("../app/gallery")(log, test_dir),
