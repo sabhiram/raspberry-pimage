@@ -67,6 +67,7 @@ module.exports = function(gallery, rpi_camera) {
 
         // Image related APIs
         camera: {
+
             take_picture: function(request, response) {
                 log.info("GET /api/take_picture/album/:album_name");
                 var

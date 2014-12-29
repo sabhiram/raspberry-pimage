@@ -67,20 +67,15 @@ module.exports = function(settings_file) {
         });
     }
 
-    // Helper function to run a given command line
-    function run_command_line(cmd, callback) {
-        log.info("Running cmd: " + cmd);
-        exec(cmd, function(error, stderr, stdout) {
-            callback(error, stdout);
-        });
-    }
 
     /******************************************************************************\
     Define external interfaces
     \******************************************************************************/
+    var
+
     // Initialize the rpi_camera, called once explicitly
     // by whoever requires this
-    var _init = function(callback) {
+    _init = function(callback) {
         load_settings(function(error) {
             if (!error) {
                 log.info("RPI Camera Online...");
@@ -88,33 +83,33 @@ module.exports = function(settings_file) {
             }
             callback(error);
         });
-    };
+    },
 
-    var _take_picture = function(image_path, callback) {
+    _take_picture = function(image_path, callback) {
         var options_str =
                 helpers.build_cmd_from_options(_settings.preview) + " " +
                 helpers.build_cmd_from_options(_settings.camera),
             cmd = "raspistill -t 1 -n -rot 180 " + options_str + " -o \"" + image_path + "\"";
 
-        run_command_line(cmd, function(error, stdout) {
-            callback();
+        rpi_utils.run_system_cmd(cmd, function(error, stdout) {
+            callback(error, stdout);
         });
-    };
+    },
 
-    var _save_settings = function(settings, callback) {
+    _save_settings = function(settings, callback) {
         // TODO: This needs to be a update, then a copy.
         // For the time being it is assumed that NO partial
         // setting will be set this way. Settings is assumed
         // to contain *every* setting expected...
         _settings = _.extend(_settings, settings);
         helpers.write_json_to_file(_settings, _settings_file, callback);
-    };
+    },
 
-    var _get_settings_sync = function() {
+    _get_settings_sync = function() {
         return _settings;
-    };
+    },
 
-    var _get_default_settings_sync = function() {
+    _get_default_settings_sync = function() {
         return _DEFAULT_SETTINGS;
     };
 

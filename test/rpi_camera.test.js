@@ -68,4 +68,12 @@ describe("RPI Camera Tests", function() {
             next_test(error);
         });
     });
+
+    it("Take picture", function(next_test) {
+        rpi_camera.take_picture(function(error, result) {
+            result.should.match("raspistill");
+            next_test(error);
+        });
+    });
+
 });
