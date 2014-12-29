@@ -4,17 +4,17 @@
 var
     // Underscore.js - http://underscorejs.org/
     //     Utility module for NodeJS with awesome helpers for
-    //     working with collections, lists, and higer order functions 
+    //     working with collections, lists, and higer order functions
     _               = require("underscore")._,
-    
+
     // Async - https://github.com/caolan/async
     //     Async utility module, very useful for things like avoiding
     //     excessively nested callbacks. Allows for easier control flow
     //     of async code
     async           = require("async"),
-     
+
     // express - http://expressjs.com/
-    //     A web framework for node, provides easy ways to manage 
+    //     A web framework for node, provides easy ways to manage
     //     a web application"s routes, etc
     express         = require("express"),
 
@@ -33,9 +33,9 @@ var
     // TODO: Load args from file
     args = {
         port:               process.env.PORT || 1234,
-        version:            "0.0.1",
+        version:            "1.0.0",
         name:               "RaspberryPIMage",
-        gallery_dir:        "app/public/gallery",
+        gallery_dir:        "./app/public/gallery",
         camera_settings:    "camera_settings.json",
         admin_passcode:     "mrfseesall",
         logs_dir:           "logs",
@@ -61,17 +61,17 @@ var
     // the loggers settings in a logger.js file, and pass the path to the
     // logs dir while requiring the logger module. This way all modules
     // can log to a consistent location.
-    log =           require("./app/logger.js")(_logs),
+    log        = require("./app/logger.js")(_logs),
 
     // Include our custom "gallery" interface and pass it to
     // the API
-    gallery =       require("./app/gallery")(log, args.gallery_dir),
-    rpi_camera =    require("./app/rpi_camera")(log, args.camera_settings),
+    gallery    = require("./app/gallery")(log, args.gallery_dir),
+    rpi_camera = require("./app/rpi_camera")(log, args.camera_settings),
 
     // Define API and View handlers
-    handlers = {
-        view:       require("./app/route_handlers/view")(log),
-        api:        require("./app/route_handlers/api")(log, gallery, rpi_camera),
+    handlers   = {
+        view:    require("./app/route_handlers/view")(log),
+        api:     require("./app/route_handlers/api")(log, gallery, rpi_camera),
     },
 
     // Create an express app. Note this is using our custom

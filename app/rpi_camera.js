@@ -96,7 +96,7 @@ module.exports = function(log, settings_file) {
             options_str =
                 helpers.build_cmd_from_options(_settings.preview) + " " +
                 helpers.build_cmd_from_options(_settings.camera),
-            cmd = "raspistill -t 1 -n -rot 180 "+options_str+" -o \"" + image_path + "\"";
+            cmd = "raspistill -t 1 -n -rot 180 " + options_str + " -o \"" + image_path + "\"";
 
         run_command_line(cmd, function(error, stdout) {
             callback();
