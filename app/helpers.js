@@ -17,8 +17,8 @@ module.exports.build_cmd_from_options = function(options) {
                 _.map(options, function(value, key) {
                     // Mapping step - return the appropriate arg strs for
                     // each of the options allowable.
-                    if(typeof(value)=="boolean") {
-                        if(value) {
+                    if (typeof(value)=="boolean") {
+                        if (value) {
                             // Boolean which is enabled should be of the
                             // form "--key" (enable etc)
                             return "--" + key
@@ -37,7 +37,7 @@ module.exports.build_cmd_from_options = function(options) {
                     return item;
                 }), function(cmd, item) {
                     // Reduce step - merge command line :)
-                    if(cmd.length) {
+                    if (cmd.length) {
                         return cmd + " " + item;
                     } else {
                         return item;

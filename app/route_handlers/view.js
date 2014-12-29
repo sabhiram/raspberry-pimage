@@ -9,6 +9,7 @@ module.exports = function() {
     return {
 
         app: function(request, response) {
+            log.info("GET /")
             response.render("index", {});
         },
 

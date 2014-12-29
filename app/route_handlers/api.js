@@ -1,10 +1,10 @@
 var
     // Node Modules
-    _       = require("underscore")._,
-    path    = require("path"),
+    _    = require("underscore")._,
+    path = require("path"),
 
     // Custom Modules
-    log     = require("../logger")();
+    log  = require("../logger")();
 
 /*****************************************************************************\
 RPI API Handler. This is only done in a single file since this
@@ -17,7 +17,7 @@ module.exports = function(gallery, rpi_camera) {
     // Helper function to log errors and send success status to the
     // response based on any object the api wishes to pass back
     function log_error_send_success_with(success_obj, error, response) {
-        if(error) {
+        if (error) {
             log.error(error);
             response.send({ status: "ERROR", error: error });
         } else {

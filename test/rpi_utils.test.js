@@ -8,5 +8,4 @@ describe("RPI Utils Tests", function() {
         log          = require("../app/logger")(),
         rpi_utils    = require("../app/rpi_utils")();
 
-
 });
