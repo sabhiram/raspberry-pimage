@@ -56,6 +56,7 @@ for the tests to override logging on a per test basis
 \*****************************************************************************/
 module.exports = function(debug_options) {
 
+    /* istanbul ignore else  */
     if (process.env.UNIT_TESTS_ENABLED) {
 
         if (typeof(debug_options) == "object") {
