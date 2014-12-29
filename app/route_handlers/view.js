@@ -1,6 +1,10 @@
-module.exports = function(log_settings) {
+var
+    // Node Modules
 
-    var log = require("./logger")(log_settings);
+    // Custom Modules
+    log = require("../logger")();
+
+module.exports = function() {
 
     return {
 
@@ -13,6 +17,7 @@ module.exports = function(log_settings) {
             log.warn(request.url + " attempted and failed...");
             response.send(404, "Umm, this is an error page... what the heck are you looking for?");
         }
+
     };
 
 };

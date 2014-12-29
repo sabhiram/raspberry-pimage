@@ -9,15 +9,15 @@ var
     util    = require("util")
 
     // Custom modules
-    helpers = require("./helpers");
+    helpers = require("./helpers"),
+    log     = require("./logger")();
 
-module.exports = function(settings_file, log_settings) {
+module.exports = function(settings_file) {
     /******************************************************************************\
     Define module globals / constants. Some of these are / can be exposed to the
     person including the module.
     \******************************************************************************/
     var
-        log     = require("./logger")(log_settings),
         _settings_file = settings_file,
         _settings = null,
 

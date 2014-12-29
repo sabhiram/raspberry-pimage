@@ -1,7 +1,11 @@
 var
+    // Node Modules
     async = require("async"),
     _     = require("underscore"),
-    util  = require("util");
+    util  = require("util"),
+
+    // Custom Modules
+    log     = require("./logger")();
 
 // Helper function which accepts a group of options and generats
 // a command line string to be used with the likes of the RPI Camera

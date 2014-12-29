@@ -1,17 +1,18 @@
 var
     // Node Modules
     _       = require("underscore")._,
-    path    = require("path");
+    path    = require("path"),
 
-/***
- *  RPI API Handler. This is only done in a single file since this
- *  is a very simple project... if this required a more heavy handed
- *  approach (manage albums, folders, images etc directly), then
- *  this *should* be split out into various handlers.
-***/
-module.exports = function(gallery, rpi_camera, log_settings) {
+    // Custom Modules
+    log     = require("../logger")();
 
-    var log = require("./logger")(log_settings);
+/*****************************************************************************\
+RPI API Handler. This is only done in a single file since this
+is a very simple project... if this required a more heavy handed
+approach (manage albums, folders, images etc directly), then
+this *should* be split out into various handlers.
+\*****************************************************************************/
+module.exports = function(gallery, rpi_camera) {
 
     // Helper function to log errors and send success status to the
     // response based on any object the api wishes to pass back

@@ -6,15 +6,17 @@ var
     fs      = require("fs"),
     rm_rf   = require("rimraf"),
     util    = require("util"),
-    path    = require("path");
+    path    = require("path"),
 
-module.exports = function(gallery_dir, log_settings) {
+    // Custom Modules
+    log     = require("./logger")();
+
+module.exports = function(gallery_dir) {
     /******************************************************************************\
     Define module globals / constants. Some of these are / can be exposed to the
     person including the module.
     \******************************************************************************/
     var
-        log = require("./logger")(log_settings),
         _gallery_dir = gallery_dir,
         _ERRORS = {
             UNKNOWN_ERROR:                          { id: 0, name: "UNKNOWN_ERROR" },

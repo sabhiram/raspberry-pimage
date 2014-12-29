@@ -3,11 +3,12 @@ var
     _     = require("underscore")._,
     async = require("async"),
     util  = require("util"),
-    path  = require("path");
+    path  = require("path"),
 
-module.exports = function(log_settings) {
+    // Custom Modules
+    log     = require("./logger")();
 
-    var log = require("./logger")(log_settings);
+module.exports = function() {
 
     return {
 

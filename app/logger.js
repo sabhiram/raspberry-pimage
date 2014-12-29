@@ -3,7 +3,8 @@
 //     to define transport mechanisims to route logs to arbitary
 //     recievers
 var winston     = require("winston"),
-    path        = require("path");
+    path        = require("path"),
+    _           = require("underscore")._;
 
 // TODO: Load args from file, use nconf?
 var args = {
@@ -31,11 +32,8 @@ Custom App Logger
 `logs_path` points at the folder in which the `master.log` and the
 `exceptions.log` files will be written to. The `debug_options` parameter is
 specified as follows:
-
-debug_options = {
-    // This enables the debug logging vs regular winston logging
-    unit_tests_enabeld: false
-
+\*****************************************************************************/
+var DEFAULT_DEBUG_OPTIONS = {
     // Set this to `true` if you want errors to cause the test to fail
     // by raising an error. Default value is `false`
     abort_on_error: false,
@@ -48,14 +46,23 @@ debug_options = {
 
     // Set this to `true` to log all messages
     log_all: false,
-}
+};
+
+/*****************************************************************************\
+The `debug_options` param below is expected to be `undefined` for all normal
+cases of running the server. However when `UNIT_TEST_ENABLED` is set then
+the `debug_options` are merged with the `DEFAULT_DEBUG_OPTIONS` which allows
+for the tests to override logging on a per test basis
 \*****************************************************************************/
 module.exports = function(debug_options) {
-    if (typeof(debug_options) != "object") {
-        debug_options = {}
-    }
 
-    if (debug_options["unit_tests_enabeld"]) {
+    if (process.env.UNIT_TESTS_ENABLED) {
+
+        if (typeof(debug_options) == "object") {
+            debug_options = _.extend(DEFAULT_DEBUG_OPTIONS, debug_options);
+        } else {
+            debug_options = DEFAULT_DEBUG_OPTIONS;
+        }
 
         // If the unit tests are enabled, then we just return our custom log interface
         // this allows us to assert on errors, log wierd messages when debugging etc
@@ -70,6 +77,7 @@ module.exports = function(debug_options) {
                 if (debug_options["log_errors"]) { console.log(s); }
                 if (debug_options["abort_on_error"]) { assert(false); }
             };
+
         return {
             log:    _log,
             info:   _info,
@@ -93,5 +101,7 @@ module.exports = function(debug_options) {
             ],
             exitOnError: false
         });
+
     }
+
 };
