@@ -3,9 +3,10 @@ var
     async = require("async"),
     _     = require("underscore"),
     util  = require("util"),
+    fs    = require("fs"),
 
     // Custom Modules
-    log     = require("./logger")();
+    log     = require("./logger")({});
 
 // Helper function which accepts a group of options and generats
 // a command line string to be used with the likes of the RPI Camera
@@ -45,3 +46,11 @@ module.exports.build_cmd_from_options = function(options) {
                 }, "");
     return ret;
 };
+
+/*****************************************************************************\
+Writes a json object to a file. If the file exists the file gets overwritten.
+\*****************************************************************************/
+module.exports.write_json_to_file = function(json, file_path, callback) {
+    fs.writeFile(file_path, JSON.stringify(json, null, 4), "utf-8", callback);
+};
+
