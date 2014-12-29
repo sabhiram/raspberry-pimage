@@ -9,8 +9,10 @@ var
     util    = require("util")
 
     // Custom modules
-    helpers = require("./helpers"),
-    log     = require("./logger")();
+    helpers     = require("./helpers"),
+    rpi_utils   = require("./rpi_utils")(),
+    log         = require("./logger")();
+
 
 module.exports = function(settings_file) {
     /******************************************************************************\
@@ -51,17 +53,13 @@ module.exports = function(settings_file) {
     /******************************************************************************\
     Helper functions
     \******************************************************************************/
-    function flush_settings(callback) {
-        fs.writeFile(_settings_file, JSON.stringify(_settings, null, 4), "utf-8", callback);
-    }
-
     function load_settings(callback) {
         fs.readFile(_settings_file, "utf-8", function(error, data) {
             if(error) {
                 log.info("Unable to load settings file for RPI Camera");
                 log.info("Using default settings...");
                 _settings = _DEFAULT_SETTINGS;
-                flush_settings(callback);
+                helpers.write_json_to_file(_settings, _settings_file, callback);
             } else {
                 _settings = JSON.parse(data);
                 callback();
@@ -111,8 +109,8 @@ module.exports = function(settings_file) {
         // For the time being it is assumed that NO partial
         // setting will be set this way. Settings is assumed
         // to contain *every* setting expected...
-        _settings = settings;
-        flush_settings(callback);
+        _settings = _.extend(_settings, settings);
+        helpers.write_json_to_file(_settings, _settings_file, callback);
     };
 
     var _get_settings_sync = function() {

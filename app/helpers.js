@@ -3,6 +3,7 @@ var
     async = require("async"),
     _     = require("underscore"),
     util  = require("util"),
+    fs    = require("fs"),
 
     // Custom Modules
     log     = require("./logger")();
@@ -45,3 +46,19 @@ module.exports.build_cmd_from_options = function(options) {
                 }, "");
     return ret;
 };
+
+/*****************************************************************************\
+Writes a json object to a file. If the file exists the file gets overwritten.
+\*****************************************************************************/
+module.exports.write_json_to_file = function(json, file_path, callback) {
+    fs.writeFile(file_path, JSON.stringify(json, null, 4), "utf-8", callback);
+};
+
+/*****************************************************************************\
+Extends a json object to a file. If the file does not exists then the
+file gets updated
+\*****************************************************************************/
+module.exports.extend_json_to_file = function(json, file_path, callback) {
+    fs.writeFile(file_path, JSON.stringify(json, null, 4), "utf-8", callback);
+};
+
