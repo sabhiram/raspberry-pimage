@@ -20,10 +20,10 @@ html, body {
     width: 12px;
 }
 ::-webkit-scrollbar-thumb {
-    background: #000000; 
+    background: rgba(255,255,255,0.3);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(0,0,0,0.8); 
+    background: rgba(0,0,0,0.8);
 }
 textarea:focus, input:focus, *.focus{
     outline: 0;
@@ -62,7 +62,7 @@ textarea:focus, input:focus, *.focus{
     max-width: 350px;
     height: 100%;
     -webkit-transition: all 0.61s linear 0.0s;
- 
+
     z-index: 12;
 }
 .pim-header-dropdown-sizer.hidden {
@@ -76,7 +76,7 @@ textarea:focus, input:focus, *.focus{
     width: 72px;
     height: 100%;
     -webkit-transition: all 0.61s linear 0.0s;
- 
+
     z-index: 11;
 }
 .pim-header-link-sizer.expanded {
@@ -95,7 +95,7 @@ textarea:focus, input:focus, *.focus{
     color: #ffffff;
 }
 #pim-settings-div::-webkit-scrollbar-thumb {
-    background: #ffffff; 
+    background: #ffffff;
 }
 .pim-settings-container {
     width: 95%;
@@ -299,9 +299,9 @@ textarea:focus, input:focus, *.focus{
     position: relative;
     display: inline-block;
 
-    -webkit-box-shadow: 3px 3px 1px 0px rgba(0,0,0,0.6);  
+    -webkit-box-shadow: 3px 3px 1px 0px rgba(0,0,0,0.6);
 
-    overflow: hidden;  
+    overflow: hidden;
     background-color: #000000;
 
     cursor: pointer;
@@ -463,7 +463,7 @@ textarea:focus, input:focus, *.focus{
     width: 24px;
     height: 24px;
     top: 6px;
-    
+
     margin-left: 10px; margin-right: 10px;
 
     border: 2px solid #ffffff;
@@ -519,121 +519,6 @@ textarea:focus, input:focus, *.focus{
     END - pimCheckbox
 
 \*****************************************************************/
-
-
-
-
-
-
-
-/*****************************************************************\
-
-    BEGIN - pimSlider
-
-\*****************************************************************/
-.pim-slider-container {
-    width: 100%;
-    height: 40px;
-    position: relative;
-    margin-bottom: 15px;
-}
-.pim-slider-container * {
-    float: left;
-}
-.pim-slider-name-container {
-    position: absolute;
-    height: 24px;
-    width: 30%;
-    top: 8px; left: 0;
-    line-height: 24px;
-    overflow: hidden;
-    font-size: 14pt;
-}
-.pim-slider-name,
-.pim-slider-value {
-    position: absolute;
-    width: 100%; height: 100%;
-    top: 0;
-    left: 10px;
-    opacity: 1;
-    -webkit-transition: all 0.30s linear 0.0s;
-}
-.pim-slider-name.underfocus,
-.pim-slider-value.underfocus {
-    top: -100%;
-    opacity: 0;
-}
-.pim-slider-value-reset {
-    font-size: 11pt;
-    color: #999999;
-    cursor: pointer;
-}
-.pim-slider-input-container {
-    position: absolute;
-    height: 21px;
-    top: 10px; left: 30%;
-    right: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.pim-slider-min,
-.pim-slider-max {
-    color: #999999;
-    position: absolute;
-    top: 32px;
-    width: auto;
-}
-.pim-slider-min {
-    left: 28%;
-}
-.pim-slider-max {
-    right: 0%;
-}
-
-.pim-slider-input {
-    position: absolute;
-    top: 4px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-input[type="range"] {
-    margin-top: 5px;
-    -webkit-appearance: none;
-    background-color: #999999;
-    height: 4px;
-    -webkit-transition: all 0.30s linear 0.0s;
-    cursor: pointer;
-}
-input[type="range"]:hover, input[type="range"]:focus,
-input[type="range"]:active {
-    background-color: #ffffff;
-}
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    position: relative;
-    top: 0px; z-index: 1;
-    width: 28px; height: 28px;
-    cursor: pointer;
-    border-radius: 100%;
-    background-color: #000000;
-    border: 3px solid #999999;
-    color: #ffffff;
-}
-input[type="range"]::-webkit-slider-thumb:hover,
-input[type="range"]::-webkit-slider-thumb:focus {
-    -webkit-transition: all 0.30s linear 0.0s;
-    background-color: #ffffff;
-    border: 2px solid #ffffff;
-    color: #000000;
-}
-/*****************************************************************\
-
-    END - pimSlider
-
-\*****************************************************************/
-
-
 
 
 

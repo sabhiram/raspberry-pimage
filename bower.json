@@ -1,0 +1,27 @@
+{
+  "name": "raspberry-pimage",
+  "version": "1.0.0",
+  "homepage": "https://github.com/sabhiram/raspberry-pimage",
+  "authors": [
+    "Shaba Abhiram <shabarivas@gmail.com>"
+  ],
+  "description": "Raspberry Pi Camera Interface",
+  "main": "server.js",
+  "keywords": [
+    "rpi",
+    "image",
+    "interface"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-slick-slider": "~1.0.0"
+  }
+}

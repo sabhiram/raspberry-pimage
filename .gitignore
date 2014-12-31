@@ -1,5 +1,6 @@
 /node_modules
 /logs
 /app/public/gallery/
+/app/public/bower/
 camera_settings.json
 

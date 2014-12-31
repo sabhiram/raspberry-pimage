@@ -29,7 +29,7 @@ var
 \*****************************************************************************/
 // TODO: Load args from file, use nconf?
 var args = {
-    port:               process.env.PORT || 1234,
+    port:               process.env.PORT || 80,
     version:            "1.0.0",
     name:               "RaspberryPIMage",
     gallery_dir:        "./app/public/gallery",

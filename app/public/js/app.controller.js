@@ -6,7 +6,8 @@
 ***/
 var app = angular.module("PIMageApp", [
     "ngAnimate",
-    "ngRoute"
+    "ngRoute",
+    "sabhiram.slick-slider"
 ]);
 
 /******************************************************************************\
@@ -419,56 +420,6 @@ app.directive("pimHelpFrame", function() {
     };
 });
 
-/******************************************************************************\
-Directive:
-    pimSlider <pim-slider>
-
-Dependencies:
-    None
-
-Inputs:
-    =value   - value to bind this slider to
-    @min     - min value
-    @max     - max value
-    @default - default, if source is undefined
-
-Description:
-    Slider directive for PIMage
-\******************************************************************************/
-app.directive("pimSlider", function() {
-    return {
-        restrict: "E",
-        scope: {
-            value: "=",
-            min: "@",
-            max: "@",
-            default: "@"
-        },
-        replace: true,
-        transclude: true,
-        template: [
-            "<div class='pim-slider-container' ng-mouseenter='focused = true' ng-mouseleave='focused = false'>",
-            "    <div class='pim-slider-name-container'>",
-            "        <div class='pim-slider-name' ng-transclude ng-class='{\"underfocus\": focused}'></div>",
-            "        <div class='pim-slider-value' align='center' ng-class='{\"underfocus\": !focused}'>",
-            "            {{value}}",
-            "            <div class='pim-slider-value-reset' ng-click='value = default'>default</div>",
-            "        </div>",
-            "    </div>",
-            "    <div class='pim-slider-min'>{{min}}</div>",
-            "    <div class='pim-slider-max'>{{max}}</div>",
-            "    <div class='pim-slider-input-container'>",
-            "        <input class='pim-slider-input' ng-model='value' type='range' min='{{min}}' max='{{max}}'></input>",
-            "    </div>",
-            "</div>",
-        ].join("\n"),
-        link: function(scope, element, attributes) {
-            scope.min = parseInt(scope.min, 10) || 0;
-            scope.max = parseInt(scope.min, 10) || 100;
-            scope.default = parseInt(scope.default, 10) || 50;
-        }
-    };
-});
 
 /******************************************************************************\
 Directive:

@@ -13,11 +13,15 @@
     <link rel="stylesheet" href="/external/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
 
+    <!-- Bower CSS components -->
+    <link rel="stylesheet" href="/bower/angular-slick-slider/slider.css">
+    <!-- Bower CSS components -->
+
     <title>RaspberryPImage</title>
 
 </head>
 <body ng-controller="AppController">
-   
+
     <!-- Header div for the dropdown / other buttons always visible -->
     <div id="pim-full-header-div" ng-class="{'expanded': show_settings}">
 
@@ -50,7 +54,7 @@
 
             <div class="pim-settings-container" ng-class="{'expanded': b_expanded}">
                 <h3 ng-click="b_expanded = !b_expanded">Preview Window:</h3>
-                
+
                 <pim-checkbox
                     value = "settings.preview.fullscreen"
                     prompt = "enable" prompt-alt = "disable"> Full Screen
@@ -69,10 +73,10 @@
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.preview.opacity"
-                    min = "0" max = "255" default = "255"> Opacity 
-                </pim-slider>
+                    min = "0" max = "255" default = "255"> Opacity
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --opacity (-op), Set preview window opacity. 0 = invisible, 255 = fully opaque. Default is 255 (opaque).
                 </pim-help-frame>
@@ -83,46 +87,46 @@
             <div class="pim-settings-container" ng-class="{'expanded': c_expanded}">
                 <h3 ng-click="c_expanded = !c_expanded">Camera Control Options:</h3>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.camera.sharpness"
-                    min = "-100" max = "100" default = "0"> Sharpness 
-                </pim-slider>
+                    min = "-100" max = "100" default = "0"> Sharpness
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --sharpness (-sh), Set the image sharpness. Default is 0.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.camera.contrast"
-                    min = "-100" max = "100" default = "0"> Contrast 
-                </pim-slider>
+                    min = "-100" max = "100" default = "0"> Contrast
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --contrast (-co), Set the image contrast. Default is 0.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.camera.brightness"
-                    min = "0" max = "100" default = "50"> Brightness 
-                </pim-slider>
+                    min = "0" max = "100" default = "50"> Brightness
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --brightness (-br), Set the brightness of the image, 50 is the default. 0 is black, 100 is white.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.camera.saturation"
-                    min = "-100" max = "100" default = "0"> Saturation 
-                </pim-slider>
+                    min = "-100" max = "100" default = "0"> Saturation
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --saturation (-sa), Set the color saturation of the image. 0 is the default.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.camera.ISO"
-                    min = "100" max = "800" default = "100"> ISO 
-                </pim-slider>
+                    min = "100" max = "800" default = "100"> ISO
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --ISO (-ISO), Sets the ISO to be used for captures. Range is 100 to 800.
                 </pim-help-frame>
@@ -137,10 +141,10 @@
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
 
-                <pim-slider
+                <sab-slick-slider
                     value = "settings.camera.ev"
-                    min = "-10" max = "10" default = "0"> EV Compensation 
-                </pim-slider>
+                    min = "-10" max = "10" default = "0"> EV Compensation
+                </sab-slick-slider>
                 <pim-help-frame show="settings.general.show_help">
                     --ev (-ev), Set the EV compensation of the image. Range is -10 to +10, default is 0.
                 </pim-help-frame>
@@ -169,7 +173,7 @@
         </div>
 
         <div id="pim-header-div">
-            <!-- This is the dropdown directive holder, this is used to position this 
+            <!-- This is the dropdown directive holder, this is used to position this
             appropriately, as well as easily hide it if we are showing the settings
             page -->
             <div class="pim-header-dropdown-sizer" ng-class="{'hidden': show_settings}">
@@ -212,6 +216,12 @@
     <script src="/external/js/angular.animate.js"></script>
     <script src="/external/js/angular.route.js"></script>
     <script src="/js/app.controller.js"></script>
+
+    <!-- Bower JS components -->
+    <script src="/bower/angular-slick-slider/slider.js"></script>
+    <!-- Bower JS components -->
+
+
 
     <script>
         // On document ready...
