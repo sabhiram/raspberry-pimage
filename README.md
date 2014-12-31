@@ -36,12 +36,13 @@ sudo apt-get install git -y
 
 # Installation
 
-Now the easy part... from the pi:
+Now the easy part... from the pi (assumes you have bower installed)
 
 ```sh
 git clone https://github.com/sabhiram/raspberry-pimage
 cd raspberry-pimage
 npm update
+bower update
 npm start
 ```
 
