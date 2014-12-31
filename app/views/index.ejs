@@ -2,7 +2,6 @@
 <html lang="en" ng-app="PIMageApp">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=1">
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,8 +19,9 @@
     <link rel="stylesheet" href="/css/style.css">
 
     <title>RaspberryPImage</title>
-
 </head>
+
+
 <body ng-controller="AppController">
 
     <!-- Header div for the dropdown / other buttons always visible -->
@@ -29,8 +29,8 @@
 
         <div id="pim-settings-div">
 
-            <div class="pim-settings-container" ng-class="{'expanded': !a_expanded}">
-                <h3 ng-click="a_expanded = !a_expanded">General Settings:</h3>
+            <div class="pim-settings-container" ng-class="{'expanded': !general_settings_expanded}">
+                <h3 ng-click="general_settings_expanded = !general_settings_expanded">General Settings:</h3>
 
                 <pim-checkbox
                     value = "settings.general.show_help"
@@ -49,13 +49,11 @@
                     Enable the autosaving of settings. This will be typically done when the settings div is collapsed.
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
-
             </div>
 
-            <!-- Fuzzles was here github! You better watch out!! -->
 
-            <div class="pim-settings-container" ng-class="{'expanded': b_expanded}">
-                <h3 ng-click="b_expanded = !b_expanded">Preview Window:</h3>
+            <div class="pim-settings-container" ng-class="{'expanded': preview_settings_expanded}">
+                <h3 ng-click="preview_settings_expanded = !preview_settings_expanded">Preview Window:</h3>
 
                 <pim-checkbox
                     value = "settings.preview.fullscreen"
@@ -83,11 +81,11 @@
                     --opacity (-op), Set preview window opacity. 0 = invisible, 255 = fully opaque. Default is 255 (opaque).
                 </pim-help-frame>
                 <pim-settings-spacer vertical-space="10px"></pim-settings-spacer>
-
             </div>
 
-            <div class="pim-settings-container" ng-class="{'expanded': c_expanded}">
-                <h3 ng-click="c_expanded = !c_expanded">Camera Control Options:</h3>
+
+            <div class="pim-settings-container" ng-class="{'expanded': camera_settings_expanded}">
+                <h3 ng-click="camera_settings_expanded = !camera_settings_expanded">Camera Control Options:</h3>
 
                 <sab-slick-slider
                     value = "settings.camera.sharpness"
@@ -174,6 +172,7 @@
 
         </div>
 
+
         <div id="pim-header-div">
             <!-- This is the dropdown directive holder, this is used to position this
             appropriately, as well as easily hide it if we are showing the settings
@@ -191,25 +190,27 @@
 
                 <div id="pim-save-btn-container"ng-class="{'shrunk': !show_settings}">
                     <pim-json-transport
-                        model   = "settings"
-                        api     = "/api/camera/settings"
-                        shrunk  = "!show_settings"
+                        model        = "settings"
+                        api          = "/api/camera/settings"
+                        shrunk       = "!show_settings"
                         load-on-init = "true"
-                        autosave= "settings.general.enable_autosave" />
+                        autosave     = "settings.general.enable_autosave" />
                 </div>
 
                 <div class="pim-default-settings-btn" ng-click="load_default_settings()" ng-class="{'hidden': !show_settings}">
                     <i class="fa fa-2x fa-refresh"></i>
                 </div>
-
             </div>
         </div>
 
     </div>
 
+
+    <!-- Application Views Go Here -->
     <div id="pim-content-div">
         <div ng-view></div>
     </div>
+
 
     <script src="/external/js/underscore.min.js"></script>
     <script src="/external/js/jquery.js"></script>
