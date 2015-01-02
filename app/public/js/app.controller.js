@@ -5,7 +5,6 @@
  *  refer to.
 ***/
 var app = angular.module("PIMageApp", [
-    "ngAnimate",
     "ngRoute",
     "sabhiram.slick-slider"
 ]);
@@ -133,6 +132,7 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     });
 }
 
+
 /******************************************************************************\
 Function:
     AlbumController
@@ -199,6 +199,27 @@ function PreviewController($scope) {
     console.log("PreviewController loaded");
 }
 
+/*****************************************************************************\
+Bind app controllers in-line since global defines are not allowed
+\*****************************************************************************/
+app.controller("AppController", AppController);
+app.controller("AlbumController", AlbumController);
+app.controller("PreviewController", PreviewController);
+
+
+/*****************************************************************************\
+Filter:
+    unspacify_url
+
+Description:
+    Takes a url with spaces, and replaces the \s for a %20
+\*****************************************************************************/
+app.filter("unspacify_url", function() {
+    return function(item) {
+        return item.replace(/\s/g, "%20");
+    };
+});
+
 
 /******************************************************************************\
 Directive:
@@ -240,7 +261,7 @@ app.directive("pimImageThumb", function() {
         template: [
             "<div class='pim-image-thumb' ng-mouseenter='hovered = true' ng-mouseleave='hovered = false'>",
             "    <div class='pim-image-header' ng-class='{\"selected\": hovered}'>{{imageName}}</div>",
-            "    <img ng-src='gallery/{{albumName}}/{{imageName}}' class='pim-image-img pim-center-image'></img>",
+            "    <img ng-src='gallery/{{albumName | unspacify_url}}/{{imageName | unspacify_url}}' class='pim-image-img pim-center-image'></img>",
             "    <div class='pim-image-toolbox' ng-class='{\"hide_toolbox\": !hovered}' align='right'>",
             "        <i class='fa fa-search'></i>",
             "        <i class='fa fa-edit'></i>",
@@ -256,6 +277,7 @@ app.directive("pimImageThumb", function() {
         },
     };
 });
+
 
 /******************************************************************************\
 Directive:
@@ -314,6 +336,7 @@ app.directive("pimDropdown", function($location) {
     };
 });
 
+
 /******************************************************************************\
 Directive:
     pimCheckbox <pim-checkbox>
@@ -360,6 +383,7 @@ app.directive("pimCheckbox", function() {
     };
 });
 
+
 /******************************************************************************\
 Directive:
     pimSettingsSpacer <pim-settings-spacer>
@@ -387,6 +411,7 @@ app.directive("pimSettingsSpacer", function() {
         }
     };
 });
+
 
 /******************************************************************************\
 Directive:
