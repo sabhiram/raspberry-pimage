@@ -29,6 +29,16 @@ textarea:focus, input:focus, *.focus{
     outline: 0;
 }
 
+/* sab-button-flap override */
+#rpi_util_flap {
+    top: 300px;
+    opacity: 1;
+    -webkit-transition: all 0.30s linear 0.0s;
+}
+#rpi_util_flap.hide_away {
+    opacity: 0;
+}
+/* sab-button-flap */
 
 #pim-full-header-div {
     position: relative;
