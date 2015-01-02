@@ -1,8 +1,13 @@
 <div class="pim-album-container" ng-show="album_name">
+
     <div class="pim-album-info-container" align="left">
         <h3>Album Information:</h3>
-        <div class="btn btn-success" ng-click="take_picture()"><i class="fa fa-camera-o"></i>&nbsp;Take Picture</div><br>
-        <b>Name:</b> {{album_name}}<br>
+        <div class="btn btn-success" ng-click="take_picture()">
+            <i class="fa fa-camera-o"></i>&nbsp;Take Picture
+        </div>
+        <br>
+
+        <b>Name:  </b> {{album_name}}   <br>
         <b>Images:</b> {{images.length}}<br>
     </div>
 
@@ -13,4 +18,5 @@
         on-delete   = "delete_image($index, image.name)"
         class       = "pim-image-thumb-div">
     </pim-image-thumb>
+
 </div>
