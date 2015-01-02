@@ -1,10 +1,11 @@
 var
     // Node Modules
-    _    = require("underscore")._,
-    path = require("path"),
+    _         = require("underscore")._,
+    path      = require("path"),
 
     // Custom Modules
-    log  = require("../logger")();
+    log       = require("../logger")(),
+    rpi_utils = require("../rpi_utils")();
 
 /*****************************************************************************\
 RPI API Handler. This is only done in a single file since this
@@ -103,6 +104,24 @@ module.exports = function(gallery, rpi_camera) {
             get_default_settings: function(request, response) {
                 log.info("GET /api/default_settings");
                 log_error_send_success_with({default_settings: rpi_camera.get_default_settings_sync()}, null, response);
+            },
+        },
+
+        // RPI Util APIs
+        utils: {
+
+            reboot: function(request, response) {
+                log.info("POST /api/utils/reboot");
+                rpi_utils.reboot_pi(function(error, stdout) {
+                    response.send("OK");
+                });
+            },
+
+            shutdown: function(request, response) {
+                log.info("POST /api/utils/shutdown");
+                rpi_utils.shutdown_pi(function(error, stdout) {
+                    response.send("OK");
+                });
             },
         },
 

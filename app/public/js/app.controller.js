@@ -6,7 +6,8 @@
 ***/
 var app = angular.module("PIMageApp", [
     "ngRoute",
-    "sabhiram.slick-slider"
+    "sabhiram.slick-slider",
+    "sabhiram.button-flap"
 ]);
 
 /******************************************************************************\
@@ -103,6 +104,10 @@ function AppController(AlbumManager, CameraManager, $scope, $location, $timeout)
     // Initialize scope
     $scope.albums = [];
     $scope.show_settings = false;
+    $scope.rpi_util_cmds = [
+        ["fa-power-off", "/api/utils/shutdown"],
+        ["fa-refresh", "/api/utils/reboot"]
+    ];
 
     // Defer load the settings when the pimJsonTransport directive is
     // loaded. This settings model is passed in as reference to said
