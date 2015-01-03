@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/bower/angular-button-flap/flap.css">
     <!-- Bower CSS components -->
 
+    <link rel="stylesheet" href="/css/flap.css">
     <link rel="stylesheet" href="/css/style.css">
 
     <title>RaspberryPImage</title>
@@ -213,14 +214,15 @@
     <sab-button-flap
         items       = "rpi_util_cmds"
         orientation = "right"
-        ng-class    = "{'hide_away': show_settings}"
+        ng-class    = "{'hide-away': show_settings}"
         id          = "rpi_util_flap" >
     </sab-button-flap>
 
 
     <!-- Bower JS components -->
     <script src="/bower/jquery/dist/jquery.min.js"></script>
-    <script src="/bower/angular/angular.min.js"></script>
+    <script src="/bower/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/bower/angular/angular.js"></script>
     <script src="/bower/angular-route/angular-route.min.js"></script>
     <script src="/bower/underscore/underscore-min.js"></script>
     <script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -230,6 +232,14 @@
     <!-- Bower JS components -->
 
     <script src="/js/app.controller.js"></script>
+    <script>
+        $(function() {
+            // Enable draggable on button flap
+            $("#rpi_util_flap").draggable({
+                axis: "y",
+                containment: "parent"});
+        });
+    </script>
 
 
 </body>

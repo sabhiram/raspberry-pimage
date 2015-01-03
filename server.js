@@ -29,13 +29,13 @@ var
 \*****************************************************************************/
 // TODO: Load args from file, use nconf?
 var args = {
-    port:               process.env.PORT || 80,
-    version:            "1.0.0",
-    name:               "RaspberryPIMage",
-    gallery_dir:        "./app/public/gallery",
-    camera_settings:    "camera_settings.json",
-    admin_passcode:     "mrfseesall",
-    logs_dir:           "./logs",
+    port:            process.env.PORT || 80,
+    version:         "1.0.0",
+    name:            "RaspberryPIMage",
+    gallery_dir:     "./app/public/gallery",
+    camera_settings: "camera_settings.json",
+    admin_passcode:  "mrfseesall",
+    logs_dir:        "./logs",
 };
 
 /*****************************************************************************\

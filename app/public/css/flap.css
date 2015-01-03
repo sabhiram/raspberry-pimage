@@ -1,0 +1,169 @@
+.sab-flap-container {
+    position: absolute;
+
+    background-color: #D0D0D0;
+    color: #808080;
+
+    -webkit-transition: all 0.3s linear 0.0s;
+    padding: 0;
+}
+.sab-flap-container:hover {
+    background-color: #808080;
+    color: #D0D0D0;
+}
+
+.sab-flap-container.left {
+    left: 0; top: 100px;
+
+    width: 40px;
+    height: auto;
+}
+.sab-flap-container.right {
+    right: 0; top: 100px;
+
+    width: 40px;
+    height: auto;
+}
+.sab-flap-container.bottom {
+    bottom: 0; left: 100px;
+
+    width: auto;
+    height: 40px;
+}
+.sab-flap-container.top {
+    top: 0; left: 100px;
+
+    width: auto;
+    height: 40px;
+}
+
+.sab-flap-container.right:before,
+.sab-flap-container.left:before,
+.sab-flap-container.right:after,
+.sab-flap-container.left:after,
+.sab-flap-container.top:before,
+.sab-flap-container.top:after,
+.sab-flap-container.bottom:before,
+.sab-flap-container.bottom:after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    -webkit-transition: all 0.3s linear 0.0s;
+}
+.sab-flap-container.right:before,
+.sab-flap-container.left:before,
+.sab-flap-container.right:after,
+.sab-flap-container.left:after {
+    width: 40px; height: 30px;
+}
+.sab-flap-container.right:before,
+.sab-flap-container.left:before {
+    top: -30px; left: 0;
+}
+.sab-flap-container.right:after,
+.sab-flap-container.left:after {
+    top: 100%; left: 0;
+}
+.sab-flap-container.left:before {
+    border-width: 30px 0 0 40px;
+    border-color: transparent transparent transparent #D0D0D0;
+}
+.sab-flap-container.left:hover:before {
+    border-color: transparent transparent transparent #808080;
+}
+.sab-flap-container.left:after {
+    border-width: 30px 40px 0 0;
+    border-color: #D0D0D0 transparent transparent transparent;
+}
+.sab-flap-container.left:hover:after {
+    border-color: #808080 transparent transparent transparent;
+}
+.sab-flap-container.right:before {
+    border-width: 0 0 30px 40px;
+    border-color: transparent transparent #D0D0D0 transparent;
+}
+.sab-flap-container.right:hover:before {
+    border-color: transparent transparent #808080 transparent;
+}
+.sab-flap-container.right:after {
+    border-width: 0 40px 30px 0;
+    border-color: transparent #D0D0D0 transparent transparent;
+}
+.sab-flap-container.right:hover:after {
+    border-color: transparent #808080 transparent transparent;
+}
+
+.sab-flap-container.top:before,
+.sab-flap-container.top:after,
+.sab-flap-container.bottom:before,
+.sab-flap-container.bottom:after {
+    width: 30px; height: 40px;
+}
+.sab-flap-container.top:before,
+.sab-flap-container.bottom:before {
+    left: -30px; top: 0;
+}
+.sab-flap-container.top:after,
+.sab-flap-container.bottom:after {
+    left: 100%; top: 0;
+}
+.sab-flap-container.top:before {
+    border-width: 0 30px 40px 0;
+    border-color: transparent #D0D0D0 transparent transparent;
+}
+.sab-flap-container.top:hover:before {
+    border-color: transparent #808080 transparent transparent;
+}
+.sab-flap-container.top:after {
+    border-width: 40px 30px 0 0;
+    border-color: #D0D0D0 transparent transparent transparent;
+}
+.sab-flap-container.top:hover:after {
+    border-color: #808080 transparent transparent transparent;
+}
+.sab-flap-container.bottom:before {
+    border-width: 0 0 40px 30px;
+    border-color: transparent transparent #D0D0D0 transparent;
+}
+.sab-flap-container.bottom:hover:before {
+    border-color: transparent transparent #808080 transparent;
+}
+.sab-flap-container.bottom:after {
+    border-width: 40px 0 0 30px;
+    border-color: transparent transparent transparent #D0D0D0;
+}
+.sab-flap-container.bottom:hover:after {
+    border-color: transparent transparent transparent #808080;
+}
+
+.sab-flap-item {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 100%;
+
+    border: 2px solid black;
+    color: black;
+
+    margin: 4px;
+
+    text-align: center;
+    vertical-align: center;
+
+    -webkit-transition: all 0.3s linear 0.0s;
+    cursor: pointer;
+
+    float: left;
+}
+.sab-flap-item:hover {
+    border: 2px solid black;
+    background-color: black;
+    color: yellow;
+}
+
+.sab-flap-item i {
+    padding-top: 9px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
