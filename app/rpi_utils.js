@@ -17,16 +17,15 @@ module.exports = function() {
     \*****************************************************************************/
     _run_system_cmd = function(cmd, callback) {
         // Dont actually run the commands if we are testing,
-        // simply return back the cmd to the callback w/ no error
-        /* istanbul ignore else */
+        // simply echo them :)
         if (process.env.UNIT_TESTS_ENABLED) {
-            callback(null, cmd);
-        } else {
-            log.info("Running command: " + cmd);
-            exec(cmd, function(error, stdout, stderr) {
-                callback(error, stdout);
-            });
+            cmd = "echo " + cmd;
         }
+
+        log.info("Running command: " + cmd);
+        exec(cmd, function(error, stdout, stderr) {
+            callback(error, stdout);
+        });
     },
 
     /*****************************************************************************\
