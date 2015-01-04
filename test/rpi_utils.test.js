@@ -23,8 +23,8 @@ describe("RPI Utils Tests", function() {
         });
     });
 
-    it("reboot_pi() test", function(next_test) {
-        rpi_utils.reboot_pi(function(error, result) {
+    it("restart_pi() test", function(next_test) {
+        rpi_utils.restart_pi(function(error, result) {
             result.should.match("shutdown -r now");
             next_test(error);
         });
@@ -32,14 +32,12 @@ describe("RPI Utils Tests", function() {
 
     it("enable_start_on_boot(true) test", function(next_test) {
         rpi_utils.enable_start_on_boot(false, function(error, result) {
-            result.should.match("TODO");
             next_test(error);
         });
     });
 
     it("enable_start_on_boot(false) test", function(next_test) {
         rpi_utils.enable_start_on_boot(true, function(error, result) {
-            result.should.match("TODO");
             next_test(error);
         });
     });

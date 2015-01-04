@@ -19,8 +19,8 @@ module.exports = function(app, handlers) {
     app.post(  "/api/camera/settings",                             handlers.api.camera.save_settings);
 
     // RPI Utils
-    app.get(   "/api/utils/reboot",                                handlers.api.utils.reboot);
-    app.get(   "/api/utils/shutdown",                              handlers.api.utils.shutdown);
+    app.post(  "/api/utils/restart",                               handlers.api.utils.restart);
+    app.post(  "/api/utils/shutdown",                              handlers.api.utils.shutdown);
 
     // 404 Page
     app.get(   "*",                                                handlers.view.error);

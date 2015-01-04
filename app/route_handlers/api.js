@@ -110,18 +110,30 @@ module.exports = function(gallery, rpi_camera) {
         // RPI Util APIs
         utils: {
 
-            reboot: function(request, response) {
-                log.info("POST /api/utils/reboot");
-                rpi_utils.reboot_pi(function(error, stdout) {
-                    response.send("OK");
+            restart: function(request, response) {
+                log.info("POST /api/utils/restart");
+                rpi_utils.restart_pi(function(error, stdout) {
+                    log_error_send_success_with({}, error, response);
                 });
             },
 
             shutdown: function(request, response) {
                 log.info("POST /api/utils/shutdown");
                 rpi_utils.shutdown_pi(function(error, stdout) {
-                    response.send("OK");
+                    log_error_send_success_with({}, error, response);
                 });
+            },
+
+            start_on_boot: function(request, response) {
+                log.info("POST /api/utils/start_on_boot/:status");
+                if (status == "true" || status == "false") {
+                    rpi_utils.enable_start_on_boot(status, function(error) {
+                        log_error_send_success_with({}, error, response);
+                    });
+                } else {
+                    log.info("  ignoring request, status " + status + " is invalid");
+                    log_error_send_success_with({}, "bad status value", response);
+                }
             },
         },
 

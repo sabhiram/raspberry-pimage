@@ -91,6 +91,39 @@ app.service("CameraManager", function($http) {
 });
 
 /******************************************************************************\
+Service:
+    PiUtilManager
+
+Dependencies:
+    $http
+
+Description:
+    This is a simple service which abstracts the HTTP ReST API which the
+    server exposes for the RPI Utilities
+\******************************************************************************/
+app.service("PiUtilManager", function($http) {
+    return {
+        restart_pi: function() {
+            return $http.post("/api/utils/restart", {});
+        },
+        shutdown_pi: function() {
+            return $http.post("/api/utils/shutdown", {});
+        },
+    };
+});
+
+/*****************************************************************************\
+Helper function to validate a response object from our server
+\*****************************************************************************/
+function validate_response(response) {
+    if (response.data.status == "SUCCESS") {
+        console.log("... command successful!");
+    } else {
+        console.log("Error - " + response.data);
+    }
+}
+
+/******************************************************************************\
 Function:
     AppController
 
@@ -100,30 +133,40 @@ Dependencies:
 Description:
     Main application controller
 \******************************************************************************/
-function AppController(AlbumManager, CameraManager, $scope, $location, $timeout) {
+function AppController(AlbumManager, CameraManager, PiUtilManager, $scope, $location, $timeout) {
     // Initialize scope
     $scope.albums = [];
     $scope.show_settings = false;
     $scope.rpi_util_cmds = [
-        ["fa-power-off", "/api/utils/shutdown"],
-        ["fa-refresh", "/api/utils/reboot"]
+        ["fa-power-off", $scope.shutdown_pi],
+        ["fa-refresh",   $scope.restart_pi]
     ];
-
     // Defer load the settings when the pimJsonTransport directive is
     // loaded. This settings model is passed in as reference to said
     // directive along with the API endpoint to get / set the settings.
     $scope.settings = null;
 
+    // Define scope functions to bind to the clicking of the reboot
+    // and shutdown actions
+    $scope.shutdown_pi = function() {
+        console.log("Sending shutdown command");
+        PiUtilManager.shutdown_pi().then(validate_response);
+    }
+    $scope.restart_pi = function() {
+        console.log("Sending reboot command");
+        PiUtilManager.restart_pi().then(validate_response);
+    }
+
     // Define a function to fetch the default settings from the server
     $scope.load_default_settings = function() {
         CameraManager.get_default_settings().then(function(response) {
             if (response.data.status == "SUCCESS") {
-                console.log("Setting settings to default!");
+                // TODO Check PiUtilManager for auto boot settings etc
                 $scope.settings = response.data.default_settings;
             } else {
                 console.log("Error - " + response.data);
             }
-        })
+        });
     }
 
     // Deferred load the list of albums and set the scope

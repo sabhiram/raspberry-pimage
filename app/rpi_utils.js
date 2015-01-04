@@ -33,21 +33,32 @@ module.exports = function() {
     Enable / Disable start this service on boot
     \*****************************************************************************/
     _enable_start_on_boot = function(enabled, callback) {
-        log.info("enable_start_on_boot - TODO");
-        callback(null, "TODO");
+        log.info("enable_start_on_boot - " + enabled);
+
+        async.series([
+            function check_boot_script(next_step) {
+                log.info("Dirname: " + __dirname);
+                next_step();
+            },
+            function update_script(next_step) {
+                log.info("Update script...");
+                next_step();
+            },
+        ], callback);
     },
 
     /*****************************************************************************\
     Reboot the pi
     \*****************************************************************************/
-    _reboot_pi = function(callback) {
+    _restart_pi = function(callback) {
         log.info("Rebooting the pi");
-        _run_system_cmd("shutdown -r now", callback);
+        _run_system_cmd("echo shutdown -r now", callback);
+
     },
 
     _shutdown_pi = function(callback) {
         log.info("Shutdown the pi");
-        _run_system_cmd("shutdown -t now", callback);
+        _run_system_cmd("echo shutdown -t now", callback);
     };
 
     /*****************************************************************************\
@@ -59,7 +70,7 @@ module.exports = function() {
 
         enable_start_on_boot: _enable_start_on_boot,
 
-        reboot_pi: _reboot_pi,
+        restart_pi: _restart_pi,
         shutdown_pi: _shutdown_pi,
 
     };
