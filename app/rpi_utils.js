@@ -19,7 +19,7 @@ module.exports = function() {
         // Dont actually run the commands if we are testing,
         // simply echo them :)
         if (process.env.UNIT_TESTS_ENABLED) {
-            cmd = "echo " + cmd;
+            cmd = "echo -n " + cmd;
         }
 
         log.info("Running command: " + cmd);
@@ -51,13 +51,13 @@ module.exports = function() {
     \*****************************************************************************/
     _restart_pi = function(callback) {
         log.info("Rebooting the pi");
-        _run_system_cmd("echo shutdown -r now", callback);
+        _run_system_cmd("shutdown -r now", callback);
 
     },
 
     _shutdown_pi = function(callback) {
         log.info("Shutdown the pi");
-        _run_system_cmd("echo shutdown -t now", callback);
+        _run_system_cmd("shutdown -t now", callback);
     };
 
     /*****************************************************************************\
